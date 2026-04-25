@@ -3,7 +3,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyBGdFc2n1Ogu-AQADw_
 const AUTO_SAVE_KEY = 'bcfl_savedProgress_v1';
 
 // ========= DEADLINE ENFORCEMENT =========
-const ENTRY_DEADLINE = new Date("2025-12-04T23:59:00Z");
+const ENTRY_DEADLINE = new Date("2026-05-13T23:59:00Z");
 
 function isPastDeadline() {
   const now = new Date();
@@ -51,6 +51,7 @@ const maleClasses   = ['59m','66m','74m','83m','93m','105m','120m','120pm'];
 
 // Meta for confidence labels
 const classMeta = {
+  '43w':  { labelPrefix: '43 kg Predicted Winner' },
   '47w':  { labelPrefix: '47 kg Predicted Winner' },
   '52w':  { labelPrefix: '52 kg Predicted Winner' },
   '57w':  { labelPrefix: '57 kg Predicted Winner' },
@@ -60,6 +61,7 @@ const classMeta = {
   '84w':  { labelPrefix: '84 kg Predicted Winner' },
   '84pw': { labelPrefix: '84+ kg Predicted Winner' },
 
+  '53m':   { labelPrefix: '53 kg Predicted Winner' },
   '59m':   { labelPrefix: '59 kg Predicted Winner' },
   '66m':   { labelPrefix: '66 kg Predicted Winner' },
   '74m':   { labelPrefix: '74 kg Predicted Winner' },
@@ -195,8 +197,8 @@ function initConfidenceOptions() {
     placeholder.textContent = 'Select rating…';
     sel.appendChild(placeholder);
 
-    // Ratings 1–16
-    for (let i = 1; i <= 16; i++) {
+    // Ratings 1–18
+    for (let i = 1; i <= 18; i++) {
       const opt = document.createElement('option');
       opt.value = String(i);
       opt.textContent = String(i);
@@ -366,7 +368,7 @@ function validateStep(stepIndex) {
   }
 
   if (stepIndex === 3) {
-    // Confidence Ratings – all 16 must be filled and 1–16 used exactly once
+    // Confidence Ratings – all 18 must be filled and 1–18 used exactly once
     const allClasses = [...femaleClasses, ...maleClasses];
 
     allClasses.forEach(cls => {
@@ -385,8 +387,8 @@ function validateStep(stepIndex) {
       .filter(v => v !== '' && v !== 'CLEAR_ALL');
 
     const unique = new Set(allValues);
-    if (allValues.length !== 16 || unique.size !== 16) {
-      showStatus('Each confidence rating 1–16 must be used exactly once across all weight classes.', true);
+    if (allValues.length !== 18 || unique.size !== 18) {
+      showStatus('Each confidence rating 1–18 must be used exactly once across all weight classes.', true);
       valid = false;
     }
   }
