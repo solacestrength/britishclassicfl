@@ -46,8 +46,8 @@ const clearBtn = document.getElementById('clearFormBtn');
 const confSelects = Array.from(document.querySelectorAll('.conf-select'));
 
 // Class IDs (for looping)
-const femaleClasses = ['47w','52w','57w','63w','69w','76w','84w','84pw'];
-const maleClasses   = ['59m','66m','74m','83m','93m','105m','120m','120pm'];
+const femaleClasses = ['43w', '47w','52w','57w','63w','69w','76w','84w','84pw'];
+const maleClasses   = ['43w','66m','74m','83m','93m','105m','120m','120pm'];
 
 // Meta for confidence labels
 const classMeta = {
@@ -190,7 +190,8 @@ function updateConfidenceLabels() {
 function setDefaultConfidenceValues() {
   const defaults = {
     c43w: 1,
-    c53m: 2
+    c47w: 2,
+    c53m: 3
   };
 
   Object.entries(defaults).forEach(([name, value]) => {
