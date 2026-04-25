@@ -146,6 +146,34 @@
                   which will be used as a tie-breaker — don't skip if you're in it to win it!
                 </p>
 
+                <!-- 43 kg Women -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-2">43 kg Women</h3>
+                  <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+                      <select id="w43w" name="w43w" data-gender="female"
+                              class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                        <option value="">Select a lifter…</option>
+                        <option>Anais Falcon (325 kg)</option>
+                        <option>Sharvari Karnik (322.5 kg)</option>
+                        <option>Nikola Murray (320 kg)</option>
+                        <option>Lauren Murray (307.5 kg)</option>
+                        <option>Gigi Nicolson (305 kg)</option>
+                      </select>
+                      <p id="w43wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t43w" name="t43w"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t43wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- 47 kg Women -->
                 <div class="border border-gray-700 rounded-md p-3 mb-3">
                   <h3 class="font-semibold text-sm mb-2">47 kg Women</h3>
@@ -427,6 +455,34 @@
 
               <!-- STEP 2: Men (winners + totals only) -->
               <div class="step" data-step="2">
+
+                <!-- 53 kg Men -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-2">53 kg Men</h3>
+                  <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+                      <select id="w53m" name="w53m" data-gender="male"
+                              class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                        <option value="">Select a lifter…</option>
+                        <option>Salman Desai (435 kg)</option>
+                        <option>Samuel Parkin (432.5 kg)</option>
+                        <option>James Donnelley (430 kg)</option>
+                        <option>Tejay Hall (320 kg)</option>
+                      </select>
+                      <p id="w53mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t53m" name="t53m"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t53mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>                
+                
                 <!-- 59 kg Men -->
                 <div class="border border-gray-700 rounded-md p-3 mb-3">
                   <h3 class="font-semibold text-sm mb-2">59 kg Men</h3>
@@ -707,6 +763,23 @@
                 <!-- Women’s Confidence -->
                 <p class="font-semibold text-sm mb-2">Women’s Classes</p>
 
+                <!-- 43 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">43 kg Confidence Rating</h3>
+                  <p id="confLabel_47w" class="text-xs text-gray-400 mb-2">
+                    Your 43 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c47w" name="c47w"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c47wError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>                
+
                 <!-- 47 kg Confidence -->
                 <div class="border border-gray-700 rounded-md p-3 mb-3">
                   <h3 class="font-semibold text-sm mb-1">47 kg Confidence Rating</h3>
@@ -715,7 +788,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c47w" name="c47w"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -732,7 +805,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c52w" name="c52w"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -749,7 +822,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c57w" name="c57w"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -766,7 +839,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c63w" name="c63w"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -783,7 +856,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c69w" name="c69w"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -800,7 +873,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c76w" name="c76w"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -817,7 +890,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c84w" name="c84w"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -834,7 +907,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c84pw" name="c84pw"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -846,6 +919,23 @@
                 <!-- Men’s Confidence -->
                 <p class="font-semibold text-sm mb-2">Men’s Classes</p>
 
+                <!-- 53 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">53 kg Confidence Rating</h3>
+                  <p id="confLabel_53m" class="text-xs text-gray-400 mb-2">
+                    Your 53 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c53m" name="c53m"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c53mError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>                
+
                 <!-- 59 kg Confidence -->
                 <div class="border border-gray-700 rounded-md p-3 mb-3">
                   <h3 class="font-semibold text-sm mb-1">59 kg Confidence Rating</h3>
@@ -854,7 +944,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c59m" name="c59m"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -871,7 +961,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c66m" name="c66m"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -888,7 +978,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c74m" name="c74m"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -905,7 +995,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c83m" name="c83m"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -922,7 +1012,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c93m" name="c93m"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -939,7 +1029,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c105m" name="c105m"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -956,7 +1046,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c120m" name="c120m"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
@@ -973,7 +1063,7 @@
                   </p>
                   <div>
                     <label class="text-xs font-semibold mb-1 block">
-                      Confidence Rating (1–16) <span class="text-red-500">*</span>
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
                     </label>
                     <select id="c120pm" name="c120pm"
                             class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
