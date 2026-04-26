@@ -49,6 +49,8 @@ const confSelects = Array.from(document.querySelectorAll('.conf-select'));
 const femaleClasses = ['43w', '47w','52w','57w','63w','69w','76w','84w','84pw'];
 const maleClasses   = ['53m','59m','66m','74m','83m','93m','105m','120m','120pm'];
 
+const ALL_CLASSES = [...femaleClasses, ...maleClasses];
+
 // Meta for confidence labels
 const classMeta = {
   '43w':  { labelPrefix: '43 kg Predicted Winner' },
@@ -198,7 +200,8 @@ function initConfidenceOptions() {
     sel.appendChild(placeholder);
 
     // Ratings 1–18
-    for (let i = 1; i <= 18; i++) {
+    const total = confSelects.length;
+    for (let i = 1; i <= total; i++) {
       const opt = document.createElement('option');
       opt.value = String(i);
       opt.textContent = String(i);
@@ -255,7 +258,7 @@ confSelects.forEach(sel => {
       });
 
       refreshConfidenceDisables();
-      showStatus('All confidence ratings have been reset. Please reassign 1–16.', false);
+      showStatus(`All ${confSelects.length} confidence ratings have been reset. Please reassign 1–${confSelects.length}.`, false);
       sel.value = '';
       return;
     }
@@ -385,22 +388,24 @@ if (stepIndex === 3) {
     }
   });
 
-  const allValues = allClasses
-    .map(cls => {
-      const cSel = document.getElementById('c' + cls);
-      return cSel ? cSel.value : '';
-    })
-    .filter(v => v !== '' && v !== 'CLEAR_ALL');
+const allValues = ALL_CLASSES
+  .map(cls => {
+    const cSel = document.getElementById('c' + cls);
+    return cSel ? cSel.value : null;
+  })
+  .filter(v => v !== null && v !== '' && v !== 'CLEAR_ALL');
 
   const unique = new Set(allValues);
 
-  if (allValues.length !== 18 || unique.size !== 18) {
-    showStatus(
-      'Each confidence rating 1–18 must be used exactly once across all weight classes.',
-      true
-    );
-    valid = false;
-  }
+const total = confSelects.length;
+
+if (allValues.length !== total || unique.size !== total) {
+  showStatus(
+    `Each confidence rating 1–${total} must be used exactly once across all weight classes.`,
+    true
+  );
+  valid = false;
+}
 }
 
   if (stepIndex === 4) {
