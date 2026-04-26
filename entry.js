@@ -373,20 +373,21 @@ function validateStep(stepIndex) {
 if (stepIndex === 3) {
   const allClasses = [...femaleClasses, ...maleClasses];
 
-  allClasses.forEach(cls => {
-    const cSel = document.getElementById('c' + cls);
+allClasses.forEach(cls => {
+  const cSel = document.getElementById('c' + cls);
 
-    if (!cSel) {
-      console.error('Missing element:', 'c' + cls);
-      valid = false;
-      return;
-    }
+  if (!cSel) {
+    console.error('Missing element:', 'c' + cls);
+    showStatus('Form configuration error. Please refresh the page.', true);
+    valid = false;
+    return;
+  }
 
-    if (!cSel.value || cSel.value === 'CLEAR_ALL') {
-      setError('c' + cls + 'Error', 'Please choose a confidence rating.');
-      valid = false;
-    }
-  });
+  if (!cSel.value || cSel.value === 'CLEAR_ALL') {
+    setError('c' + cls + 'Error', 'Please choose a confidence rating.');
+    valid = false;
+  }
+});
 
 const allValues = ALL_CLASSES
   .map(cls => {
