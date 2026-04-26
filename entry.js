@@ -187,14 +187,6 @@ function updateConfidenceLabels() {
 
 // ========= CONFIDENCE RATING LOGIC =========
 
-  Object.entries(defaults).forEach(([name, value]) => {
-    const input = document.querySelector(`[name="${name}"]`);
-    if (input && !input.value) {
-      input.value = value;
-    }
-  });
-}
-
 function initConfidenceOptions() {
   confSelects.forEach(sel => {
     sel.innerHTML = '';
