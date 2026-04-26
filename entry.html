@@ -4,47 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>League Entry | British Classic Fantasy League 2026 🇬🇧</title>
-  <script>
-  (function () {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.classList.toggle('light-mode', savedTheme === 'light');
-  })();
-</script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-  /* LIGHT MODE OVERRIDES */
-  .light-mode body {
-    background-color: #f3f4f6;
-    color: #111827;
-  }
-
-  .light-mode .site-background-overlay {
-    background-color: rgba(255,255,255,0.7);
-  }
-
-  .light-mode .bg-gray-900 { background-color: #ffffff !important; }
-  .light-mode .bg-gray-800\/60 { background-color: rgba(255,255,255,0.85) !important; }
-  .light-mode .bg-gray-700 { background-color: #e5e7eb !important; }
-
-  .light-mode .text-white { color: #111827 !important; }
-  .light-mode .text-gray-300,
-  .light-mode .text-gray-400 { color: #374151 !important; }
-
-  .light-mode .border-gray-700,
-  .light-mode .border-gray-800 {
-    border-color: #d1d5db !important;
-  }
-
-  .light-mode input,
-  .light-mode select {
-    background-color: #ffffff !important;
-    color: #111827 !important;
-  }
-
-  .light-mode a:hover {
-    color: #dc2626 !important;
-  }
-</style>
   <style>
     @keyframes fadeInUp {
       0% { opacity: 0; transform: translateY(10px); }
@@ -69,45 +29,21 @@
 
   <div class="relative z-10">
     <!-- Header -->
-    <header class="site-header w-full backdrop-blur-sm border-b 
-               bg-gray-900/90 border-gray-800
-               dark:bg-gray-900/90 dark:border-gray-800
-               light:bg-white/90 light:border-gray-300">
+    <header class="site-header w-full bg-gray-900/90 backdrop-blur-sm border-b border-gray-800 relative z-50">
       <div class="w-full flex items-center justify-center px-4 py-3">
         <div class="flex-1 text-center">
           <a href="index.html" class="font-bold text-white hover:text-red-500 transition animate-fade-in-up text-sm sm:text-lg md:text-xl lg:text-2xl">
             British Classic Fantasy League 2026 🇬🇧
           </a>
         </div>
-        <!-- Light/Dark Mode Toggle -->
-        <button id="themeToggle"
-        class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 p-2 rounded-md hover:bg-gray-800/50">
-        ☀️
-        </button>
-<!-- Light Mode Toggle (LEFT SIDE) -->
-<div class="absolute left-4 top-1/2 -translate-y-1/2">
-  <button id="themeToggle"
-    class="text-gray-300 light:text-gray-700 p-2 rounded-md hover:bg-gray-800/50 light:hover:bg-gray-200 transition">
-    
-    <!-- Moon (dark mode icon) -->
-    <svg id="themeIconDark" xmlns="http://www.w3.org/2000/svg"
-      class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M21 12.79A9 9 0 1111.21 3 
-           7 7 0 0021 12.79z" />
-    </svg>
-
-    <!-- Sun (light mode icon) -->
-    <svg id="themeIconLight" xmlns="http://www.w3.org/2000/svg"
-      class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M12 3v1m0 16v1m8-9h1M3 12H2
-           m15.364-6.364l.707-.707M6.343 17.657l-.707.707
-           m12.728 0l-.707-.707M6.343 6.343l-.707-.707
-           M12 8a4 4 0 100 8 4 4 0 000-8z" />
-    </svg>
-  </button>
-</div>
+        <div class="absolute right-4 top-1/2 -translate-y-1/2">
+          <button id="menu-btn" aria-expanded="false" class="text-gray-300 p-2 rounded-md hover:bg-gray-800/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <span class="sr-only">Open menu</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -1283,7 +1219,7 @@
       <div class="flex justify-center mt-8">
         <a href="metrics.html"
            class="inline-flex items-center justify-center bg-gray-800/60 border border-gray-700
-                  text-gray-200 light:text-black font-semibold px-6 py-3 rounded-full backdrop-blur-sm shadow-lg
+                  text-gray-200 font-semibold px-6 py-3 rounded-full backdrop-blur-sm shadow-lg
                   hover:bg-gray-700/70 hover:text-red-400 transition text-sm">
           View Metrics
         </a>
@@ -1409,22 +1345,6 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/britishclassicfl/service-worker.js");
   });
 }
-</script>
-<script>
-  const themeToggle = document.getElementById('themeToggle');
-
-  function updateIcon() {
-    const isLight = document.documentElement.classList.contains('light-mode');
-    themeToggle.textContent = isLight ? '🌙' : '☀️';
-  }
-
-  themeToggle.addEventListener('click', () => {
-    const isLight = document.documentElement.classList.toggle('light-mode');
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    updateIcon();
-  });
-
-  updateIcon();
 </script>
   <!-- DEADLINE LOCK OVERLAY (allows burger menu) -->
 <!-- <div id="deadline-closed-overlay"
