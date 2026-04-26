@@ -372,41 +372,36 @@ function validateStep(stepIndex) {
 
 if (stepIndex === 3) {
   const allClasses = [...femaleClasses, ...maleClasses];
+  const allValues = [];
 
-allClasses.forEach(cls => {
-  const cSel = document.getElementById('c' + cls);
-
-  if (!cSel) {
-    console.error('Missing element:', 'c' + cls);
-    showStatus('Form configuration error. Please refresh the page.', true);
-    valid = false;
-    return;
-  }
-
-  if (!cSel.value || cSel.value === 'CLEAR_ALL') {
-    setError('c' + cls + 'Error', 'Please choose a confidence rating.');
-    valid = false;
-  }
-});
-
-const allValues = ALL_CLASSES
-  .map(cls => {
+  allClasses.forEach(cls => {
     const cSel = document.getElementById('c' + cls);
-    return cSel ? cSel.value : null;
-  })
-  .filter(v => v !== null && v !== '' && v !== 'CLEAR_ALL');
+
+    if (!cSel) {
+      console.error('Missing element:', 'c' + cls);
+      valid = false;
+      return;
+    }
+
+    const val = cSel.value;
+
+    if (!val || val === 'CLEAR_ALL') {
+      setError('c' + cls + 'Error', 'Please choose a confidence rating.');
+      valid = false;
+    } else {
+      allValues.push(val);
+    }
+  });
 
   const unique = new Set(allValues);
 
-const total = confSelects.length;
-
-if (allValues.length !== total || unique.size !== total) {
-  showStatus(
-    `Each confidence rating 1–${total} must be used exactly once across all weight classes.`,
-    true
-  );
-  valid = false;
-}
+  if (allValues.length !== 18 || unique.size !== 18) {
+    showStatus(
+      'Each confidence rating 1–18 must be used exactly once across all weight classes.',
+      true
+    );
+    valid = false;
+  }
 }
 
   if (stepIndex === 4) {
