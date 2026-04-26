@@ -334,40 +334,62 @@ function validateStep(stepIndex) {
 
   if (stepIndex === 1) {
     // Women – winners & totals required (confidence is on Step 4 now)
-    femaleClasses.forEach(cls => {
-      const wSel = document.getElementById('w' + cls);
-      const tInput = document.getElementById('t' + cls);
+femaleClasses.forEach(cls => {
+  const wSel = document.getElementById('w' + cls);
+  const tInput = document.getElementById('t' + cls);
 
-      if (!wSel.value) {
-        setError('w' + cls + 'Error', 'Please pick a winner.');
-        valid = false;
-      }
-
-      const v = tInput.value.trim();
-      if (v !== '' && !totalRegex.test(v)) {
-        setError('t' + cls + 'Error', 'Use 0–2000 in steps of 0.5 (e.g. 865 or 865.5).');
-        valid = false;
-      }
-    });
+  if (!wSel) {
+    console.error('Missing element:', 'w' + cls);
+    valid = false;
+    return;
   }
 
+  if (!wSel.value) {
+    setError('w' + cls + 'Error', 'Please pick a winner.');
+    valid = false;
+  }
+
+  if (tInput) {
+    const v = tInput.value.trim();
+    if (v !== '' && !totalRegex.test(v)) {
+      setError('t' + cls + 'Error', 'Use 0–2000 in steps of 0.5 (e.g. 865 or 865.5).');
+      valid = false;
+    }
+  } else {
+    console.error('Missing element:', 't' + cls);
+    valid = false;
+  }
+});
+  }
+    
   if (stepIndex === 2) {
     // Men – winners & totals required (confidence is on Step 4 now)
-    maleClasses.forEach(cls => {
-      const wSel = document.getElementById('w' + cls);
-      const tInput = document.getElementById('t' + cls);
+maleClasses.forEach(cls => {
+  const wSel = document.getElementById('w' + cls);
+  const tInput = document.getElementById('t' + cls);
 
-      if (!wSel.value) {
-        setError('w' + cls + 'Error', 'Please pick a winner.');
-        valid = false;
-      }
+  if (!wSel) {
+    console.error('Missing element:', 'w' + cls);
+    valid = false;
+    return;
+  }
 
-      const v = tInput.value.trim();
-      if (v !== '' && !totalRegex.test(v)) {
-        setError('t' + cls + 'Error', 'Use 0–2000 in steps of 0.5 (e.g. 865 or 865.5).');
-        valid = false;
-      }
-    });
+  if (!wSel.value) {
+    setError('w' + cls + 'Error', 'Please pick a winner.');
+    valid = false;
+  }
+
+  if (tInput) {
+    const v = tInput.value.trim();
+    if (v !== '' && !totalRegex.test(v)) {
+      setError('t' + cls + 'Error', 'Use 0–2000 in steps of 0.5 (e.g. 865 or 865.5).');
+      valid = false;
+    }
+  } else {
+    console.error('Missing element:', 't' + cls);
+    valid = false;
+  }
+});
   }
 
 if (stepIndex === 3) {
