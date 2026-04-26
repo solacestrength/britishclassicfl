@@ -187,13 +187,6 @@ function updateConfidenceLabels() {
 
 // ========= CONFIDENCE RATING LOGIC =========
 
-function setDefaultConfidenceValues() {
-  const defaults = {
-    c43w: 1,
-    c47w: 2,
-    c53m: 3
-  };
-
   Object.entries(defaults).forEach(([name, value]) => {
     const input = document.querySelector(`[name="${name}"]`);
     if (input && !input.value) {
@@ -382,31 +375,41 @@ function validateStep(stepIndex) {
     });
   }
 
-  if (stepIndex === 3) {
-    // Confidence Ratings – all 18 must be filled and 1–18 used exactly once
-    const allClasses = [...femaleClasses, ...maleClasses];
+if (stepIndex === 3) {
+  const allClasses = [...femaleClasses, ...maleClasses];
 
-    allClasses.forEach(cls => {
-      const cSel = document.getElementById('c' + cls);
-      if (!cSel || !cSel.value || cSel.value === 'CLEAR_ALL') {
-        setError('c' + cls + 'Error', 'Please choose a confidence rating.');
-        valid = false;
-      }
-    });
+  allClasses.forEach(cls => {
+    const cSel = document.getElementById('c' + cls);
 
-    const allValues = allClasses
-      .map(cls => {
-        const cSel = document.getElementById('c' + cls);
-        return cSel ? cSel.value : '';
-      })
-      .filter(v => v !== '' && v !== 'CLEAR_ALL');
+    if (!cSel) {
+      console.error('Missing element:', 'c' + cls);
+      valid = false;
+      return;
+    }
 
-    const unique = new Set(allValues);
-    if (allValues.length !== 18 || unique.size !== 18) {
-      showStatus('Each confidence rating 1–18 must be used exactly once across all weight classes.', true);
+    if (!cSel.value || cSel.value === 'CLEAR_ALL') {
+      setError('c' + cls + 'Error', 'Please choose a confidence rating.');
       valid = false;
     }
+  });
+
+  const allValues = allClasses
+    .map(cls => {
+      const cSel = document.getElementById('c' + cls);
+      return cSel ? cSel.value : '';
+    })
+    .filter(v => v !== '' && v !== 'CLEAR_ALL');
+
+  const unique = new Set(allValues);
+
+  if (allValues.length !== 18 || unique.size !== 18) {
+    showStatus(
+      'Each confidence rating 1–18 must be used exactly once across all weight classes.',
+      true
+    );
+    valid = false;
   }
+}
 
   if (stepIndex === 4) {
     // Best Lifters
@@ -890,8 +893,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   initConfidenceOptions();
   buildBestLifterLists();
   showStep(0);
-
-  setDefaultConfidenceValues();
 
   // Wire up live updates for confidence labels
   const allClasses = [...femaleClasses, ...maleClasses];
