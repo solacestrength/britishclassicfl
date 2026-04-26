@@ -5,6 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Home | British Classic Fantasy League 2026 🇬🇧</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+  (function () {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.classList.toggle('light-mode', savedTheme === 'light');
+  })();
+</script>
+  <style>
+  /* LIGHT MODE OVERRIDES */
+  .light-mode body {
+    background-color: #f3f4f6;
+    color: #111827;
+  }
+
+  .light-mode .site-background-overlay {
+    background-color: rgba(255,255,255,0.7);
+  }
+
+  .light-mode .bg-gray-900 { background-color: #ffffff !important; }
+  .light-mode .bg-gray-800\/60 { background-color: rgba(255,255,255,0.85) !important; }
+  .light-mode .bg-gray-700 { background-color: #e5e7eb !important; }
+
+  .light-mode .text-white { color: #111827 !important; }
+  .light-mode .text-gray-300,
+  .light-mode .text-gray-400 { color: #374151 !important; }
+
+  .light-mode .border-gray-700,
+  .light-mode .border-gray-800 {
+    border-color: #d1d5db !important;
+  }
+
+  .light-mode input,
+  .light-mode select {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  .light-mode a:hover {
+    color: #dc2626 !important;
+  }
+</style>
   <style>
   @keyframes fadeInUp {
     0% {
@@ -79,6 +119,12 @@
             British Classic Fantasy League 2026 🇬🇧
           </a>
         </div>
+
+        <!-- Light/Dark Mode Toggle -->
+        <button id="themeToggle"
+        class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 p-2 rounded-md hover:bg-gray-800/50">
+        ☀️
+        </button>
 
         <!-- Burger button -->
         <div class="absolute right-4 top-1/2 -translate-y-1/2">
@@ -371,6 +417,22 @@
   });
 
   toggleMenu(false);
+</script>
+<script>
+  const themeToggle = document.getElementById('themeToggle');
+
+  function updateIcon() {
+    const isLight = document.documentElement.classList.contains('light-mode');
+    themeToggle.textContent = isLight ? '🌙' : '☀️';
+  }
+
+  themeToggle.addEventListener('click', () => {
+    const isLight = document.documentElement.classList.toggle('light-mode');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    updateIcon();
+  });
+
+  updateIcon();
 </script>
 <script>
 if ("serviceWorker" in navigator) {
