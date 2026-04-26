@@ -332,7 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------- Load Accuracy Scores CSV ---------- */
   async function loadAccuracyScores() {
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSuA8YB98ghNeM-cS6Fs1pJNkEBOI0x7WKI4R0vtvAG68mo7PJZYVj2HsdxH3DDqvieaTpe9zUzJcNW/pub?gid=1841956952&single=true&output=csv";
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFrZCAoHEZqARjNLR5OsRl8F7blm3BHIKTkOZVAfMRwx-rkf4spDM8yGBGP7NOksjgJbokFVnzRLaK/pub?gid=167144887&single=true&output=csv";
     const res = await fetch(csvUrl);
     const text = await res.text();
     const rows = text.trim().split(/\r?\n/).map(l => l.split(","));
