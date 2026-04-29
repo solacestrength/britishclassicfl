@@ -299,7 +299,7 @@ select {
 
     <a href="leaderboard.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Leaderboard</a>
     <a href="accuracy_scores.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Accuracy Scores</a>
-    <a href="metrics.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Metrics</a>
+    <a href="metrics-juniors.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Metrics</a>
   </nav>
 </div>
 
@@ -2076,14 +2076,14 @@ async function shareChart(id, g) {
   credit.style.textAlign = 'center';
   credit.style.marginTop = isDonut ? '8px' : '4px';
   credit.innerHTML =
-    'Data from tinyurl.com/britishclassicfl-metrics<br><br>Sponsored by the Sabado Sessions Podcast';
+    'Data from tinyurl.com/britishclassicfl-metricsjuniors<br><br>Sponsored by the Sabado Sessions Podcast';
 
   inner.appendChild(credit);
 
   // QR Code
   const qr = new Image();
   const qrsz = s.qrSize;
-  qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=${qrsz}x${qrsz}&data=${encodeURIComponent('https://solacestrength.github.io/britishclassicfl/metrics.html')}`;
+  qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=${qrsz}x${qrsz}&data=${encodeURIComponent('https://solacestrength.github.io/britishclassicfl/metrics-juniors.html')}`;
   qr.style.position = 'absolute';
   qr.style.bottom = '18px';
   qr.style.left = '18px';
@@ -2291,12 +2291,12 @@ const fn = `metrics_drill_${g}_${classLabel}_${safeAthlete}.png`;
   credit.style.marginTop = '8px';
   credit.style.textAlign = 'center';
   credit.innerHTML =
-    'Data from tinyurl.com/britishclassicfl-metrics<br><br>Sponsored by the Sabado Sessions Podcast';
+    'Data from tinyurl.com/britishclassicfl-metricsjuniors<br><br>Sponsored by the Sabado Sessions Podcast';
 
 // QR in bottom-left, matching donut & histogram exports
 const qr = new Image();
 const qrsz = s.qrSize;
-qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=${qrsz}x${qrsz}&data=${encodeURIComponent('https://solacestrength.github.io/britishclassicfl/metrics.html')}`;
+qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=${qrsz}x${qrsz}&data=${encodeURIComponent('https://solacestrength.github.io/britishclassicfl/metrics-juniors.html')}`;
 qr.style.position = 'absolute';
 qr.style.bottom = '18px';
 qr.style.left  = '18px';
