@@ -51,7 +51,33 @@
     <div id="mobile-menu" class="fixed top-16 right-4 w-48 bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-md shadow-lg z-50 scale-y-0 opacity-0 origin-top transition-transform duration-300 ease-in-out pointer-events-none">
       <nav class="flex flex-col py-2 text-white">
         <a href="index.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Home</a>
-        <a href="entry.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">League Entry</a>
+        <div class="nav-dropdown">
+
+    <div class="nav-row">
+
+      <a href="entry-select.html" class="nav-link">
+
+        League Entry
+
+      </a>
+
+      <button class="nav-dropdown-toggle" type="button">
+
+        <span class="nav-chevron">▾</span>
+
+      </button>
+
+    </div>
+
+    <div class="nav-dropdown-menu">
+
+      <a href="entry-juniors.html">Junior Entry</a>
+
+      <a href="entry-subjuniors.html">Sub-Junior Entry</a>
+
+    </div>
+
+  </div>
         <a href="leaderboard.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Leaderboard</a>
         <a href="accuracy_scores.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Accuracy Scores</a>
         <a href="metrics.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Metrics</a>
