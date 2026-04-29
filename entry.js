@@ -1,6 +1,6 @@
 // ========= CONFIG =========
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyBGdFc2n1Ogu-AQADw_03uSoNk-OSQltl5Z-zEgjRDCdwwLIioVerSmGgDlqZWO4qM/exec'; // <-- your deployed Apps Script Web App URL
-const AUTO_SAVE_KEY = 'bcfl_savedProgress_v1';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzNmK42c6AVa1-RTYoKRRhb-YOlypNT-TNS3oZIiK2IQGj0TcQw0-YmO-x0wcq6Gc5WCA/exec'; // <-- your deployed Apps Script Web App URL
+const AUTO_SAVE_KEY = 'bcfl_jr26_savedProgress_v1';
 
 // ========= DEADLINE ENFORCEMENT =========
 const ENTRY_DEADLINE = new Date("2026-05-13T23:59:00Z");
