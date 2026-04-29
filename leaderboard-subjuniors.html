@@ -418,7 +418,7 @@ if (menuBtn && mobileMenu) {
 
   /* ---------- Load CSV ---------- */
   async function loadLeaderboard(){
-    const url="https://docs.google.com/spreadsheets/d/e/2PACX-1vSFrZCAoHEZqARjNLR5OsRl8F7blm3BHIKTkOZVAfMRwx-rkf4spDM8yGBGP7NOksjgJbokFVnzRLaK/pub?gid=469782385&single=true&output=csv";
+    const url="https://docs.google.com/spreadsheets/d/e/2PACX-1vSraGwk9AxTJik09rQaXwmuS6xyELM7A4yepH7nMMxwP7HXF9tL6IUG9Ci8x-H8hPm8UD3_fiq1uY9j/pub?gid=854498263&single=true&output=csv";
     const res=await fetch(url);const text=await res.text();
     const rows=text.trim().split(/\r?\n/).map(l=>l.split(","));
     if(!rows.length)return;
