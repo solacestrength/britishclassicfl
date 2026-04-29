@@ -1,131 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>League Entry</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entry Select</title>
 
   <style>
-    /* ========= RESET ========= */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
     body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0b1020;
       color: #fff;
-      overflow-x: hidden;
     }
 
-    /* ========= BACKGROUND ========= */
-    .bg-image {
-      position: fixed;
+    /* ===== HEADER ===== */
+    .site-header {
+      position: sticky;
       top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('image_entry.jpg') center / cover no-repeat;
-      z-index: -2;
-    }
-
-    .bg-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.65);
-      z-index: -1;
-    }
-
-    /* ========= LAYOUT ========= */
-    .container {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 24px;
-      text-align: center;
-      gap: 28px;
-    }
-
-    h1 {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-    }
-
-    /* ========= BUTTON GROUP ========= */
-    .button-group {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      width: 100%;
-      max-width: 320px;
-    }
-
-    /* ========= PILL BUTTON (NORTH STAR STYLE) ========= */
-    .pill-btn {
-      display: block;
-      padding: 16px 20px;
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 16px;
-      text-align: center;
-
-      background: rgba(255, 255, 255, 0.08);
+      z-index: 50;
+      background: rgba(8, 13, 28, 0.96);
       backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
 
-      border: 1px solid rgba(255, 255, 255, 0.15);
+    .nav-shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .site-title {
       color: #fff;
-
-      transition: all 0.18s ease;
+      font-weight: 800;
+      font-size: 1rem;
+      text-decoration: none;
+      letter-spacing: 0.02em;
     }
 
-    .pill-btn:hover {
-      background: rgba(255, 255, 255, 0.18);
-      transform: translateY(-2px);
+    .menu-btn {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-size: 1.35rem;
+      cursor: pointer;
     }
 
-    .pill-btn:active {
-      transform: scale(0.98);
+    /* ===== MOBILE MENU ===== */
+    .mobile-menu {
+      transform-origin: top;
+      transition: transform 0.22s ease, opacity 0.22s ease;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    /* ========= SUBTEXT (OPTIONAL) ========= */
-    .subtitle {
-      font-size: 14px;
-      opacity: 0.75;
+    .mobile-menu a,
+    .nav-dropdown-toggle {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 12px 14px;
+      text-align: left;
     }
 
+    .nav-dropdown-toggle {
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .nav-dropdown-menu {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+      padding-left: 10px;
+    }
+
+    .nav-dropdown.open .nav-dropdown-menu {
+      display: flex;
+    }
+
+    .scale-y-0 { transform: scaleY(0); }
+    .scale-y-100 { transform: scaleY(1); }
+    .opacity-0 { opacity: 0; }
+    .opacity-100 { opacity: 1; }
+    .pointer-events-none { pointer-events: none; }
+
+    /* ===== PAGE CONTENT ===== */
+    .content {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #fff;
+      color: #000;
+      font-weight: 700;
+      text-decoration: none;
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- Background -->
-  <div class="bg-image"></div>
-  <div class="bg-overlay"></div>
+<header class="site-header">
+  <div class="nav-shell">
+    <a href="index.html" class="site-title">
+      British Juniors Fantasy League 2026 🇬🇧
+    </a>
 
-  <!-- Content -->
-  <div class="container">
-    <h1>League Entry</h1>
-    <div class="subtitle">Select your division</div>
-
-    <div class="button-group">
-      <a href="entry-juniors.html" class="pill-btn">
-        Juniors
-      </a>
-
-      <a href="entry-subjuniors.html" class="pill-btn">
-        Sub-Juniors
-      </a>
-    </div>
+    <button id="menu-btn" class="menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+      ☰
+    </button>
   </div>
+
+  <nav id="mobile-menu" class="mobile-menu scale-y-0 opacity-0 pointer-events-none">
+    <a href="index.html">Home</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="accuracy_scores.html">Accuracy Scores</a>
+    <a href="metrics.html">Metrics</a>
+
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-toggle" aria-expanded="false">
+        League Entry ▾
+      </button>
+
+      <div class="nav-dropdown-menu">
+        <a href="entry-select.html">Enter League</a>
+        <a href="entry.html">Full Entry Form</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="content">
+  <div class="card">
+    <h2>Enter the League</h2>
+    <p>Select how you want to submit your entry.</p>
+    <a href="entry.html">Start Entry</a>
+  </div>
+
+  <div class="card">
+    <h2>View Leaderboard</h2>
+    <p>Check current standings.</p>
+    <a href="leaderboard.html">View Leaderboard</a>
+  </div>
+</div>
+
+<script>
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  function closeNavDropdowns() {
+    document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+      dropdown.classList.remove('open');
+      const toggle = dropdown.querySelector('.nav-dropdown-toggle');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  function toggleMenu(show) {
+    if (!menuBtn || !mobileMenu) return;
+
+    if (show) {
+      mobileMenu.classList.remove('scale-y-0','opacity-0','pointer-events-none');
+      mobileMenu.classList.add('scale-y-100','opacity-100');
+      menuBtn.setAttribute('aria-expanded','true');
+    } else {
+      mobileMenu.classList.add('scale-y-0','opacity-0','pointer-events-none');
+      mobileMenu.classList.remove('scale-y-100','opacity-100');
+      menuBtn.setAttribute('aria-expanded','false');
+      closeNavDropdowns();
+    }
+  }
+
+  let menuVisible = false;
+
+  menuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menuVisible = !menuVisible;
+    toggleMenu(menuVisible);
+  });
+
+  document.querySelectorAll('.nav-dropdown-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const parent = btn.closest('.nav-dropdown');
+      if (!parent) return;
+
+      const isOpen = parent.classList.contains('open');
+      closeNavDropdowns();
+
+      parent.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    const clickedInsideMenu = mobileMenu.contains(e.target);
+    const clickedMenuButton = menuBtn.contains(e.target);
+    const clickedDropdown = e.target.closest('.nav-dropdown');
+
+    if (!clickedDropdown) closeNavDropdowns();
+
+    if (!clickedInsideMenu && !clickedMenuButton) {
+      if (menuVisible) {
+        menuVisible = false;
+        toggleMenu(false);
+      }
+    }
+  });
+
+  toggleMenu(false);
+
+  // Spotify gate
+  const spotifyLink = document.getElementById('spotify-link');
+  const spotifyLock = document.getElementById('spotify-lock');
+
+  if (spotifyLink && spotifyLock) {
+    spotifyLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      const url = spotifyLink.href;
+
+      sessionStorage.setItem('spotifyPassed', '1');
+      spotifyLock.classList.add('hidden');
+
+      const opened = window.open(url, '_blank');
+      if (!opened) window.location.href = url;
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('spotifyPassed') === '1') {
+        spotifyLock.classList.add('hidden');
+      }
+    });
+  }
+
+  // Back to top
+  const bottomBackToTop = document.getElementById('bottomBackToTop');
+  if (bottomBackToTop) {
+    bottomBackToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+</script>
 
 </body>
 </html>
