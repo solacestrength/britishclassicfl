@@ -14,96 +14,109 @@
     .animate-fade-in { animation: fadeInUp 1s ease-out forwards; }
     .fade-out { opacity: 0; transition: opacity 0.6s ease; }
 
-/* Row layout */
-.nav-row {
+/* ========= GLOBAL BURGER MENU NAV FIX ========= */
+
+/* Base nav container (no changes to your layout) */
+.burger-menu {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  flex-direction: column;
 }
 
-/* Main link */
-.nav-link {
-  flex: 1;
-  text-decoration: none;
+/* ===== ALL NAV LINKS (Home, Leaderboard, etc.) ===== */
+.burger-menu a,
+.nav-link,
+.nav-sub-link {
+  display: block;
+  width: 100%;
+
+  padding: 10px 16px;
+
   color: #fff;
+  text-decoration: none;
+
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;           /* 🔥 removes unwanted bold */
+  text-align: left;           /* 🔥 forces consistent alignment */
+  line-height: 1.4;
 }
 
-.nav-dropdown {
-  width: 100%;
-}
-
-/* Keep League Entry aligned exactly like the other nav links */
+/* ===== DROPDOWN ROW (League Entry) ===== */
 .nav-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 32px;
   align-items: center;
   width: 100%;
 }
 
-/* League Entry should behave like a normal nav item */
-.nav-link {
-  flex: 1;
-  text-decoration: none;
-  color: #fff;
-  font-size: inherit;
-  font-weight: inherit;
-  text-align: inherit;
-  padding: 0;
+/* Ensure League Entry behaves EXACTLY like other links */
+.nav-row .nav-link {
+  padding: 10px 16px;
 }
 
-/* Chevron stays close, but does not push text off alignment */
+/* ===== CHEVRON BUTTON ===== */
 .nav-dropdown-toggle {
+  width: 32px;
+  height: 32px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  margin-left: 8px;
-  background: none;
+
+  background: transparent;
   border: none;
   padding: 0;
-  color: #fff;
+  margin: 0;
+
   cursor: pointer;
+  color: #fff;
 }
 
-/* Slightly smaller than before, cleaner */
+/* Chevron icon */
 .nav-chevron {
-  width: 19px;
-  height: 19px;
+  width: 18px;
+  height: 18px;
+
   stroke: currentColor;
   stroke-width: 2.6;
   fill: none;
+
   transition: transform 0.2s ease;
 }
 
+/* Rotate when open */
 .nav-dropdown.open .nav-chevron {
   transform: rotate(180deg);
 }
 
-/* Submenu keeps the nice indentation */
+/* ===== DROPDOWN MENU ===== */
 .nav-dropdown-menu {
   display: none;
   flex-direction: column;
-  margin-top: 10px;
+  width: 100%;
+  margin-top: 4px;
 }
 
 .nav-dropdown.open .nav-dropdown-menu {
   display: flex;
 }
 
+/* ===== INDENTED SUB ITEMS ===== */
 .nav-sub-link {
-  padding: 8px 0 8px 34px;
-  text-decoration: none;
+  padding: 10px 16px 10px 36px; /* 🔥 clean, consistent indent */
   color: rgba(255,255,255,0.85);
-  font-size: inherit;
-  font-weight: inherit;
-  text-align: inherit;
 }
 
 .nav-sub-link:hover {
   color: #fff;
+}
+    /* Hover anywhere on the row */
+.nav-row:hover .nav-link {
+  color: #ff4d4d;
+}
+
+/* Keep red when open */
+.nav-dropdown.open > .nav-row .nav-link {
+  color: #ff4d4d;
 }
     
   </style>
