@@ -25,44 +25,80 @@
     animation: fadeInUp 1s ease-out forwards;
   }
 
-  .nav-row {
+ /* Row layout */
+.nav-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
+/* Main link */
 .nav-link {
-  text-decoration: none;
-  color: inherit;
   flex: 1;
+  text-decoration: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
 }
 
+/* Toggle button (BIG tap target fix) */
+.nav-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;   /* 🔥 mobile-friendly */
+  height: 44px;
+
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  cursor: pointer;
+}
+
+/* Chevron (bigger + cleaner) */
+.nav-chevron {
+  width: 22px;
+  height: 22px;
+
+  stroke: #fff;
+  stroke-width: 2.5;
+  fill: none;
+
+  transition: transform 0.2s ease;
+}
+
+/* Rotate on open */
+.nav-dropdown.open .nav-chevron {
+  transform: rotate(180deg);
+}
+
+/* Dropdown menu */
 .nav-dropdown-menu {
   display: none;
   flex-direction: column;
-  gap: 8px;
-  padding-left: 14px;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
+/* Open state */
 .nav-dropdown.open .nav-dropdown-menu {
   display: flex;
 }
 
-.nav-dropdown-toggle {
-  background: none;
-  border: none;
-  color: inherit;
-  cursor: pointer;
+/* Sub-links */
+.nav-sub-link {
+  padding: 10px 16px 10px 32px; /* nice indent */
+  text-decoration: none;
+  color: rgba(255,255,255,0.85);
+  font-size: 15px;
 }
 
-.nav-chevron {
-  transition: transform 0.2s ease;
+.nav-sub-link:hover {
+  color: #fff;
 }
-
-.nav-dropdown.open .nav-chevron {
-  transform: rotate(180deg);
-}  
 
   /* Collapsible shared styles */
   .rules-collapsible,
@@ -135,33 +171,24 @@
     <div id="mobile-menu" class="fixed top-16 right-4 w-48 bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-md shadow-lg z-50 scale-y-0 opacity-0 origin-top transition-transform duration-300 ease-in-out">
       <nav class="flex flex-col py-2 text-white">
         <a href="index.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Home</a>
-        <div class="nav-dropdown">
+       <div class="nav-dropdown">
+  <div class="nav-row">
+    <a href="entry-select.html" class="nav-link">
+      League Entry
+    </a>
 
-    <div class="nav-row">
-
-      <a href="entry-select.html" class="nav-link">
-
-        League Entry
-
-      </a>
-
-      <button class="nav-dropdown-toggle" type="button">
-
-        <span class="nav-chevron">▾</span>
-
-      </button>
-
-    </div>
-
-    <div class="nav-dropdown-menu">
-
-      <a href="entry-juniors.html">Junior Entry</a>
-
-      <a href="entry-subjuniors.html">Sub-Junior Entry</a>
-
-    </div>
-
+    <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+      <svg class="nav-chevron" viewBox="0 0 24 24">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
   </div>
+
+  <div class="nav-dropdown-menu">
+    <a href="entry-juniors.html" class="nav-sub-link">Junior Entry</a>
+    <a href="entry-subjuniors.html" class="nav-sub-link">Sub-Junior Entry</a>
+  </div>
+</div>        
         <a href="leaderboard.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Leaderboard</a>
         <a href="accuracy_scores.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Accuracy Scores</a>
         <a href="metrics.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Metrics</a>
@@ -424,13 +451,38 @@
     rulesArrow.classList.toggle('rotate', isOpen);
   });
 
+document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".nav-dropdown-toggle").forEach(btn => {
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const parent = btn.closest(".nav-dropdown");
-    parent.classList.toggle("open");
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const parent = btn.closest(".nav-dropdown");
+      const isOpen = parent.classList.contains("open");
+
+      // Close others
+      document.querySelectorAll(".nav-dropdown").forEach(d => {
+        d.classList.remove("open");
+        const b = d.querySelector(".nav-dropdown-toggle");
+        if (b) b.setAttribute("aria-expanded", "false");
+      });
+
+      // Toggle current
+      parent.classList.toggle("open", !isOpen);
+      btn.setAttribute("aria-expanded", String(!isOpen));
+    });
   });
-});  
+
+  // Close when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".nav-dropdown")) {
+      document.querySelectorAll(".nav-dropdown").forEach(d => {
+        d.classList.remove("open");
+        const b = d.querySelector(".nav-dropdown-toggle");
+        if (b) b.setAttribute("aria-expanded", "false");
+      });
+    }
+  });
+});
 
   prizesToggle.addEventListener('click', () => {
     const isOpen = prizesContent.classList.toggle('open');
