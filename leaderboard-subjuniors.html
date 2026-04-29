@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard | British Juniors Fantasy League 2026 🇬🇧</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/fix-dropdown.css" />
+  <link rel="manifest" href="/britishclassicfl/manifest.json">
+  <meta name="theme-color" content="#b91c1c">
+
+  <!-- iOS -->
+  <link rel="apple-touch-icon" href="/britishclassicfl/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <style>
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+    .animate-fade-in { animation: fadeInUp 1s ease-out forwards; }
+
+    @keyframes pulse-row-red {
+      0% { background-color: rgba(239,68,68,0.3); }
+      50% { background-color: rgba(239,68,68,0.15); }
+      100% { background-color: rgba(239,68,68,0.3); }
+    }
+    .pulse-row {
+      animation: pulse-row-red 1.2s ease-in-out 1;
+      background-color: rgba(239,68,68,0.3);
+      font-weight: bold;
+    }
+
+    #leaderboardTable { table-layout: fixed; width: 100%; }
+
+    #contextualShareBtn {
+      opacity: 1; transition: opacity 0.5s ease;
+    }
+    #contextualShareBtn.hidden { opacity: 0; pointer-events: none; }
+
+    #leaderboardTable th:nth-child(2),
+    #leaderboardTable td:nth-child(2),
+    #accuracyTable th:nth-child(2),
+    #accuracyTable td:nth-child(2) {
+      min-width: 170px;
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    #leaderboardTable th,
+    #leaderboardTable td {
+      white-space: normal !important;
+      overflow-wrap: break-word !important;
+      word-break: break-word !important;
+      text-align: center;
+    }
+
+    #backToTopFab {
+      transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+    }
+
+    /* ========= GLOBAL BURGER MENU NAV FIX ========= */
+
+.burger-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.burger-menu a,
+.nav-link,
+.nav-sub-link {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.nav-row {
+  display: grid;
+  grid-template-columns: 1fr 32px;
+  align-items: center;
+  width: 100%;
+}
+
+.nav-row .nav-link {
+  padding: 10px 16px;
+}
+
+.nav-dropdown-toggle {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: #fff;
+}
+
+.nav-chevron {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  fill: none;
+  transition: transform 0.2s ease;
+}
+
+.nav-dropdown.open .nav-chevron {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.nav-dropdown.open .nav-dropdown-menu {
+  display: flex;
+}
+
+.nav-sub-link {
+  padding: 10px 16px 10px 36px;
+  color: rgba(255,255,255,0.85);
+}
+
+.nav-sub-link:hover {
+  color: #fff;
+}
+
+.nav-row:hover .nav-link {
+  color: #ff4d4d;
+}
+
+.nav-dropdown.open > .nav-row .nav-link {
+  color: #ff4d4d;
+}
+  </style>
+</head>
+
+<body class="relative bg-gray-900 text-white font-sans">
+  <div class="site-background absolute inset-0 bg-[url('image_leaderboard_shf.jpg')] bg-cover bg-center opacity-45"></div>
+  <div class="site-background-overlay absolute inset-0 bg-black/70"></div>
+
+  <div class="relative z-10">
+    <!-- Header -->
+    <header class="site-header w-full bg-gray-900/90 backdrop-blur-sm border-b border-gray-800 relative z-50">
+      <div class="w-full flex items-center justify-center px-4 py-3">
+        <div class="flex-1 text-center">
+          <a href="index.html" class="font-bold text-white hover:text-red-500 transition animate-fade-in-up text-sm sm:text-lg md:text-xl lg:text-2xl">
+            British Juniors Fantasy League 2026 🇬🇧
+          </a>
+        </div>
+        <div class="absolute right-4 top-1/2 -translate-y-1/2">
+          <button id="menu-btn" aria-expanded="false" class="text-gray-300 p-2 rounded-md hover:bg-gray-800/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <span class="sr-only">Open menu</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+<!-- Dropdown menu -->
+<div id="mobile-menu" class="fixed top-16 right-4 w-48 bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-md shadow-lg z-50 scale-y-0 opacity-0 pointer-events-none origin-top transition-transform duration-300 ease-in-out">
+  <nav class="burger-menu flex flex-col py-2 text-white">
+    <a href="index.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Home</a>
+
+    <div class="nav-dropdown">
+      <div class="nav-row">
+        <a href="entry-select.html" class="nav-link">League Entry</a>
+
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          <svg class="nav-chevron" viewBox="0 0 24 24">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div class="nav-dropdown-menu">
+        <a href="entry-juniors.html" class="nav-sub-link">Junior Entry</a>
+        <a href="entry-subjuniors.html" class="nav-sub-link">Sub-Junior Entry</a>
+      </div>
+    </div>
+
+    <a href="leaderboard-subjuniors.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Leaderboard</a>
+    <a href="accuracy_scores.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Accuracy Scores</a>
+    <a href="metrics.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Metrics</a>
+  </nav>
+</div>
+
+    <!-- Main content -->
+    <main class="pt-20 md:pt-24 animate-fade-in">
+      <section class="w-full px-4">
+        <div class="w-full max-w-3xl lg:max-w-4xl mx-auto bg-gray-800/60 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-gray-700">
+          
+          <!-- Leaderboard header -->
+          <div class="w-full mt-10 mb-6 flex flex-col sm:grid sm:grid-cols-3 items-center">
+            <div class="hidden sm:block"></div>
+            <h2 class="text-2xl font-bold text-white text-center sm:text-center">Sub-Junior Leaderboard</h2>
+            <div class="flex items-center space-x-2 mt-3 sm:mt-0 sm:justify-self-end">
+              <button id="shareRankingBtn" class="bg-red-600 hover:bg-red-500 text-white rounded-lg flex items-center justify-center" style="height: 32px; width: 32px;" aria-label="Share Ranking">
+                <img src="https://img.icons8.com/?size=100&id=qWomDF3YJPZv&format=png&color=000000" alt="Share Icon" class="w-4 h-4 invert" />
+              </button>
+              <div class="relative">
+                <input type="text" id="searchInput" placeholder="Search"
+                  class="bg-gray-700/60 text-white placeholder-gray-400 text-sm rounded-lg pl-8 pr-6 py-1
+                         focus:outline-none focus:ring-2 focus:ring-red-500"
+                  style="width: calc(11ch + 16px); height: 32px;" />
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  class="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
+                </svg>
+                <button id="clearSearchBtn"
+                  class="hidden absolute right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full
+                         bg-gray-500/70 text-[10px] leading-[14px] flex items-center justify-center
+                         text-white hover:bg-red-500">
+                  ×
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Leaderboard table -->
+          <div class="overflow-hidden rounded-xl border border-gray-700">
+            <table id="leaderboardTable" class="w-full text-sm text-gray-200 text-center">
+              <thead class="bg-gray-700 text-gray-100">
+                <tr id="leaderboardHeader"></tr>
+              </thead>
+              <tbody id="leaderboardBody" class="divide-y divide-gray-700"></tbody>
+            </table>
+          </div>
+
+          <div id="paginationContainer" class="flex justify-center items-center mt-4 flex-wrap text-sm text-gray-300"></div>
+          <div class="flex justify-center mt-2">
+            <button id="showAllBtn" class="px-3 py-1 rounded bg-gray-700/60 hover:bg-gray-600 text-white text-sm mt-2">Show All Entries</button>
+          </div>
+          <p class="text-xs text-gray-500 text-center mt-3">
+            Data auto-updates from Google Sheets
+          </p>
+        </div>
+      </section>
+
+      <div class="flex justify-center mt-8">
+        <a href="accuracy_scores.html" class="inline-flex items-center justify-center bg-gray-800/60 border border-gray-700 text-gray-200 font-semibold px-6 py-3 rounded-full backdrop-blur-sm shadow-lg hover:bg-gray-700/70 hover:text-red-400 transition text-sm">
+          View Accuracy Scores
+        </a>
+      </div>
+
+      <div class="flex justify-center mt-8">
+        <button id="bottomBackToTop" class="bg-gray-800/60 border border-gray-700 text-red-500 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg hover:bg-gray-700/70 hover:text-red-400 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
+      </div>
+    </main>
+
+    <footer class="text-center text-gray-500 text-sm mt-16 pb-4">
+      Sponsored by the Sabado Sessions Podcast
+    </footer>
+  </div>
+
+  <!-- FABs -->
+  <button id="backToTopFab" class="fixed right-4 top-1/2 -translate-y-1/2 bg-gray-800/60 border border-gray-700 text-red-500 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg hover:bg-gray-700/70 hover:text-red-400 transition opacity-0 pointer-events-none z-50">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+    </svg>
+  </button>
+
+  <button id="backToBottomFab" class="fixed right-4 top-[calc(50%+3.5rem)] bg-gray-800/60 border border-gray-700 text-red-500 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg hover:bg-gray-700/70 hover:text-red-400 transition opacity-0 pointer-events-none z-50">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  /* ---------- Device detection ---------- */
+  const ua = navigator.userAgent.toLowerCase();
+  const isAndroidChrome = ua.includes("android") && ua.includes("chrome") && !ua.includes("edge") && !ua.includes("opr") && !ua.includes("opera");
+
+  /* ---------- Burger Menu ---------- */
+const menuBtn = document.getElementById("menu-btn");
+const mobileMenu = document.getElementById("mobile-menu");
+
+function closeNavDropdowns() {
+  document.querySelectorAll(".nav-dropdown").forEach(dropdown => {
+    dropdown.classList.remove("open");
+
+    const toggle = dropdown.querySelector(".nav-dropdown-toggle");
+    if (toggle) toggle.setAttribute("aria-expanded", "false");
+  });
+}
+
+function toggleMenu(show) {
+  mobileMenu.classList.toggle("opacity-100", show);
+  mobileMenu.classList.toggle("opacity-0", !show);
+  mobileMenu.classList.toggle("scale-y-100", show);
+  mobileMenu.classList.toggle("scale-y-0", !show);
+  mobileMenu.classList.toggle("pointer-events-none", !show);
+  menuBtn.setAttribute("aria-expanded", String(show));
+
+  if (!show) closeNavDropdowns();
+}
+
+let menuVisible = false;
+
+if (menuBtn && mobileMenu) {
+  menuBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    menuVisible = !menuVisible;
+    toggleMenu(menuVisible);
+  });
+
+  document.querySelectorAll(".nav-dropdown-toggle").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const parent = btn.closest(".nav-dropdown");
+      if (!parent) return;
+
+      const isOpen = parent.classList.contains("open");
+
+      closeNavDropdowns();
+
+      parent.classList.toggle("open", !isOpen);
+      btn.setAttribute("aria-expanded", String(!isOpen));
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    const clickedInsideMenu = mobileMenu.contains(e.target);
+    const clickedMenuButton = menuBtn.contains(e.target);
+    const clickedDropdown = e.target.closest(".nav-dropdown");
+
+    if (!clickedDropdown) closeNavDropdowns();
+
+    if (!clickedInsideMenu && !clickedMenuButton) {
+      menuVisible = false;
+      toggleMenu(false);
+    }
+  });
+
+  toggleMenu(false);
+}
+
+  /* ---------- Toast ---------- */
+  function showWarning(msg){
+    const old=document.getElementById("shareWarningToast");
+    if(old)old.remove();
+    const t=document.createElement("div");
+    t.id="shareWarningToast";t.textContent=msg;
+    Object.assign(t.style,{position:"fixed",top:"18px",left:"50%",transform:"translateX(-50%)",
+      background:"rgba(239,68,68,0.9)",color:"#fff",padding:"8px 14px",borderRadius:"8px",
+      fontSize:"13px",boxShadow:"0 2px 8px rgba(0,0,0,.25)",zIndex:9999,opacity:0,
+      transition:"opacity .4s ease-in-out"});
+    document.body.appendChild(t);requestAnimationFrame(()=>t.style.opacity=1);
+    setTimeout(()=>{t.style.opacity=0;setTimeout(()=>t.remove(),400)},2500);
+  }
+
+  /* ---------- FAB ---------- */
+  const fab=document.getElementById("backToTopFab");let scrollTimer;
+  const fabBottom = document.getElementById("backToBottomFab");
+  const bottomBtn=document.getElementById("bottomBackToTop");
+  function handleScrollFabs() {
+    const y = window.scrollY;
+    const nearTop = y < 150;
+    const nearBottom = y + window.innerHeight > document.body.scrollHeight - 150;
+    fab.style.opacity = 0; fab.style.pointerEvents = "none"; fab.style.transform = "translateY(-50%) scale(0.9)";
+    fabBottom.style.opacity = 0; fabBottom.style.pointerEvents = "none"; fabBottom.style.transform = "translateY(-50%) scale(0.9)";
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(()=>{
+      if(!nearTop&&!nearBottom){
+        fab.style.opacity=1; fab.style.pointerEvents="auto"; fab.style.transform="translateY(-50%) scale(1)";
+        fabBottom.style.opacity=1; fabBottom.style.pointerEvents="auto"; fabBottom.style.transform="translateY(-50%) scale(1)";
+      }
+    },120);
+  }
+  window.addEventListener("scroll", handleScrollFabs);
+  fab.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+  if(bottomBtn) bottomBtn.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+  if(fabBottom) fabBottom.addEventListener("click",()=>window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"}));
+
+  /* ---------- State ---------- */
+  const rowsPerPage=50;
+  let allRows=[],filteredRows=[],currentPage=1,searchMatches=[],currentMatchIndex=-1;
+  let headerRow=[],nameColIdx=-1,contextualShareBtn=null,lastMatchedGlobalIndex=null;
+  const searchInput=document.getElementById("searchInput");
+  const clearBtn=document.getElementById("clearSearchBtn");
+  let shareButtonFadeTimer = null;
+  let isShowingAll = false;
+  const showAllBtn = document.getElementById("showAllBtn");
+
+  function escapeRegExp(s){return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");}
+
+  /* ---------- Load CSV ---------- */
+  async function loadLeaderboard(){
+    const url="https://docs.google.com/spreadsheets/d/e/2PACX-1vSFrZCAoHEZqARjNLR5OsRl8F7blm3BHIKTkOZVAfMRwx-rkf4spDM8yGBGP7NOksjgJbokFVnzRLaK/pub?gid=469782385&single=true&output=csv";
+    const res=await fetch(url);const text=await res.text();
+    const rows=text.trim().split(/\r?\n/).map(l=>l.split(","));
+    if(!rows.length)return;
+    headerRow=rows.shift();
+    nameColIdx=headerRow.findIndex(h=>/name|entrant/i.test(h.trim()));
+    if(nameColIdx<0)nameColIdx=1;
+    document.getElementById("leaderboardHeader").innerHTML=headerRow.map(h=>`<th class="px-3 py-2 text-center">${h}</th>`).join("");
+    allRows=rows;filteredRows=[...allRows];renderTable();
+  }
+
+  /* ---------- Contextual Share ---------- */
+  function removeContextualShare(){
+    const ex=document.querySelector(".contextual-share-row");
+    if(ex)ex.remove();contextualShareBtn=null;
+  }
+  function insertContextualShare(targetRow){
+    removeContextualShare();
+    if(!targetRow||!headerRow.length)return;
+    const tr=document.createElement("tr");
+    tr.className="contextual-share-row";
+    tr.innerHTML=`<td colspan="${headerRow.length}" class="text-center py-1">
+      <button id="contextualShareBtn"
+        class="bg-red-600 hover:bg-red-500 text-white rounded-full text-xs font-semibold shadow-md px-3 py-1"
+        style="min-width:130px;height:24px;">Share My Ranking</button></td>`;
+    targetRow.parentNode.insertBefore(tr,targetRow);
+    contextualShareBtn=document.getElementById("contextualShareBtn");
+    contextualShareBtn.addEventListener("click",shareRanking);
+  }
+
+  /* ---------- Render ---------- */
+  function renderTable(){
+    const tbody=document.getElementById("leaderboardBody");
+    const pagination=document.getElementById("paginationContainer");
+    tbody.innerHTML=""; if(pagination) pagination.innerHTML="";
+
+    const query=(searchInput?.value||"").trim().toLowerCase();
+    const hasQuery=!!query;
+
+    const usePagination = !isShowingAll;
+
+    let displayRows = filteredRows;
+    if (usePagination) {
+      const start=(currentPage-1)*rowsPerPage, end=start+rowsPerPage;
+      displayRows = filteredRows.slice(start,end);
+    }
+
+    const startIndex = usePagination ? (currentPage-1)*rowsPerPage : 0;
+    const regex=hasQuery?new RegExp(`(${escapeRegExp(query)})`,"ig"):null;
+
+    displayRows.forEach((row,i)=>{
+      const global=startIndex+i;
+      const highlight=searchMatches.length&&currentMatchIndex>=0&&searchMatches[currentMatchIndex]===global;
+      const cls=highlight?"pulse-row":"";
+      const tds=row.map((c,ci)=>{
+        let content=c;
+        if(hasQuery&&ci===nameColIdx&&regex)content=c.replace(regex,"<strong>$1</strong>");
+        return `<td class="px-3 py-2 text-center">${content}</td>`;
+      }).join("");
+      const tr=document.createElement("tr");
+      tr.innerHTML=tds;
+      tr.className=cls;
+      tr.setAttribute("data-global-index",global);
+      tbody.appendChild(tr);
+
+      if(highlight) insertContextualShare(tr);
+    });
+
+    renderPagination();
+  }
+
+  /* ---------- Pagination ---------- */
+  function renderPagination(){
+    const container=document.getElementById("paginationContainer");
+    if(!container) return;
+    container.innerHTML="";
+
+    if(isShowingAll) return;
+
+    const totalPages=Math.ceil(filteredRows.length/rowsPerPage);
+    if(totalPages<=1) return;
+
+    const make=(t,h,d=false,a=false)=>{
+      const b=document.createElement("button");
+      b.textContent=t;
+      b.className=`px-2 py-1 mx-1 rounded ${a?"bg-red-600 text-white":"bg-gray-700/60 hover:bg-gray-600"}`;
+      b.disabled=d;b.onclick=h;container.appendChild(b);
+    };
+
+    make("« Prev",()=>{if(currentPage>1){currentPage--;renderTable();}},currentPage===1);
+    const maxBtns=5; let s=Math.max(1,currentPage-Math.floor(maxBtns/2));
+    let e=Math.min(totalPages,s+maxBtns-1); if(e-s<maxBtns-1) s=Math.max(1,e-maxBtns+1);
+    for(let i=s;i<=e;i++){make(i,()=>{currentPage=i;renderTable();},false,i===currentPage);}
+    make("Next »",()=>{if(currentPage<totalPages){currentPage++;renderTable();}},currentPage===totalPages);
+  }
+
+  /* ---------- Scroll to Highlight ---------- */
+  function scrollToHighlighted(){
+    if(!searchMatches.length||currentMatchIndex<0) return;
+    const tbody=document.getElementById("leaderboardBody");
+    const rows=tbody.querySelectorAll("tr[data-global-index]");
+    const targetGlobal=searchMatches[currentMatchIndex];
+    const row=[...rows].find(r=>+r.dataset.globalIndex===targetGlobal);
+    if(!row) return;
+    const header=document.querySelector(".site-header");
+    const headerH=header?header.offsetHeight:0;
+    const table=document.getElementById("leaderboardTable");
+    const tableTop=table.getBoundingClientRect().top+window.scrollY;
+    const rowRect=row.getBoundingClientRect(),rowH=rowRect.height||32;
+    const total=allRows.length,start=(currentPage-1)*rowsPerPage,rowIdx=targetGlobal-start;
+    let dest;
+    if(rowIdx<5) dest=tableTop-headerH-4;
+    else if(total-targetGlobal<=5) dest=document.body.scrollHeight-window.innerHeight;
+    else dest=rowRect.top+window.scrollY-(headerH+rowH*2);
+    window.scrollTo({top:dest,behavior:"smooth"});
+    setTimeout(()=>insertContextualShare(row),250);
+  }
+
+  /* ---------- Search ---------- */
+  searchInput.addEventListener("input",()=>{
+    const f=searchInput.value.trim().toLowerCase();
+    clearBtn.classList.toggle("hidden",!f);
+
+    searchMatches=[];currentMatchIndex=-1;removeContextualShare();
+
+    if(!f){
+      filteredRows=[...allRows];
+      if (!isShowingAll && lastMatchedGlobalIndex!==null)
+        currentPage = Math.floor(lastMatchedGlobalIndex/rowsPerPage)+1;
+      renderTable();
+      if(lastMatchedGlobalIndex!==null){
+        currentMatchIndex=searchMatches.indexOf(lastMatchedGlobalIndex);
+        scrollToHighlighted();
+      }
+      return;
+    }
+
+    filteredRows=[...allRows];
+    allRows.forEach((row,i)=>{if(row.join(" ").toLowerCase().includes(f))searchMatches.push(i);});
+
+    if(searchMatches.length){
+      currentMatchIndex=0;
+      lastMatchedGlobalIndex=searchMatches[currentMatchIndex];
+      if (!isShowingAll)
+        currentPage=Math.floor(searchMatches[0]/rowsPerPage)+1;
+      renderTable();
+      scrollToHighlighted();
+    } else renderTable();
+  });
+
+  searchInput.addEventListener("keydown",e=>{
+    if(e.key==="Enter"&&searchMatches.length){
+      e.preventDefault();
+      if(searchMatches.length>1)
+        currentMatchIndex=(currentMatchIndex+1)%searchMatches.length;
+      lastMatchedGlobalIndex=searchMatches[currentMatchIndex];
+      if (!isShowingAll)
+        currentPage=Math.floor(searchMatches[currentMatchIndex]/rowsPerPage)+1;
+      renderTable();scrollToHighlighted();
+    }
+  });
+
+  /* ---------- CLEAR SEARCH ---------- */
+  clearBtn.addEventListener("click",()=>{
+    searchInput.value=""; clearBtn.classList.add("hidden");
+    searchMatches=[]; currentMatchIndex=-1; removeContextualShare();
+    filteredRows=[...allRows];
+    if (!isShowingAll && lastMatchedGlobalIndex!==null)
+      currentPage = Math.floor(lastMatchedGlobalIndex/rowsPerPage)+1;
+    renderTable();
+    if(lastMatchedGlobalIndex!==null){
+      searchMatches=[lastMatchedGlobalIndex];
+      currentMatchIndex=0;
+      scrollToHighlighted();
+    }
+  });
+
+  /* ---------- SHOW ALL ---------- */
+  if(showAllBtn){
+    showAllBtn.addEventListener("click",()=>{
+      isShowingAll = !isShowingAll;
+      showAllBtn.textContent = isShowingAll ? "Show 50 Per Page" : "Show All Entries";
+      if(!isShowingAll) currentPage=1;
+      renderTable();
+    });
+  }
+
+  /* ---------- Share ---------- */
+  function detectBrowserShareSupport(){ return {isAndroidChrome, isChromeIOS: ua.includes("crios")}; }
+
+  async function shareRanking(){
+    if(!searchMatches.length){showWarning("Please search for your name before sharing."); return;}
+    const {isChromeIOS}=detectBrowserShareSupport();
+    const btn=contextualShareBtn||document.getElementById("shareRankingBtn");
+    if(!btn) return;
+    const original=btn.textContent; btn.disabled=true;
+    if(btn===contextualShareBtn) btn.textContent="Generating…";
+
+    try{
+      const file=await buildSnapshotFile();
+      if(!isChromeIOS && navigator.canShare && navigator.canShare({files:[file]}))
+        await navigator.share({title:"British Juniors Fantasy League 2026 🇬🇧",
+          text:"Check out my league ranking!",files:[file]});
+      else{
+        const url=URL.createObjectURL(file);
+        const a=document.createElement("a");a.href=url;a.download=file.name;
+        document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+      }
+    }catch(e){console.error(e);}
+    finally{btn.disabled=false; if(btn===contextualShareBtn) btn.textContent=original;}
+  }
+
+  /* ---------- Snapshot ---------- */
+  async function buildSnapshotFile(){
+    const total=allRows.length,idx=searchMatches[currentMatchIndex]??0;
+    let s=Math.max(0, idx-4), e=Math.min(total-1, idx+5);
+    if(idx<10) s=0, e=Math.min(total-1,9); else if(total-idx<=5) s=Math.max(0,total-10), e=total-1;
+    const slice=allRows.slice(s,e+1);
+    while(slice.length<10) slice.push(new Array(headerRow.length).fill(""));
+    const rowsHtml=slice.map((r,i)=>{const actual=s+i, bold=actual===idx?"font-weight:bold;":""; return `<tr style="${bold}">${r.map(c=>`<td class="px-3 py-1 text-center">${c}</td>`).join("")}</tr>`;}).join("");
+    const div=document.createElement("div");
+    Object.assign(div.style,{width:"600px",borderRadius:"16px",overflow:"hidden",background:"#000",
+      backgroundImage:"url('image_leaderboard_shf.jpg')",backgroundSize:"cover",backgroundPosition:"center",
+      boxShadow:"0 10px 30px rgba(0,0,0,.35)",position:"relative",zIndex:9999});
+    const qr=new Image(); qr.crossOrigin="anonymous";
+    qr.src=`https://api.qrserver.com/v1/create-qr-code/?size=75x75&data=${encodeURIComponent(window.location.href)}`;
+    await new Promise(res=>qr.onload=res);
+    div.innerHTML=`<div style="background:rgba(0,0,0,.55);padding:18px;position:relative;">
+      <img src="${qr.src}" style="position:absolute;bottom:16px;left:18px;width:52px;height:52px;border-radius:6px;">
+      <h2 style="text-align:center;font-size:20px;font-weight:700;margin-bottom:4px;">British Juniors Fantasy League 2026 🇬🇧</h2>
+      <h3 style="text-align:center;font-size:16px;font-weight:600;margin-bottom:4px;">My League Ranking</h3>
+      <p style="text-align:center;font-size:12px;color:#d1d5db;opacity:.9;margin-bottom:12px;">Entry Count – ${total}</p>
+      <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
+        <thead><tr>${headerRow.map(h=>`<th style="padding:4px;text-align:center;font-weight:600;">${h}</th>`).join("")}</tr></thead>
+        <tbody>${rowsHtml}</tbody></table>
+      <p style="font-size:11px;color:#ccc;text-align:center;margin-top:18px;line-height:1.6;">
+        Data from tinyurl.com/britishclassicfl-leaderboardsubjuniors<br><br>Sponsored by the Sabado Sessions Podcast</p></div>`;
+    document.body.appendChild(div);
+    const canvas=await html2canvas(div,{backgroundColor:null,scale:2,useCORS:true,scrollY:0});
+    div.remove();
+    const blob=await new Promise(r=>canvas.toBlob(r,"image/png"));
+    return new File([blob],"league_ranking.png",{type:"image/png"});
+  }
+
+  /* ---------- Init ---------- */
+  document.getElementById("shareRankingBtn").addEventListener("click",shareRanking);
+  loadLeaderboard();
+});
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/britishclassicfl/service-worker.js");
+  });
+}
+</script>
+</body>
+</html>
