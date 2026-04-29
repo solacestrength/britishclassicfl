@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>League Entry</title>
+
+  <style>
+    /* ========= RESET ========= /
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    / ========= BACKGROUND ========= /
+    .bg-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('image_entry.jpg') center / cover no-repeat;
+      z-index: -2;
+    }
+
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: -1;
+    }
+
+    / ========= LAYOUT ========= /
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      text-align: center;
+      gap: 28px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    / ========= BUTTON GROUP ========= /
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    / ========= PILL BUTTON (NORTH STAR STYLE) ========= /
+    .pill-btn {
+      display: block;
+      padding: 16px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      text-align: center;
+
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+
+      transition: all 0.18s ease;
+    }
+
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .pill-btn:active {
+      transform: scale(0.98);
+    }
+
+    / ========= SUBTEXT (OPTIONAL) ========= */
+    .subtitle {
+      font-size: 14px;
+      opacity: 0.75;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Background -->
+  <div class="bg-image"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- Content -->
+  <div class="container">
+    <h1>League Entry</h1>
+    <div class="subtitle">Select your division</div>
+
+    <div class="button-group">
+      <a href="entry-juniors.html" class="pill-btn">
+        Juniors
+      </a>
+
+      <a href="entry-subjuniors.html" class="pill-btn">
+        Sub-Juniors
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>
