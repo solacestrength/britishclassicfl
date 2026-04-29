@@ -25,7 +25,7 @@
     animation: fadeInUp 1s ease-out forwards;
   }
 
- /* ========= GLOBAL BURGER MENU NAV FIX ========= */
+/* ========= GLOBAL BURGER MENU NAV FIX ========= */
 
 /* Base nav container (no changes to your layout) */
 .burger-menu {
@@ -119,7 +119,18 @@
 
 .nav-sub-link:hover {
   color: #fff;
-}  </style>
+}
+    /* Hover anywhere on the row */
+.nav-row:hover .nav-link {
+  color: #ff4d4d;
+}
+
+/* Keep red when open */
+.nav-dropdown.open > .nav-row .nav-link {
+  color: #ff4d4d;
+}
+    
+  </style>
 
   <!-- Fixes for mobile menu stacking/pointer events -->
   <link rel="stylesheet" href="/assets/css/fix-dropdown.css">
