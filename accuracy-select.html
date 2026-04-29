@@ -3,145 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Leaderboard Select | British Juniors Fantasy League 2026 🇬🇧</title>
+  <title>Accuracy Select | British Juniors Fantasy League 2026 🇬🇧</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    body {
-      color: #fff;
-      overflow-x: hidden;
-    }
-
-    /* Background */
-    .bg-image {
-      position: fixed;
-      inset: 0;
-      background: url('image_leaderboard_shf.jpg') center / cover no-repeat;
-      z-index: -2;
-    }
-
-    .bg-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: -1;
-    }
-
-    /* Layout */
-    .container {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 24px;
-      text-align: center;
-      gap: 28px;
-    }
-
-    h1 {
-      font-size: 28px;
-      font-weight: 700;
-    }
-
-    .button-group {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      width: 100%;
-      max-width: 320px;
-    }
-
-    .pill-btn {
-      padding: 16px 20px;
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 16px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #fff;
-      transition: all 0.18s ease;
-    }
-
-    .pill-btn:hover {
-      background: rgba(255,255,255,0.18);
-      transform: translateY(-2px);
-    }
-
-    .subtitle {
-      font-size: 14px;
-      opacity: 0.75;
-    }
-
-    /* NAV DROPDOWN (same as homepage) */
-    .burger-menu {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .burger-menu a,
-    .nav-link,
-    .nav-sub-link {
-      display: block;
-      width: 100%;
-      padding: 10px 16px;
-      color: #fff;
-      text-decoration: none;
-      font-size: 16px;
-      text-align: left;
-    }
-
-    .nav-row {
-      display: grid;
-      grid-template-columns: 1fr 32px;
-      align-items: center;
-    }
-
-    .nav-dropdown-menu {
-      display: none;
-      flex-direction: column;
-    }
-
-    .nav-dropdown.open .nav-dropdown-menu {
-      display: flex;
-    }
-
-    .nav-sub-link {
-      padding-left: 36px;
-      color: rgba(255,255,255,0.85);
-    }
-  </style>
 </head>
 
-<body class="relative bg-gray-900 text-white font-sans">
+<body class="relative text-white font-sans min-h-screen overflow-x-hidden">
 
-  <div class="bg-image"></div>
-  <div class="bg-overlay"></div>
+  <!-- Background -->
+  <div class="absolute inset-0 bg-[url('image_accuracy.jpg')] bg-cover bg-center"></div>
+  <div class="absolute inset-0 bg-black/70"></div>
 
-  <div class="relative z-10 min-h-screen">
+  <div class="relative z-10">
 
-    <!-- HEADER -->
+    <!-- Header -->
     <header class="w-full bg-gray-900/90 backdrop-blur-sm border-b border-gray-800 relative z-50">
       <div class="flex items-center justify-center px-4 py-3">
         <div class="flex-1 text-center">
           <a href="index.html"
-            class="font-bold text-white hover:text-red-500 transition text-sm sm:text-lg md:text-xl lg:text-2xl">
+             class="font-bold text-white hover:text-red-500 transition text-sm sm:text-lg md:text-xl lg:text-2xl">
             British Juniors Fantasy League 2026 🇬🇧
           </a>
         </div>
 
+        <!-- Burger -->
         <div class="absolute right-4 top-1/2 -translate-y-1/2">
-          <button id="menu-btn" class="text-gray-300 p-2 rounded-md hover:bg-gray-800/50">
+          <button id="menu-btn" aria-expanded="false"
+                  class="text-gray-300 p-2 rounded-md hover:bg-gray-800/50">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
                  viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -151,53 +39,45 @@
       </div>
     </header>
 
-    <!-- MENU -->
+    <!-- Mobile Menu -->
     <div id="mobile-menu"
       class="fixed top-16 right-4 w-48 bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-md shadow-lg z-50 scale-y-0 opacity-0 pointer-events-none origin-top transition duration-300">
 
-      <nav class="burger-menu py-2">
-
+      <nav class="flex flex-col py-2 text-white">
         <a href="index.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800">Home</a>
-
-        <div class="nav-dropdown">
-          <div class="nav-row">
-            <a href="entry-select.html" class="nav-link">League Entry</a>
-            <button class="nav-dropdown-toggle">
-              ▼
-            </button>
-          </div>
-
-          <div class="nav-dropdown-menu">
-            <a href="entry-juniors.html" class="nav-sub-link">Junior Entry</a>
-            <a href="entry-subjuniors.html" class="nav-sub-link">Sub-Junior Entry</a>
-          </div>
-        </div>
-
-        <a href="leaderboard.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800">Leaderboard</a>
-        <a href="accuracy_scores.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800">Accuracy Scores</a>
+        <a href="entry-select.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800">League Entry</a>
+        <a href="leaderboard-select.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800">Leaderboard</a>
+        <a href="accuracy-select.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800">Accuracy Scores</a>
         <a href="metrics.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800">Metrics</a>
-
       </nav>
     </div>
 
-    <!-- CONTENT -->
-    <div class="container">
-      <h1>Leaderboard</h1>
-      <div class="subtitle">Select your division</div>
+    <!-- Main -->
+    <main class="min-h-screen flex flex-col justify-center items-center px-6 text-center gap-7">
+      <h1 class="text-3xl font-bold">Accuracy Scores</h1>
+      <p class="text-sm text-gray-300">Select your division</p>
 
-      <div class="button-group">
-        <a href="leaderboard-juniors.html" class="pill-btn">Juniors Leaderboard</a>
-        <a href="leaderboard-subjuniors.html" class="pill-btn">Sub-Juniors Leaderboard</a>
+      <div class="flex flex-col gap-4 w-full max-w-xs">
+        <a href="accuracy_scores-juniors.html"
+           class="rounded-full px-5 py-4 bg-white/10 border border-white/20 backdrop-blur-md font-semibold
+                  hover:bg-white/20 transition">
+          Juniors Accuracy Scores
+        </a>
+
+        <a href="accuracy_scores-subjuniors.html"
+           class="rounded-full px-5 py-4 bg-white/10 border border-white/20 backdrop-blur-md font-semibold
+                  hover:bg-white/20 transition">
+          Sub-Juniors Accuracy Scores
+        </a>
       </div>
-    </div>
+    </main>
 
   </div>
 
-  <!-- SCRIPT -->
+  <!-- Burger Script -->
   <script>
     const menuBtn = document.getElementById("menu-btn");
     const mobileMenu = document.getElementById("mobile-menu");
-
     let open = false;
 
     menuBtn.addEventListener("click", (e) => {
@@ -206,23 +86,19 @@
 
       mobileMenu.classList.toggle("opacity-100", open);
       mobileMenu.classList.toggle("scale-y-100", open);
+      mobileMenu.classList.toggle("scale-y-0", !open);
       mobileMenu.classList.toggle("pointer-events-none", !open);
+
+      menuBtn.setAttribute("aria-expanded", String(open));
     });
 
     document.addEventListener("click", (e) => {
       if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
         open = false;
-        mobileMenu.classList.remove("opacity-100","scale-y-100");
-        mobileMenu.classList.add("pointer-events-none");
+        mobileMenu.classList.remove("opacity-100", "scale-y-100");
+        mobileMenu.classList.add("opacity-0", "scale-y-0", "pointer-events-none");
+        menuBtn.setAttribute("aria-expanded", "false");
       }
-    });
-
-    document.querySelectorAll(".nav-dropdown-toggle").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const parent = btn.closest(".nav-dropdown");
-        parent.classList.toggle("open");
-      });
     });
   </script>
 
