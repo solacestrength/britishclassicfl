@@ -754,7 +754,7 @@ async function submitForm() {
 
     // === SHOW EDIT LINK ON PAGE ===
     if (json.ok && json.token) {
-      const editLink = `https://solacestrength.github.io/britishclassicfl/entry.html?token=${encodeURIComponent(json.token)}`;
+      const editLink = `https://solacestrength.github.io/britishclassicfl/entry-juniors.html?token=${encodeURIComponent(json.token)}`;
       const linkBox = document.getElementById('edit-link-box');
 
       if (linkBox) {
