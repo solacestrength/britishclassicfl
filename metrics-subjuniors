@@ -1,0 +1,2372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Metrics | British Juniors Fantasy League 2026 🇬🇧</title>
+
+  <!-- Libraries -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <link rel="stylesheet" href="assets/css/fix-dropdown.css" />
+  <link rel="manifest" href="/britishclassicfl/manifest.json">
+<meta name="theme-color" content="#b91c1c">
+
+<!-- iOS -->
+<link rel="apple-touch-icon" href="/britishclassicfl/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <style>
+/* === GLOBAL THEME === */
+body {
+  background: #0b0b0b;
+  color: #f1f1f1;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ========= GLOBAL BURGER MENU NAV FIX ========= */
+
+.burger-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.burger-menu a,
+.nav-link,
+.nav-sub-link {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.nav-row {
+  display: grid;
+  grid-template-columns: 1fr 32px;
+  align-items: center;
+  width: 100%;
+}
+
+.nav-row .nav-link {
+  padding: 10px 16px;
+}
+
+.nav-dropdown-toggle {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: #fff;
+}
+
+.nav-chevron {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  fill: none;
+  transition: transform 0.2s ease;
+}
+
+.nav-dropdown.open .nav-chevron {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.nav-dropdown.open .nav-dropdown-menu {
+  display: flex;
+}
+
+.nav-sub-link {
+  padding: 10px 16px 10px 36px;
+  color: rgba(255,255,255,0.85);
+}
+
+.nav-sub-link:hover {
+  color: #fff;
+}
+
+.nav-row:hover .nav-link {
+  color: #ff4d4d;
+}
+
+.nav-dropdown.open > .nav-row .nav-link {
+  color: #ff4d4d;
+}
+
+/* === SELECT ELEMENTS === */
+select {
+  background: #2f2f2f;
+  border: 1px solid #555;
+  color: #f1f1f1;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.375rem;
+  width: auto;
+  min-width: 0;
+  display: inline-block;
+}
+
+#womenSelect,
+#menSelect,
+.drill-select {
+  background-color: rgba(31, 41, 55, 0.6) !important;
+  border: 1px solid #374151;
+  color: #f1f1f1;
+}
+
+.drill-select {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  max-width: 70%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* === METRICS LAYOUT === */
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 390px; /* larger donuts */
+  max-width: 650px; /* match other containers */
+  margin: 0 auto;
+  display: block;
+  transition: opacity 0.25s ease;
+  padding-bottom: 40px; /* prevent bottom spill */
+}
+
+@media (min-width: 1024px) {
+  .chart-container {
+    height: 430px;
+  }
+}
+
+.chart-container > canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: contain;
+}
+
+/* === COLLAPSIBLE SECTIONS === */
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .5s ease, opacity .4s ease;
+}
+
+.collapsible-content.open {
+  opacity: 1;
+  max-height: 2000px;
+  padding-bottom: 1rem;
+}
+
+.arrow {
+  transition: transform .4s ease;
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+}
+
+/* === SHARE BUTTONS === */
+.share-btn {
+  background-color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: .5rem;
+  height: 40px;
+  width: 40px;
+  transition: background-color .2s ease, transform .2s ease;
+}
+
+.share-btn:hover {
+  background-color: #ef4444;
+  transform: translateY(-1px);
+}
+
+.share-icon {
+  filter: invert(1);
+  height: 20px;
+  width: 20px;
+}
+
+/* === BACK PILL === */
+.back-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  background-color: #111827;
+  border: 1px solid #374151;
+  color: #e5e7eb;
+  font-size: 0.7rem;
+  font-weight: 500;
+  backdrop-filter: blur(6px);
+  transition: all .2s ease;
+}
+
+.back-pill:hover {
+  background-color: #374151;
+  color: #f97316;
+}
+
+/* === UTILITY === */
+.no-transform {
+  transform: none !important;
+}
+  </style>
+</head>
+
+<body class="relative bg-gray-900 text-white font-sans min-h-screen flex flex-col">
+  <div class="absolute inset-0 bg-[url('bc25_logo.jpg')] bg-cover bg-center opacity-45"></div>
+  <div class="absolute inset-0 bg-black/70"></div>
+
+  <div class="relative z-10 flex flex-col flex-grow">
+    <header class="site-header w-full bg-gray-900/90 backdrop-blur-sm border-b border-gray-800 relative z-50">
+      <div class="w-full flex items-center justify-center px-4 py-3">
+        <div class="flex-1 text-center">
+          <a href="index.html"
+             class="font-bold text-white hover:text-red-500 transition text-sm sm:text-lg md:text-xl lg:text-2xl">
+            British Juniors Fantasy League 2026 🇬🇧
+          </a>
+        </div>
+
+        <div class="absolute right-4 top-1/2 -translate-y-1/2">
+          <button id="menu-btn" aria-expanded="false"
+                  class="text-gray-300 p-2 rounded-md hover:bg-gray-800/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dropdown menu -->
+<div id="mobile-menu"
+  class="fixed top-16 right-4 w-48 bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-md shadow-lg z-50 scale-y-0 opacity-0 pointer-events-none origin-top transition-transform duration-300 ease-in-out">
+  <nav class="burger-menu flex flex-col py-2 text-white">
+    <a href="index.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Home</a>
+
+    <div class="nav-dropdown">
+      <div class="nav-row">
+        <a href="entry-select.html" class="nav-link">League Entry</a>
+
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          <svg class="nav-chevron" viewBox="0 0 24 24">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div class="nav-dropdown-menu">
+        <a href="entry-juniors.html" class="nav-sub-link">Junior Entry</a>
+        <a href="entry-subjuniors.html" class="nav-sub-link">Sub-Junior Entry</a>
+      </div>
+    </div>
+
+    <a href="leaderboard.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Leaderboard</a>
+    <a href="accuracy_scores.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Accuracy Scores</a>
+    <a href="metrics-subjuniors.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Metrics</a>
+  </nav>
+</div>
+
+    <main class="max-w-5xl mx-auto p-6 space-y-8 mt-6">
+      <section class="text-center">
+        <h2 class="text-xl font-semibold mb-1">Metrics Dashboard</h2>
+        <p class="text-gray-400 text-sm">
+          Explore the predicted winner and total distributions by weight class.<br />
+          Double tap/click doughnut segments for points distributions 📊<br />
+          User note – labels seen from tapping chart elements will be visible in shared images.
+        </p>
+      </section>
+
+      <!-- WOMEN SECTION -->
+      <div class="bg-gray-800/60 border border-gray-700 backdrop-blur-sm shadow-lg rounded-2xl p-4">
+        <button onclick="toggleSection('women')"
+                class="flex items-center justify-between w-full text-left text-lg font-bold">
+          <span>Women</span>
+          <svg id="arrow-women" xmlns="http://www.w3.org/2000/svg"
+               class="h-5 w-5 arrow" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 9l-7 7-7-7"/>
+
+          </svg>
+        </button>
+
+        <div id="women" class="collapsible-content mt-4">
+          <select id="womenSelect" class="p-2 rounded mb-4 text-sm"></select>
+
+          <!-- WOMEN DONUT -->
+          <div class="chart-container" id="womenDonutContainer">
+            <div class="flex justify-end mb-1">
+              <button class="share-btn" onclick="shareChart('womenDonut','F')">
+                <img src="https://img.icons8.com/?size=100&id=qWomDF3YJPZv&format=png&color=000000"
+                     class="share-icon" alt="Share"/>
+              </button>
+            </div>
+            <canvas id="womenDonut"></canvas>
+          </div>
+
+          <!-- WOMEN DRILLDOWN -->
+          <div class="chart-container mt-4" id="womenDrillWrapper" style="display:none; opacity:0;">
+            <div class="flex items-center justify-between mb-2 gap-3">
+              <select id="womenDrillSelect" class="drill-select"></select>
+              <button class="share-btn" onclick="shareDrilldown('F')">
+                <img src="https://img.icons8.com/?size=100&id=qWomDF3YJPZv&format=png&color=000000"
+                     class="share-icon"/>
+              </button>
+            </div>
+            <div class="mb-2">
+              <button type="button" class="back-pill" onclick="closeDrilldown('F')">
+                <span>&larr;</span>
+                <span>Back to Doughnut</span>
+              </button>
+            </div>
+            <canvas id="womenDrill"></canvas>
+          </div>
+
+          <!-- WOMEN HISTOGRAM -->
+          <div class="chart-container mt-6">
+            <div class="flex justify-end mb-1">
+              <button class="share-btn" onclick="shareChart('womenHist','F')">
+                <img src="https://img.icons8.com/?size=100&id=qWomDF3YJPZv&format=png&color=000000"
+                     class="share-icon"/>
+              </button>
+            </div>
+            <canvas id="womenHist"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEN SECTION -->
+      <div class="bg-gray-800/60 border border-gray-700 backdrop-blur-sm shadow-lg rounded-2xl p-4">
+        <button onclick="toggleSection('men')"
+                class="flex items-center justify-between w-full text-left text-lg font-bold">
+          <span>Men</span>
+          <svg id="arrow-men" xmlns="http://www.w3.org/2000/svg"
+               class="h-5 w-5 arrow" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+
+        <div id="men" class="collapsible-content mt-4">
+          <select id="menSelect" class="p-2 rounded mb-4 text-sm"></select>
+
+          <!-- MEN DONUT -->
+          <div class="chart-container" id="menDonutContainer">
+            <div class="flex justify-end mb-1">
+              <button class="share-btn" onclick="shareChart('menDonut','M')">
+                <img src="https://img.icons8.com/?size=100&id=qWomDF3YJPZv&format=png&color=000000"
+                     class="share-icon"/>
+              </button>
+            </div>
+            <canvas id="menDonut"></canvas>
+          </div>
+
+          <!-- MEN DRILLDOWN -->
+          <div class="chart-container mt-4" id="menDrillWrapper" style="display:none; opacity:0;">
+            <div class="flex items-center justify-between mb-2 gap-3">
+              <select id="menDrillSelect" class="drill-select"></select>
+              <button class="share-btn" onclick="shareDrilldown('M')">
+                <img src="https://img.icons8.com/?size=100&id=qWomDF3YJPZv&format=png&color=000000"
+                     class="share-icon"/>
+              </button>
+            </div>
+            <div class="mb-2">
+              <button type="button" class="back-pill" onclick="closeDrilldown('M')">
+                <span>&larr;</span>
+                <span>Back to Doughnut</span>
+              </button>
+            </div>
+            <canvas id="menDrill"></canvas>
+          </div>
+
+          <!-- MEN HISTOGRAM -->
+          <div class="chart-container mt-6">
+            <div class="flex justify-end mb-1">
+              <button class="share-btn" onclick="shareChart('menHist','M')">
+                <img src="https://img.icons8.com/?size=100&id=qWomDF3YJPZv&format=png&color=000000"
+                     class="share-icon"/>
+              </button>
+            </div>
+            <canvas id="menHist"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- BEST LIFTERS SECTION -->
+      <div class="bg-gray-800/60 border border-gray-700 backdrop-blur-sm shadow-lg rounded-2xl p-4">
+        <button onclick="toggleSection('bestlifters')"
+                class="flex items-center justify-between w-full text-left text-lg font-bold">
+          <span>Best Lifters</span>
+          <svg id="arrow-bestlifters" xmlns="http://www.w3.org/2000/svg"
+               class="h-5 w-5 arrow" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+
+        <div id="bestlifters" class="collapsible-content mt-4">
+
+          <!-- FEMALE BEST LIFTER -->
+          <h3 id="bestFTitle" class="text-center font-bold"></h3>
+<p id="bestFSubtitle" class="text-center"></p>
+
+          <div class="chart-container" id="bestFContainer">
+            <div class="flex justify-end mb-1">
+              <button class="share-btn" onclick="shareBestLifter('F')">
+                <img src="https://img.icons8.com/?size=100&id=qWomDF3YJPZv&format=png&color=000000"
+                     class="share-icon"/>
+              </button>
+            </div>
+            <canvas id="bestF"></canvas>
+          </div>
+
+          <!-- MALE BEST LIFTER -->
+          <h3 id="bestMTitle" class="text-center font-bold mt-8"></h3>
+<p id="bestMSubtitle" class="text-center"></p>
+
+          <div class="chart-container" id="bestMContainer">
+            <div class="flex justify-end mb-1">
+              <button class="share-btn" onclick="shareBestLifter('M')">
+                <img src="https://img.icons8.com/?size=100&id=qWomDF3YJPZv&format=png&color=000000"
+                     class="share-icon"/>
+              </button>
+            </div>
+            <canvas id="bestM"></canvas>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- VIEW LEADERBOARD BUTTON -->
+      <div class="flex justify-center mt-8">
+        <a href="leaderboard.html"
+           class="inline-flex items-center justify-center bg-gray-800/60 border border-gray-700
+                  text-gray-200 font-semibold px-6 py-3 rounded-full backdrop-blur-sm shadow-lg
+                  hover:bg-gray-700/70 hover:text-red-400 transition text-sm">
+          View Leaderboard
+        </a>
+      </div>
+
+      <!-- BACK TO TOP -->
+      <div class="flex justify-center mt-8">
+        <button id="bottomBackToTop"
+                class="bg-gray-800/60 border border-gray-700 text-red-500 w-10 h-10 rounded-full
+                       flex items-center justify-center backdrop-blur-sm shadow-lg
+                       hover:bg-gray-700/70 hover:text-red-400 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <footer class="text-center text-gray-500 text-sm py-4 bg-transparent">
+        Sponsored by the Sabado Sessions Podcast
+      </footer>
+    </main>
+  </div>
+
+<script>
+/* ========= PLUGIN: CENTER HISTOGRAM / DRILL AREA ========= */
+const centerHistAreaPlugin = {
+  id: 'centerHistArea',
+  afterLayout(chart, args, opts) {
+    if (!opts || !opts.enabled) return;
+    if (chart.config.type !== 'bar') return;
+    if (!chart.canvas || !/(Hist|Drill)$/i.test(chart.canvas.id)) return;
+    if (chart.$histCentered) return;
+
+    const area = chart.chartArea;
+    if (!area) return;
+
+    const canvasMid = chart.width / 2;
+    const areaMid = (area.left + area.right) / 2;
+    const diff = areaMid - canvasMid;
+    if (Math.abs(diff) < 1) {
+      chart.$histCentered = true;
+      return;
+    }
+
+    const layout = chart.options.layout || {};
+    const padding = layout.padding || {};
+    const baseTop = +padding.top || 0;
+    const baseLeft = +padding.left || 0;
+    const baseBottom = +padding.bottom || 0;
+    const baseRight = +padding.right || 0;
+
+    let extraRight = 2 * diff;
+    let newRight = baseRight + extraRight;
+    if (newRight < 0) newRight = 0;
+
+    chart.options.layout = {
+      ...layout,
+      padding: {
+        top: baseTop,
+        left: baseLeft,
+        bottom: baseBottom,
+        right: newRight
+      }
+    };
+
+    chart.$histCentered = true;
+    chart.update('none');
+  }
+};
+
+Chart.register(ChartDataLabels, centerHistAreaPlugin);
+
+/* ========= DATA / LAYOUT HELPERS ========= */
+
+const SHEET_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vSFrZCAoHEZqARjNLR5OsRl8F7blm3BHIKTkOZVAfMRwx-rkf4spDM8yGBGP7NOksjgJbokFVnzRLaK/pub?gid=754215998&single=true&output=csv';
+
+let allData = [];
+const charts = {};
+
+function sizing() {
+  const d = window.matchMedia('(min-width:1024px)').matches;
+  return {
+    donutTitle:   d ? 22 : 14,
+    donutSubtitle:d ? 18 : 12,
+    donutLegend:  d ? 18 : 12,
+    donutPercent: d ? 16 : 12,
+    histTitle:    d ? 22 : 14,
+    histSubtitle: d ? 18 : 12,
+    axisTitle:    d ? 18 : 12,
+    axisTick:     d ? 14 : 11,
+    histBarLabel: d ? 12 : 10,
+    exportWidth:  d ? 1024 : 780,
+    qrSize:       d ? 96 : 72,
+    creditFont:   d ? 18 : 13,
+    headerFont:   d ? 32 : 20,
+    subFont:      d ? 26 : 16
+  };
+}
+
+/* ---------- Burger Menu ---------- */
+const menuBtn = document.getElementById("menu-btn");
+const mobileMenu = document.getElementById("mobile-menu");
+
+function closeNavDropdowns() {
+  document.querySelectorAll(".nav-dropdown").forEach(dropdown => {
+    dropdown.classList.remove("open");
+
+    const toggle = dropdown.querySelector(".nav-dropdown-toggle");
+    if (toggle) toggle.setAttribute("aria-expanded", "false");
+  });
+}
+
+function toggleMenu(show) {
+  mobileMenu.classList.toggle("opacity-100", show);
+  mobileMenu.classList.toggle("opacity-0", !show);
+  mobileMenu.classList.toggle("scale-y-100", show);
+  mobileMenu.classList.toggle("scale-y-0", !show);
+  mobileMenu.classList.toggle("pointer-events-none", !show);
+  menuBtn.setAttribute("aria-expanded", String(show));
+
+  if (!show) closeNavDropdowns();
+}
+
+let menuVisible = false;
+
+if (menuBtn && mobileMenu) {
+  menuBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    menuVisible = !menuVisible;
+    toggleMenu(menuVisible);
+  });
+
+  document.querySelectorAll(".nav-dropdown-toggle").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const parent = btn.closest(".nav-dropdown");
+      if (!parent) return;
+
+      const isOpen = parent.classList.contains("open");
+
+      closeNavDropdowns();
+
+      parent.classList.toggle("open", !isOpen);
+      btn.setAttribute("aria-expanded", String(!isOpen));
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    const clickedInsideMenu = mobileMenu.contains(e.target);
+    const clickedMenuButton = menuBtn.contains(e.target);
+    const clickedDropdown = e.target.closest(".nav-dropdown");
+
+    if (!clickedDropdown) closeNavDropdowns();
+
+    if (!clickedInsideMenu && !clickedMenuButton) {
+      menuVisible = false;
+      toggleMenu(false);
+    }
+  });
+
+  toggleMenu(false);
+}
+
+/* ========= LOAD CSV ========= */
+
+Papa.parse(SHEET_URL, {
+  download: true,
+  header: true,
+  complete: (r) => {
+    allData = r.data;
+    setupDropdowns();
+  }
+});
+
+/* ========= LOAD BEST LIFTER CSV ========= */
+
+const BEST_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vSFrZCAoHEZqARjNLR5OsRl8F7blm3BHIKTkOZVAfMRwx-rkf4spDM8yGBGP7NOksjgJbokFVnzRLaK/pub?gid=1601627274&single=true&output=csv';
+
+let bestData = [];
+
+Papa.parse(BEST_URL, {
+  download: true,
+  header: true,
+  complete: r => {
+    bestData = r.data;
+    renderBestLifter('F');
+    renderBestLifter('M');
+  }
+});
+
+/* ========= DRILLDOWN STATE ========= */
+const drillState = {
+  F: {
+    wrapper: document.getElementById('womenDrillWrapper'),
+    select: document.getElementById('womenDrillSelect'),
+    canvas: document.getElementById('womenDrill'),
+    chart: null,
+    currentAthlete: null,
+    currentClass: null,
+    athleteMap: {},
+    totalVotesInClass: 0
+  },
+  M: {
+    wrapper: document.getElementById('menDrillWrapper'),
+    select: document.getElementById('menDrillSelect'),
+    canvas: document.getElementById('menDrill'),
+    chart: null,
+    currentAthlete: null,
+    currentClass: null,
+    athleteMap: {},
+    totalVotesInClass: 0
+  }
+};
+
+/* ========= BLUE GRADIENT FOR HISTOGRAM ========= */
+function getBlueGradientColors(n) {
+  const colors = [];
+  const start = { r: 96, g: 165, b: 250 };
+  const end   = { r: 30, g: 64,  b: 175 };
+  if (n <= 1) {
+    colors.push(`rgb(${start.r},${start.g},${start.b})`);
+    return colors;
+  }
+  for (let i = 0; i < n; i++) {
+    const t = i / (n - 1);
+    const r = Math.round(start.r + (end.r - start.r) * t);
+    const g = Math.round(start.g + (end.g - start.g) * t);
+    const b = Math.round(start.b + (end.b - start.b) * t);
+    colors.push(`rgb(${r},${g},${b})`);
+  }
+  return colors;
+}
+
+/* ========= RED GRADIENT FOR DRILLDOWN ========= */
+function getRedGradientColors(n = 16) {
+  const colors = [];
+  const start = { r: 248, g: 113, b: 113 };
+  const end   = { r: 185, g: 28,  b: 28 };
+  if (n <= 1) {
+    colors.push(`rgb(${start.r},${start.g},${start.b})`);
+    return colors;
+  }
+  for (let i = 0; i < n; i++) {
+    const t = i / (n - 1);
+    const r = Math.round(start.r + (end.r - start.r) * t);
+    const g = Math.round(start.g + (end.g - start.g) * t);
+    const b = Math.round(start.b + (end.b - start.b) * t);
+    colors.push(`rgb(${r},${g},${b})`);
+  }
+  return colors;
+}
+
+/* ========= ARRAY SHUFFLE ========= */
+function shuffleArray(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ========= COMMON HELPERS (MISSING BEFORE) ========= */
+
+// Quantile helper for Freedman–Diaconis
+function quantile(sorted, q) {
+  if (!sorted.length) return NaN;
+  const pos = (sorted.length - 1) * q;
+  const base = Math.floor(pos);
+  const rest = pos - base;
+
+  if (sorted[base + 1] !== undefined) {
+    return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+  }
+  return sorted[base];
+}
+
+// Simple fade helpers used by drilldown
+function fadeIn(el) {
+  if (!el) return;
+  el.style.display = 'block';
+  el.style.opacity = 0;
+  requestAnimationFrame(() => {
+    el.style.opacity = 1;
+  });
+}
+
+function fadeOut(el) {
+  if (!el) return;
+  el.style.opacity = 0;
+  setTimeout(() => {
+    el.style.display = 'none';
+  }, 250);
+}
+
+/* Desktop tooltip linger (donut / hist / drill) */
+function enableDesktopTooltipLinger(chart, ms = 5000) {
+  // Desktop only
+  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) return;
+  if (!chart || !chart.canvas) return;
+
+  // Remove mouseout from Chart.js events so it doesn't auto-clear
+  const evts = chart.options.events || [];
+  chart.options.events = evts.filter(
+    e => e !== 'mouseout' && e !== 'mouseleave'
+  );
+
+  if (!chart.options.plugins) chart.options.plugins = {};
+  if (!chart.options.plugins.tooltip) chart.options.plugins.tooltip = {};
+  chart.options.plugins.tooltip.enabled = true;
+
+  const canvas = chart.canvas;
+  let lastActive = [];
+  let lingerTimer = null;
+  let hovering = false;
+
+  function clearLinger() {
+    if (lingerTimer) {
+      clearTimeout(lingerTimer);
+      lingerTimer = null;
+    }
+    if (!chart || chart._destroyed) return;
+    chart.tooltip.setActiveElements([], { x: 0, y: 0 });
+    chart.update('none');
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    hovering = true;
+    const pts = chart.getElementsAtEventForMode(
+      e,
+      'nearest',
+      { intersect: true },
+      true
+    );
+    if (pts && pts.length) {
+      lastActive = pts.map(p => ({
+        datasetIndex: p.datasetIndex,
+        index: p.index
+      }));
+    }
+    if (lingerTimer) {
+      clearTimeout(lingerTimer);
+      lingerTimer = null;
+    }
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    hovering = false;
+    if (!lastActive.length) return;
+
+    requestAnimationFrame(() => {
+      if (!chart || chart._destroyed) return;
+      chart.tooltip.setActiveElements(
+        lastActive,
+        { x: chart.width / 2, y: chart.height / 2 }
+      );
+      chart.update('none');
+
+      lingerTimer = setTimeout(() => {
+        if (!hovering) clearLinger();
+      }, ms);
+    });
+  });
+
+  window.addEventListener('scroll', () => {
+    const r = canvas.getBoundingClientRect();
+    const visible = r.bottom > 0 && r.top < window.innerHeight;
+    if (!visible) clearLinger();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (lingerTimer && !canvas.contains(e.target)) {
+      clearLinger();
+    }
+  });
+
+  canvas.addEventListener('mouseenter', () => {
+    hovering = true;
+    if (lingerTimer) {
+      clearTimeout(lingerTimer);
+      lingerTimer = null;
+    }
+    chart.tooltip.setActiveElements([], { x: 0, y: 0 });
+    chart.update('none');
+  });
+}
+
+// Strip transforms around charts (desktop only) to keep hover/click maths correct
+function stripTransformsForCharts() {
+  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) return;
+
+  const ids = ['womenDonut','menDonut','womenHist','menHist','womenDrill','menDrill','bestF','bestM'];
+  ids.forEach(id => {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+
+    let el = canvas.parentElement;
+    let hops = 0;
+    while (el && el !== document.body && hops < 6) {
+      const tf = getComputedStyle(el).transform;
+      if (tf && tf !== 'none') {
+        el.classList.add('no-transform');
+        el.style.transform = 'none';
+      }
+      el = el.parentElement;
+      hops++;
+    }
+  });
+}
+
+/* ========= SETUP DROPDOWNS ========= */
+function setupDropdowns() {
+  ['F', 'M'].forEach((g) => {
+    const genderRows = allData.filter(r => r.Gender === g);
+    const classes = [...new Set(genderRows.map(r => r.Class))]
+      .filter(Boolean)
+      .sort((a, b) => parseFloat(a) - parseFloat(b));
+
+    const select = document.getElementById(
+      g === 'F' ? 'womenSelect' : 'menSelect'
+    );
+    if (!select) return;
+
+    // Populate options: "63 kg" etc.
+    select.innerHTML = classes
+      .map(c => `<option value="${c}">${c} kg</option>`)
+      .join('');
+
+    // On change, re-render donut + histogram (+ reopen drilldown if needed)
+    select.onchange = () => {
+      const newClass = select.value;
+      renderCharts(g, newClass);
+
+      const state = drillState[g];
+      if (state && state.wrapper.style.display === 'block') {
+        const rows = allData.filter(
+          r => r.Gender === g && r.Class === newClass
+        );
+        const firstAthlete = rows[0]?.Athlete;
+        if (firstAthlete) {
+          openDrilldown(g, newClass, firstAthlete, rows, { skipFade: true });
+        } else {
+          closeDrilldown(g);
+        }
+      }
+    };
+
+    // Initial load: render first class for each gender
+    if (classes[0]) {
+      renderCharts(g, classes[0]);
+    }
+  });
+}
+
+/* ========= CHART RENDERING ========= */
+function renderCharts(g, w) {
+  const s = sizing();
+  const donutId = g === 'F' ? 'womenDonut' : 'menDonut';
+  const histId  = g === 'F' ? 'womenHist'  : 'menHist';
+
+  // Randomise order so colour assignment cannot reveal first voter
+  const rows = shuffleArray(
+    allData.filter(r => r.Gender === g && r.Class === w)
+  );
+  if (!rows.length) return;
+
+  /* --- DONUT --- */
+  // Count votes per athlete
+  const counts = {};
+  rows.forEach(r => {
+    counts[r.Athlete] = (counts[r.Athlete] || 0) + 1;
+  });
+
+  // Sort athletes by vote count (largest → smallest)
+  const entries = Object.entries(counts); // [ [athlete, count], ... ]
+  entries.sort((a, b) => b[1] - a[1]);
+
+  const dLabels = entries.map(e => e[0]);
+  const dData   = entries.map(e => e[1]);
+  const total   = dData.reduce((a, b) => a + b, 0);
+
+  /* ========= MEDAL COLOURS FOR TOP 3 ========= */
+  const GOLD   = '#efbf04'; // readable with white labels
+  const SILVER = '#9ea2a6';
+  const BRONZE = '#b46d32';
+
+  /* ========= COLOURS FOR 4th, 5th, … ========= */
+  const EXTRA_COLOURS = [
+    '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4',
+    '#14b8a6', '#84cc16', '#d946ef', '#fb7185'
+  ];
+
+  const donutColors = [];
+  for (let i = 0; i < dLabels.length; i++) {
+    if (i === 0) {
+      donutColors.push(GOLD);
+    } else if (i === 1) {
+      donutColors.push(SILVER);
+    } else if (i === 2) {
+      donutColors.push(BRONZE);
+    } else {
+      donutColors.push(EXTRA_COLOURS[(i - 3) % EXTRA_COLOURS.length]);
+    }
+  }
+
+  // Destroy existing donut if present
+  if (charts[donutId]) charts[donutId].destroy();
+  const donutCtx = document.getElementById(donutId).getContext('2d');
+
+  charts[donutId] = new Chart(donutCtx, {
+    type: 'doughnut',
+    data: {
+      labels: dLabels,
+      datasets: [{
+        data: dData,
+        backgroundColor: donutColors,
+        borderColor: '#111',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '57%',
+      layout: { padding: 0 },
+      events: ['mousemove','mouseout','click','touchstart','touchmove','touchend'],
+      interaction: { mode: 'nearest', intersect: true },
+      plugins: {
+        title: {
+          display: true,
+          text: 'Share of Votes',
+          color: '#ccc',
+          font: { weight: 'bold', size: s.donutTitle },
+          padding: { bottom: 8 }
+        },
+        subtitle: {
+          display: true,
+          text: `Total Votes – ${total}`,
+          color: '#aaa',
+          font: { size: s.donutSubtitle },
+          padding: { top: 2, bottom: 18 }
+        },
+        legend: {
+          position: 'bottom',
+          onClick: null,
+          onHover: null,
+          labels: {
+            color: '#ccc',
+            boxWidth: 10,
+            boxHeight: 10,
+            font: { size: s.donutLegend },
+            usePointStyle: true,
+            pointStyle: 'circle',
+
+            /* === MULTI-ROW LEGEND LAYOUT === */
+            generateLabels(chart) {
+              const original =
+                Chart.overrides.doughnut.plugins.legend.labels.generateLabels(chart);
+
+              const total = original.length;
+              if (total <= 2) return original;
+
+              const arranged = [];
+
+              // ODD COUNT → centre first label using a spacer
+              if (total % 2 === 1) {
+                arranged.push({
+                  text: '',
+                  fillStyle: 'rgba(0,0,0,0)',
+                  strokeStyle: 'rgba(0,0,0,0)',
+                  hidden: true,
+                  index: null,
+                  pointStyle: 'circle'
+                });
+                arranged.push(original[0]);
+              }
+
+              const start = (total % 2 === 1) ? 1 : 0;
+              for (let i = start; i < total; i += 2) {
+                arranged.push(original[i]);
+                if (original[i + 1]) arranged.push(original[i + 1]);
+              }
+
+              return arranged;
+            }
+          }
+        },
+        tooltip: {
+          usePointStyle: true,
+          boxWidth: 8,
+          boxHeight: 8,
+          pointStyle: 'circle',
+          callbacks: {
+            labelPointStyle: () => ({ pointStyle: 'circle', rotation: 0 }),
+            label: (ctx) => {
+              const dataset = ctx.chart.data.datasets[0];
+              const totalLocal = dataset.data.reduce((a, b) => a + b, 0);
+              const value = ctx.parsed;
+              const pct = ((value / totalLocal) * 100).toFixed(1);
+              const voteWord = value === 1 ? 'Vote' : 'Votes';
+              return `${value} ${voteWord} – ${pct}%`;
+            }
+          }
+        },
+
+        datalabels: {
+          color: '#fff',
+          font: (ctx) => {
+            const dataset = ctx.chart.data.datasets[0];
+            const value = dataset.data[ctx.dataIndex];
+            const totalLocal = dataset.data.reduce((a, b) => a + b, 0);
+            const percentage = (value / totalLocal) * 100;
+
+            const angle = (percentage / 100) * 360;
+            const base = s.donutPercent;
+
+            let size;
+            if (angle < 10) size = base * 0.45;
+            else if (angle < 20) size = base * 0.6;
+            else if (angle < 40) size = base * 0.8;
+            else size = base;
+
+            return { weight: 'bold', size: Math.max(8, size) };
+          },
+          formatter: (v, ctx) => {
+            const dataset = ctx.chart.data.datasets[0];
+            const totalLocal = dataset.data.reduce((a, b) => a + b, 0);
+            const p = (v / totalLocal) * 100;
+            return p >= 3.5 ? `${p.toFixed(1)}%` : '';
+          },
+          display: (ctx) => {
+            const dataset = ctx.chart.data.datasets[0];
+            const value = dataset.data[ctx.dataIndex];
+            const totalLocal = dataset.data.reduce((a, b) => a + b, 0);
+            const p = (value / totalLocal) * 100;
+            return p >= 3.5;
+          },
+          anchor: 'center',
+          align: 'center',
+          clamp: true,
+          clip: true,
+          offset: 0
+        }
+      },
+      onClick: (evt, elements) =>
+        handleDonutClick(g, w, donutId, evt, elements, rows)
+    }
+  });
+
+  enableDesktopTooltipLinger(charts[donutId], 5000);
+
+  // --- HISTOGRAM (FD + smart outliers, trimmed empty bins, min bin width) ---
+  
+  const vals = rows
+    .map(r => parseFloat(r.PredictedTotal))
+    .filter(v => !isNaN(v) && v > 0);
+
+  if (!vals.length) {
+    if (charts[histId]) charts[histId].destroy();
+    return;
+  }
+
+  const N = vals.length;
+  const sorted = [...vals].sort((a, b) => a - b);
+  const meanVal = sorted.reduce((a, b) => a + b, 0) / N;
+
+  // Quartiles + IQR on full data
+  const q1 = quantile(sorted, 0.25);
+  const q3 = quantile(sorted, 0.75);
+  const iqr = q3 - q1;
+
+  // 2×IQR fences
+  const lowerFence = q1 - 2 * iqr;
+  const upperFence = q3 + 2 * iqr;
+
+  let lowVals   = sorted.filter(v => v <  lowerFence);
+  let coreVals  = sorted.filter(v => v >= lowerFence && v <= upperFence);
+  let highVals  = sorted.filter(v => v >  upperFence);
+
+  // If everything is flagged, treat all as core (no outliers)
+  if (!coreVals.length) {
+    coreVals = sorted.slice();
+    lowVals = [];
+    highVals = [];
+  }
+
+  // --- SMART OUTLIER RULE (cluster <3 OR gap <= minBinWidth) ---
+  const minBinWidth = Math.max(2, Math.floor(meanVal / 100));
+
+  // Low outliers merge test
+  if (lowVals.length && coreVals.length) {
+    const gapLow = coreVals[0] - lowVals[lowVals.length - 1];
+    if (lowVals.length < 3 && gapLow <= minBinWidth) {
+      coreVals = lowVals.concat(coreVals);
+      lowVals = [];
+    }
+  }
+
+  // High outliers merge test
+  if (highVals.length && coreVals.length) {
+    const gapHigh = highVals[0] - coreVals[coreVals.length - 1];
+    if (highVals.length < 3 && gapHigh <= minBinWidth) {
+      coreVals = coreVals.concat(highVals);
+      highVals = [];
+    }
+  }
+
+  // Recompute final core range
+  const minNorm = coreVals[0];
+  const maxNorm = coreVals[coreVals.length - 1];
+  const coreRange = maxNorm - minNorm || 1;
+
+  // Freedman–Diaconis using core values only
+  let suggestedBins = null;
+  const coreQ1  = quantile(coreVals, 0.25);
+  const coreQ3  = quantile(coreVals, 0.75);
+  const coreIQR = coreQ3 - coreQ1;
+
+  if (coreIQR > 0 && isFinite(coreIQR)) {
+    const h = 2 * coreIQR / Math.cbrt(coreVals.length);
+    if (h > 0 && isFinite(h)) {
+      suggestedBins = Math.round(coreRange / h);
+    }
+  }
+
+  let innerBins = suggestedBins || Math.round(Math.sqrt(coreVals.length));
+  innerBins = Math.max(3, Math.min(innerBins, 10)); // clamp 3–10 bins
+
+  // Enforce minimum bin width relative to mean
+  if (coreRange / innerBins < minBinWidth) {
+    let adjusted = Math.floor(coreRange / minBinWidth) || 1;
+    innerBins = Math.max(1, Math.min(adjusted, 10));
+  }
+
+  const bw = coreRange / innerBins || minBinWidth || 1;
+
+  // Populate bins
+  const fullCounts = Array(innerBins).fill(0);
+  const binStarts = [];
+  const binEnds   = [];
+
+  for (let i = 0; i < innerBins; i++) {
+    const start = minNorm + i * bw;
+    const end   = minNorm + (i + 1) * bw;
+    binStarts.push(start);
+    binEnds.push(end);
+  }
+
+  coreVals.forEach(v => {
+    let idx = Math.floor((v - minNorm) / bw);
+    if (idx < 0) idx = 0;
+    if (idx >= innerBins) idx = innerBins - 1;
+    fullCounts[idx]++;
+  });
+
+  // Trim empty interior bins
+  let firstNonZero = 0;
+  let lastNonZero = innerBins - 1;
+  while (firstNonZero < innerBins && fullCounts[firstNonZero] === 0) firstNonZero++;
+  while (lastNonZero >= 0 && fullCounts[lastNonZero] === 0) lastNonZero--;
+
+  if (firstNonZero > lastNonZero) {
+    firstNonZero = 0;
+    lastNonZero = innerBins - 1;
+  }
+
+  const trimmedBinCount = lastNonZero - firstNonZero + 1;
+  const coreColors = getBlueGradientColors(trimmedBinCount);
+
+  const countsH = [];
+  const labelsH = [];
+  const colorsH = [];
+
+  const effectiveMinEdge = binStarts[firstNonZero];
+  const effectiveMaxEdge = binEnds[lastNonZero];
+
+  // --- Left outlier bin ---
+  if (lowVals.length > 0) {
+    countsH.push(lowVals.length);
+    labelsH.push(`< ${effectiveMinEdge.toFixed(0)}`);
+    colorsH.push(coreColors[0]); // lightest blue
+  }
+
+  // --- Core bins (trimmed) ---
+  for (let i = firstNonZero; i <= lastNonZero; i++) {
+    const pos = i - firstNonZero;
+    const start = binStarts[i];
+    const end   = binEnds[i];
+
+    countsH.push(fullCounts[i]);
+    labelsH.push(`${start.toFixed(0)}–${end.toFixed(0)}`);
+    colorsH.push(coreColors[pos]);
+  }
+
+  // --- Right outlier bin ---
+  if (highVals.length > 0) {
+    countsH.push(highVals.length);
+    labelsH.push(`> ${effectiveMaxEdge.toFixed(0)}`);
+    colorsH.push(coreColors[coreColors.length - 1]);
+  }
+
+  // Y-axis stepping
+  const maxC = Math.max(...countsH);
+  const yStep = 2;
+  const yMax = Math.max(yStep, Math.ceil(maxC / yStep) * yStep);
+
+  if (charts[histId]) charts[histId].destroy();
+  const histCtx = document.getElementById(histId).getContext('2d');
+
+  charts[histId] = new Chart(histCtx, {
+    type: 'bar',
+    data: {
+      labels: labelsH,
+      datasets: [{
+        data: countsH,
+        backgroundColor: colorsH,
+        borderRadius: 5,
+        barPercentage: 0.9,
+        categoryPercentage: 1.0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { bottom: 60 } },
+      events: ['mousemove','mouseout','click','touchstart','touchmove','touchend'],
+      interaction: { mode: 'nearest', intersect: true },
+      plugins: {
+        centerHistArea: { enabled: true },
+        legend: { display: false },
+        datalabels: {
+          color: '#fff',
+          font: { size: s.histBarLabel, weight: 'normal' },
+          formatter: v => v > 0 ? v : '',
+          anchor: 'center',
+          align: 'center',
+          clamp: true
+        },
+        tooltip: {
+          usePointStyle: true,
+          boxWidth: 8,
+          boxHeight: 8,
+          pointStyle: 'circle',
+          callbacks: {
+            title: (items) => {
+              const raw = items[0]?.label || "";
+              return raw + " kg";   // Always append kg ONCE
+            },
+            label: (ctx) => `Vote Count – ${ctx.parsed.y}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          offset: true,
+          ticks: {
+            color: '#ccc',
+            font: { size: s.axisTick },
+            autoSkip: false,
+            maxRotation: 60,
+            minRotation: 45,
+            callback: (_, i) => labelsH[i]
+          },
+          title: {
+            display: true,
+            text: 'Predicted Total (kg)',
+            color: '#ccc',
+            font: { size: s.axisTitle, weight: 'bold' }
+          },
+          grid: { display: false }
+        },
+        y: {
+          beginAtZero: true,
+          min: 0,
+          max: yMax,
+          ticks: {
+            color: '#ccc',
+            font: { size: s.axisTick },
+            stepSize: yStep
+          },
+          title: {
+            display: true,
+            text: `Vote Count (Total = ${N})`,
+            color: '#ccc',
+            font: { size: s.axisTitle, weight: 'bold' }
+          },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+
+  charts[histId].$histCentered = false;
+  enableDesktopTooltipLinger(charts[histId], 5000);
+  requestAnimationFrame(stripTransformsForCharts);
+}
+
+/* ========= DRILLDOWN CHART ========= */
+function renderDrillChart(g, athlete) {
+  const state = drillState[g];
+  if (!state || !state.athleteMap[athlete]) return;
+
+  const s = sizing();
+  const isMobile = window.innerWidth < 768;
+  const votes = state.athleteMap[athlete].votes || [];
+  const colors = getRedGradientColors();
+
+  // points 1–16 -> bins
+  const counts = Array(16).fill(0);
+  votes.forEach(v => {
+    if (v >= 1 && v <= 16) counts[v - 1]++;
+  });
+
+  if (state.chart) state.chart.destroy();
+
+  const ctx = state.canvas.getContext('2d');
+  state.chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Array.from({ length: 16 }, (_, i) => i + 1),
+      datasets: [{
+        data: counts,
+        backgroundColor: colors,
+        borderRadius: 5,
+        barPercentage: 0.9,
+        categoryPercentage: 1.0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { bottom: 30 } },
+      events: ['mousemove','mouseout','click','touchstart','touchmove','touchend'],
+      interaction: { mode: 'nearest', intersect: true },
+      plugins: {
+        centerHistArea: { enabled: true },
+        legend: { display: false },
+        datalabels: {
+          color: '#fff',
+          font: { size: s.histBarLabel, weight: 'normal' },
+          formatter: (v) => v > 0 ? v : '',
+          anchor: 'center',
+          align: 'center',
+          clamp: true
+        },
+        tooltip: {
+          usePointStyle: true,
+          boxWidth: 8,
+          boxHeight: 8,
+          pointStyle: 'circle',
+          callbacks: {
+            labelPointStyle: () => ({ pointStyle: 'circle', rotation: 0 }),
+            title: (items) => {
+              const bin = items[0]?.label;
+              if (!bin) return '';
+              const n = parseInt(bin, 10);
+              return isNaN(n)
+                ? bin
+                : n === 1
+                  ? `${n} Point`
+                  : `${n} Points`;
+            },
+            label: (ctx2) => `Vote Count – ${ctx2.parsed.y}`
+          }
+        },
+        title: { display: false }
+      },
+      scales: {
+        x: {
+          ticks: {
+  color: '#ccc',
+  // Slightly smaller font on mobile so all 1–16 labels fit comfortably
+  font: { size: isMobile ? Math.max(9, s.axisTick - 2) : s.axisTick },
+  maxRotation: 0,
+  minRotation: 0,
+  autoSkip: false           // <- FORCE all tick labels to render
+},
+          title: {
+            display: true,
+            text: 'Points / Confidence Level',
+            color: '#ccc',
+            font: { size: s.axisTitle, weight: 'bold' }
+          },
+          grid: { display: false }
+        },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: '#ccc',
+            font: { size: s.axisTick },
+            precision: 0
+          },
+          title: {
+            display: true,
+            text: `Vote Count (Total = ${votes.length})`,
+            color: '#ccc',
+            font: { size: s.axisTitle, weight: 'bold' }
+          },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+
+  state.chart.$histCentered = false;
+  enableDesktopTooltipLinger(state.chart, 5000);
+  requestAnimationFrame(stripTransformsForCharts);
+}
+
+/* ========= DRILLDOWN HELPERS ========= */
+
+// double-click donut -> drilldown
+function handleDonutClick(g, w, donutId, evt, elements, rows) {
+  if (!evt || !evt.native) return;
+  const target = evt.native.target;
+  const now = Date.now();
+
+  if (!target.__lastClick) {
+    target.__lastClick = now;
+    return;
+  }
+
+  const diff = now - target.__lastClick;
+  target.__lastClick = now;
+
+  if (diff < 320 && elements && elements.length > 0) {
+    const idx = elements[0].index;
+    const chart = charts[donutId];
+    if (!chart) return;
+    const athlete = chart.data.labels[idx];
+    if (!athlete) return;
+    openDrilldown(g, w, athlete, rows, { skipFade: false });
+  }
+}
+
+function buildDrillAthleteMap(rows) {
+  const map = {};
+  rows.forEach(r => {
+    const name = r.Athlete;
+    if (!name) return;
+    const pts = parseInt(r.Points, 10);
+    if (!map[name]) map[name] = { votes: [] };
+    if (!isNaN(pts) && pts >= 1 && pts <= 16) map[name].votes.push(pts);
+  });
+  return map;
+}
+
+function openDrilldown(g, w, athlete, rows, opts = {}) {
+  const state = drillState[g];
+  if (!state) return;
+
+  const donutContainerId = g === 'F' ? 'womenDonutContainer' : 'menDonutContainer';
+  const donutContainer = document.getElementById(donutContainerId);
+
+  // build athlete vote map for this class
+  state.athleteMap = buildDrillAthleteMap(rows);
+  state.currentAthlete = athlete;
+  state.currentClass = w;
+  state.totalVotesInClass = rows.length;
+
+  // rebuild dropdown for available athletes (sorted by vote share desc)
+  const names = Object.entries(state.athleteMap)
+    .sort((a, b) => b[1].votes.length - a[1].votes.length)
+    .map(e => e[0]);
+
+  state.select.innerHTML = '';
+  names.forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    if (name === athlete) opt.selected = true;
+    state.select.appendChild(opt);
+  });
+
+  // ensure fallback if invalid athlete passed
+  if (!state.athleteMap[athlete]) {
+    const fallback = names[0];
+    if (fallback) state.currentAthlete = fallback;
+  }
+
+  // toggle visibility with fade animations
+  if (!opts.skipFade) {
+    fadeOut(donutContainer);
+    fadeIn(state.wrapper);
+
+    // ensure correct pointer math on desktop after fade-in
+    if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      setTimeout(() => requestAnimationFrame(stripTransformsForCharts), 400);
+    }
+  } else {
+    donutContainer.style.display = 'none';
+    state.wrapper.style.display = 'block';
+    state.wrapper.style.opacity = 1;
+
+    // ensure correct pointer math even when skipping fade
+    if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      requestAnimationFrame(stripTransformsForCharts);
+    }
+  }
+
+  // render the selected athlete's drilldown chart
+  renderDrillChart(g, state.currentAthlete);
+
+  // change event for athlete selector
+  state.select.onchange = () => {
+    const selAthlete = state.select.value;
+    if (!selAthlete) return;
+    state.currentAthlete = selAthlete;
+    renderDrillChart(g, selAthlete);
+  };
+}
+
+function closeDrilldown(g) {
+  const state = drillState[g];
+  if (!state) return;
+
+  const donutContainerId = g === 'F' ? 'womenDonutContainer' : 'menDonutContainer';
+  const donutContainer = document.getElementById(donutContainerId);
+
+  fadeOut(state.wrapper);
+  fadeIn(donutContainer);
+
+  if (state.chart) {
+    state.chart.destroy();
+    state.chart = null;
+  }
+
+  state.currentAthlete = null;
+  state.currentClass = null;
+  state.athleteMap = {};
+  state.totalVotesInClass = 0;
+}
+
+/* ========= BEST LIFTER TITLES (MATCH MAIN DONUTS) ========= */
+function setBestLifterTitles(g, totalVotes) {
+  const s = sizing();
+
+  const titleEl    = document.getElementById(g === "F" ? "bestFTitle"    : "bestMTitle");
+  const subtitleEl = document.getElementById(g === "F" ? "bestFSubtitle" : "bestMSubtitle");
+
+  if (!titleEl || !subtitleEl) return;
+
+  // Title text + style
+  titleEl.textContent = (g === "F"
+    ? "Female Best Lifter – Share of Votes"
+    : "Male Best Lifter – Share of Votes"
+  );
+  titleEl.style.fontSize = s.donutTitle + "px";
+  titleEl.style.fontWeight = "700";
+  titleEl.style.color = "#ccc";
+  titleEl.style.marginBottom = "4px";
+
+  // Subtitle text + style
+  subtitleEl.textContent = `Total Votes – ${totalVotes}`;
+  subtitleEl.style.fontSize = s.donutSubtitle + "px";
+  subtitleEl.style.color = "#aaa";
+  subtitleEl.style.marginTop = "0px";
+  subtitleEl.style.marginBottom = "14px";
+}
+
+/* ========= BEST LIFTER CHARTS ========= */
+function renderBestLifter(g) {
+  const s = sizing();
+  const canvasId = g === 'F' ? 'bestF' : 'bestM';
+
+  const rows = bestData.filter(r => r.Gender === g && r.Athlete);
+  if (!rows.length) return;
+
+  // Count votes per athlete
+  const counts = {};
+  rows.forEach(r => {
+    counts[r.Athlete] = (counts[r.Athlete] || 0) + 1;
+  });
+
+  let entries = Object.entries(counts);
+  entries.sort((a, b) => b[1] - a[1]); // largest share first
+
+  const labels = entries.map(e => e[0]);
+  const data   = entries.map(e => e[1]);
+  const total  = data.reduce((a, b) => a + b, 0);
+
+  // Update title + subtitle under chart on the page
+  setBestLifterTitles(g, total);
+
+  // Medal colours (same as main donuts)
+  const GOLD   = '#efbf04';
+  const SILVER = '#9ea2a6';
+  const BRONZE = '#b46d32';
+  const EXTRA_COLS = [
+    '#22c55e','#3b82f6','#8b5cf6','#ec4899','#06b6d4',
+    '#14b8a6','#84cc16','#d946ef','#fb7185'
+  ];
+
+  const colors = labels.map((_, i) =>
+    i === 0 ? GOLD :
+    i === 1 ? SILVER :
+    i === 2 ? BRONZE :
+    EXTRA_COLS[(i - 3) % EXTRA_COLS.length]
+  );
+
+  if (charts[canvasId]) charts[canvasId].destroy();
+  const ctx = document.getElementById(canvasId).getContext('2d');
+
+  charts[canvasId] = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: colors,
+        borderColor: '#111',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '55%',
+      layout: { padding: 0 },
+      plugins: {
+        title: { display: false },
+        subtitle: { display: false },
+        legend: {
+          position: 'bottom',
+          onClick: null,
+          onHover: null,
+          labels: {
+            color: '#ccc',
+            boxWidth: 10,
+            boxHeight: 10,
+            font: { size: s.donutLegend },
+            usePointStyle: true,
+            pointStyle: 'circle',
+            generateLabels(chart) {
+              const original =
+                Chart.overrides.doughnut.plugins.legend.labels.generateLabels(chart);
+              const total = original.length;
+
+              if (total <= 2) return original;
+
+              const arranged = [];
+              if (total % 2 === 1) {
+                arranged.push({
+                  text: '',
+                  fillStyle: 'rgba(0,0,0,0)',
+                  strokeStyle: 'rgba(0,0,0,0)',
+                  hidden: true,
+                  index: null,
+                  pointStyle: 'circle'
+                });
+                arranged.push(original[0]);
+              }
+
+              const start = (total % 2 === 1) ? 1 : 0;
+              for (let i = start; i < total; i += 2) {
+                arranged.push(original[i]);
+                if (original[i + 1]) arranged.push(original[i + 1]);
+              }
+
+              return arranged;
+            }
+          }
+        },
+        tooltip: {
+          usePointStyle: true,
+          boxWidth: 8,
+          boxHeight: 8,
+          pointStyle: 'circle',
+          callbacks: {
+            labelPointStyle: () => ({ pointStyle: 'circle', rotation: 0 }),
+            label: (ctx) => {
+              const val = ctx.parsed;
+              const pct = (val / total * 100).toFixed(1);
+              const word = val === 1 ? 'Vote' : 'Votes';
+              return `${val} ${word} – ${pct}%`;
+            }
+          }
+        },
+        datalabels: {
+          color: '#fff',
+          font: (ctx) => {
+            const dataset = ctx.chart.data.datasets[0];
+            const value = dataset.data[ctx.dataIndex];
+            const totalLocal = dataset.data.reduce((a, b) => a + b, 0);
+            const percentage = (value / totalLocal) * 100;
+            const angle = (percentage / 100) * 360;
+            const base = s.donutPercent;
+            let size;
+
+            if (angle < 10)       size = base * 0.45;
+            else if (angle < 20)  size = base * 0.6;
+            else if (angle < 40)  size = base * 0.8;
+            else                  size = base;
+
+            return { weight: 'bold', size: Math.max(8, size) };
+          },
+          formatter: (v, ctx) => {
+            const dataset = ctx.chart.data.datasets[0];
+            const totalLocal = dataset.data.reduce((a, b) => a + b, 0);
+            const p = (v / totalLocal) * 100;
+            return p >= 2 ? `${p.toFixed(1)}%` : '';
+          },
+          display: (ctx) => {
+            const dataset = ctx.chart.data.datasets[0];
+            const value = dataset.data[ctx.dataIndex];
+            const totalLocal = dataset.data.reduce((a, b) => a + b, 0);
+            const percentage = (value / totalLocal) * 100;
+            return percentage >= 3.5;
+          },
+          anchor: 'center',
+          align: 'center',
+          clamp: true,
+          clip: true,
+          offset: 0
+        }
+      }
+    }
+  });
+
+  enableDesktopTooltipLinger(charts[canvasId], 5000);
+}
+
+/* ========= COLLAPSIBLE SECTIONS ========= */
+
+function toggleSection(id) {
+  const c = document.getElementById(id);
+  const a = document.getElementById(`arrow-${id}`);
+  const main = document.querySelector('main');
+  if (!c || !a || !main) return;
+
+  const open = c.classList.toggle('open');
+  a.classList.toggle('rotate', open);
+
+  if (open) {
+    const wrapper = c.closest('.bg-gray-800\\/60') || c;
+    wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  const anyOpen = document.querySelector('.collapsible-content.open');
+  if (anyOpen) main.classList.add('expanded');
+  else main.classList.remove('expanded');
+
+  setTimeout(repositionBottomButtons, 600);
+}
+
+function repositionBottomButtons() {
+  const main = document.querySelector('main');
+  const leaderboard = document.querySelector('a[href="leaderboard.html"]')?.closest('div');
+  const backToTop = document.getElementById('bottomBackToTop')?.closest('div');
+  if (!main || !leaderboard || !backToTop) return;
+
+  const contentHeight = main.scrollHeight;
+  const windowHeight = window.innerHeight;
+  const offset = Math.max(24, windowHeight - contentHeight / 1.2);
+
+  [leaderboard, backToTop].forEach((el, i) => {
+    el.style.transition = 'margin-top 0.6s ease';
+    el.style.marginTop = (i === 0 ? offset : 16) + 'px';
+  });
+}
+
+window.addEventListener('resize', () => {
+  repositionBottomButtons();
+  Object.values(charts).forEach(chart => {
+    if (chart &&
+        chart.config.type === 'bar' &&
+        chart.canvas &&
+        /(Hist|Drill)$/i.test(chart.canvas.id)) {
+      chart.$histCentered = false;
+      chart.update('none');
+    }
+  });
+});
+
+/* ========= SHARE / EXPORT HELPERS ========= */
+
+function detectBrowserShareSupport() {
+  const ua = navigator.userAgent.toLowerCase();
+  return {
+    isAndroidChrome: ua.includes('android') && ua.includes('chrome') && !ua.includes('edge') && !ua.includes('opr'),
+    isChromeIOS: ua.includes('crios')
+  };
+}
+
+function swapShareButtonFor(containerEl, newBtn) {
+  containerEl.innerHTML = '';
+  containerEl.appendChild(newBtn);
+}
+
+function sanitizeFilename(str) {
+  return (str || 'value')
+    .toString()
+    .normalize('NFKD')
+    .replace(/[^\w\-]+/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .toLowerCase();
+}
+
+// Crop histogram canvas bottom so we keep x-axis labels + a little padding
+function cropHistogramCanvas(srcCanvas, chart) {
+  try {
+    if (!chart || chart.config?.type !== 'bar') return srcCanvas;
+    // Only touch the main histograms (not drilldown)
+    if (!/(Hist)$/i.test(chart.canvas?.id || '')) return srcCanvas;
+
+    const xScale = chart.scales?.x;
+    if (!xScale || typeof xScale.bottom !== 'number') return srcCanvas;
+
+    const { width, height } = srcCanvas;
+    // Keep labels and a small buffer below them
+    const extra = 10; // px below label baseline
+    const cropBottom = Math.min(height, Math.round(xScale.bottom + extra));
+
+    // If something looks wrong, bail out and use full canvas
+    if (cropBottom <= 0 || cropBottom >= height) return srcCanvas;
+
+    const tmp = document.createElement('canvas');
+    tmp.width = width;
+    tmp.height = cropBottom;
+
+    const ctx = tmp.getContext('2d');
+    ctx.drawImage(
+      srcCanvas,
+      0, 0, width, cropBottom, // from original
+      0, 0, width, cropBottom  // into tmp
+    );
+
+    return tmp;
+  } catch (err) {
+    console.error('Histogram crop failed, using full canvas.', err);
+    return srcCanvas;
+  }
+}
+
+/* ========= SHARE STANDARD CHARTS (WINNERS + BEST LIFTERS + HISTOGRAMS) ========= */
+async function shareChart(id, g) {
+  const { isAndroidChrome, isChromeIOS } = detectBrowserShareSupport();
+  const s = sizing();
+  const src = document.getElementById(id);
+  if (!src) return;
+
+  const shareBar = src.previousElementSibling;
+  if (!shareBar) return;
+
+  function makeBtn(text) {
+    const b = document.createElement('button');
+    b.className = "bg-red-600 hover:bg-red-500 text-white rounded-full text-xs font-semibold shadow-md px-3 py-1";
+    b.style.minWidth = "140px";
+    b.style.height = "24px";
+    b.textContent = text;
+    return b;
+  }
+
+  function resetShareIcon() {
+    shareBar.innerHTML =
+      '<button class="share-btn" onclick="shareChart(\'' + id + '\', \'' + g + '\')">' +
+      '<img src="https://img.icons8.com/?size=100&id=qWomDF3YJPZv&format=png&color=000000" class="share-icon" alt="Share"/>' +
+      '</button>';
+  }
+
+  const generatingBtn = makeBtn("Generating…");
+  swapShareButtonFor(shareBar, generatingBtn);
+  await new Promise(requestAnimationFrame);
+
+  const sel = document.getElementById(g === 'F' ? 'womenSelect' : 'menSelect');
+  let w = sel ? sel.value : '';
+
+  const isBestLifter = (id === 'bestF' || id === 'bestM');
+  const isDonut = id.toLowerCase().includes('donut') || isBestLifter;
+  const isMobile = window.innerWidth < 768;
+  const isHistogram = id.toLowerCase().includes('hist');
+
+  // ===== TEMPORARY HISTOGRAM PADDING REDUCTION (EXPORT ONLY) =====
+  let originalPaddingBottom = null;
+  if (isHistogram && charts[id] && charts[id].options) {
+    const chart = charts[id];
+    const layout = chart.options.layout || (chart.options.layout = {});
+    const padding = layout.padding || (layout.padding = {});
+    originalPaddingBottom = (typeof padding.bottom === 'number') ? padding.bottom : 0;
+
+    // Reduce bottom padding just for export
+    padding.bottom = 10;
+    chart.update('none');
+  }
+
+  function restoreHistogramPadding() {
+    if (!isHistogram || !charts[id] || originalPaddingBottom === null) return;
+    const chart = charts[id];
+    const layout = chart.options.layout || (chart.options.layout = {});
+    const padding = layout.padding || (layout.padding = {});
+    padding.bottom = originalPaddingBottom;
+    chart.update('none');
+  }
+
+  // Filename
+  const baseLabel = isBestLifter ? 'BL' : (w || 'class');
+  const fn = `metrics_${g}_${baseLabel}_${isDonut ? 'donut' : 'hist'}.png`;
+
+  // Chart → PNG
+  const dataURL = src.toDataURL('image/png');
+  const img = new Image();
+  img.src = dataURL;
+  await img.decode();
+
+  // Share card
+  const card = document.createElement('div');
+  card.style.position = 'relative';
+  card.style.width = s.exportWidth + 'px';
+  card.style.borderRadius = '24px';
+  card.style.overflow = 'hidden';
+  card.style.margin = '0 auto';
+  card.style.backgroundImage = "url('bc25_logo.jpg')";
+  card.style.backgroundSize = 'cover';
+  card.style.backgroundPosition = 'center';
+  card.style.boxShadow = '0 16px 40px rgba(0,0,0,0.55)';
+
+  const overlay = document.createElement('div');
+  overlay.style.position = 'absolute';
+  overlay.style.inset = '0';
+  overlay.style.background = 'rgba(0,0,0,0.70)';
+  card.appendChild(overlay);
+
+  const inner = document.createElement('div');
+  inner.style.position = 'relative';
+  inner.style.textAlign = 'center';
+  inner.style.color = '#fff';
+  inner.style.fontFamily = "'Inter', sans-serif";
+  inner.style.zIndex = '2';
+  inner.style.padding = '32px 26px 26px 26px';
+  card.appendChild(inner);
+
+  // Header
+  const header = document.createElement('h2');
+  header.textContent = 'British Juniors Fantasy League 2026 🇬🇧';
+  header.style.fontSize = (isMobile ? s.headerFont * 1.4 : s.headerFont * 1.2) + 'px';
+  header.style.fontWeight = '700';
+  header.style.margin = '0 0 6px 0';
+
+  // Subheader
+  const sub = document.createElement('p');
+  let label;
+
+  if (isBestLifter) {
+    label = g === 'F'
+      ? 'Female Best Lifter – Share of Votes'
+      : 'Male Best Lifter – Share of Votes';
+  } else {
+    const genderLabel = (g === 'F' ? 'Women' : 'Men');
+    label = isDonut
+      ? `${w ? w + ' kg ' : ''}${genderLabel}`
+      : `${w ? w + ' kg ' : ''}${genderLabel}<br>Distribution of Predicted Winning Totals`;
+  }
+
+  sub.innerHTML = label;
+  sub.style.fontSize = (isMobile ? s.subFont * 1.5 : s.subFont * 1.5) + 'px';
+  sub.style.fontWeight = '600';
+  sub.style.color = '#e5e7eb';
+  sub.style.margin = '0 0 18px 0';
+
+  // Best Lifter total votes (export subtitle)
+  if (isBestLifter) {
+    const totalVotes =
+      charts[id]?.data?.datasets?.[0]?.data?.reduce((a, b) => a + b, 0) || 0;
+
+    const subVotes = document.createElement('p');
+    subVotes.textContent = `Total Votes – ${totalVotes}`;
+    subVotes.style.fontSize = (isMobile ? s.donutSubtitle * 1.5 : s.donutSubtitle * 1.5) + 'px';
+    subVotes.style.color = '#d1d5db';
+    subVotes.style.margin = '0 0 14px 0';
+
+    inner.append(header, sub, subVotes);
+  } else {
+    inner.append(header, sub);
+  }
+
+  // Chart image layout  (histogram + drilldown will now both effectively use 10px bottom margin)
+  img.style.display = 'block';
+  img.style.borderRadius = '14px';
+  img.style.width = '82%';
+  img.style.height = 'auto';
+  img.style.margin = isDonut ? '0 auto 16px auto' : '0 auto 10px auto';
+
+  inner.appendChild(img);
+
+  // Credits
+  const credit = document.createElement('p');
+  credit.style.fontSize = (isMobile ? s.creditFont * 1.5 : s.creditFont * 1.5) + 'px';
+  credit.style.color = '#d1d5db';
+  credit.style.lineHeight = '1.5';
+  credit.style.textAlign = 'center';
+  credit.style.marginTop = isDonut ? '8px' : '4px';
+  credit.innerHTML =
+    'Data from tinyurl.com/britishclassicfl-metricssubjuniors<br><br>Sponsored by the Sabado Sessions Podcast';
+
+  inner.appendChild(credit);
+
+  // QR Code
+  const qr = new Image();
+  const qrsz = s.qrSize;
+  qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=${qrsz}x${qrsz}&data=${encodeURIComponent('https://solacestrength.github.io/britishclassicfl/metrics-subjuniors.html')}`;
+  qr.style.position = 'absolute';
+  qr.style.bottom = '18px';
+  qr.style.left = '18px';
+  qr.style.width = qrsz + 'px';
+  qr.style.height = qrsz + 'px';
+  qr.style.borderRadius = '6px';
+
+  card.appendChild(qr);
+  document.body.appendChild(card);
+
+  // Capture final
+  await new Promise(requestAnimationFrame);
+  const canvas = await html2canvas(card, { backgroundColor: null, scale: 2, useCORS: true, scrollY: 0 });
+  card.remove();
+
+  const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+
+  // Restore histogram padding as soon as we've captured the export
+  restoreHistogramPadding();
+
+  if (!blob) {
+    resetShareIcon();
+    return;
+  }
+
+  const file = new File([blob], fn, { type: 'image/png' });
+
+  // Android special share
+  if (isAndroidChrome) {
+    const shareBtn = makeBtn("Share Generated Image");
+    shareBtn.onclick = async () => {
+      try {
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: 'British Juniors Fantasy League 2026',
+            text: 'Check out these stats!',
+            files: [file]
+          });
+        } else {
+          const url = URL.createObjectURL(file);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fn;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      resetShareIcon();
+    };
+    swapShareButtonFor(shareBar, shareBtn);
+    return;
+  }
+
+  // Other platforms
+  try {
+    if (!isChromeIOS && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        title: 'British Juniors Fantasy League 2026',
+        text: 'Check out these stats!',
+        files: [file]
+      });
+    } else {
+      const url = URL.createObjectURL(file);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fn;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+  } catch (err) {
+    console.error('Share failed:', err);
+  }
+
+  resetShareIcon();
+}
+
+function shareBestLifter(g) {
+  shareChart(g === 'F' ? 'bestF' : 'bestM', g);
+}
+
+/* ========= DRILLDOWN SHARE ========= */
+async function shareDrilldown(g) {
+  const state = drillState[g];
+  if (!state || !state.chart || !state.currentAthlete || !state.currentClass) return;
+
+  const { isAndroidChrome, isChromeIOS } = detectBrowserShareSupport();
+  const s = sizing();
+  const isMobile = window.innerWidth < 768;
+
+  const athlete = state.currentAthlete;
+const votes = state.athleteMap[athlete]?.votes || [];
+const votesForAthlete = votes.length;
+const n = state.totalVotesInClass || votesForAthlete;
+
+// Keep the raw class label so 84+ / 120+ stay intact in the filename,
+// just like donut & histogram exports.
+const classLabel = (state.currentClass || 'class').toString();
+
+// Still safely sanitize the athlete name to avoid odd characters in filenames.
+const safeAthlete = sanitizeFilename(athlete);
+
+const fn = `metrics_drill_${g}_${classLabel}_${safeAthlete}.png`;
+
+  const srcCanvas = state.canvas;
+
+  /* === TEMPORARY PADDING REDUCTION FOR EXPORT ONLY === */
+  let originalPadding = null;
+  try {
+    const chart = state.chart;
+    if (chart && chart.options && chart.options.layout && chart.options.layout.padding) {
+      const pad = chart.options.layout.padding;
+      originalPadding = { ...pad };           // store existing padding
+      chart.options.layout.padding = {
+        ...pad,
+        bottom: 10                             // tighter bottom padding for export
+      };
+      chart.update('none');
+    }
+  } catch (e) {
+    console.warn("Drilldown export padding adjust failed", e);
+  }
+
+  // Capture the chart with export padding
+  const chartDataUrl = srcCanvas.toDataURL('image/png');
+  const chartImg = new Image();
+  chartImg.src = chartDataUrl;
+  await chartImg.decode();
+
+  // Restore original padding for on-page chart
+  try {
+    if (originalPadding && state.chart) {
+      state.chart.options.layout.padding = originalPadding;
+      state.chart.update('none');
+    }
+  } catch (e) {
+    console.warn("Failed restoring drilldown padding", e);
+  }
+
+  const exportWidth = s.exportWidth;
+  const card = document.createElement('div');
+  card.style.position = 'relative';
+  card.style.width = exportWidth + 'px';
+  card.style.borderRadius = '24px';
+  card.style.overflow = 'hidden';
+  card.style.margin = '0 auto';
+  card.style.backgroundImage = "url('bc25_logo.jpg')";
+  card.style.backgroundSize = 'cover';
+  card.style.backgroundPosition = 'center';
+  card.style.boxShadow = '0 16px 40px rgba(0,0,0,0.55)';
+
+  const overlay = document.createElement('div');
+  overlay.style.position = 'absolute';
+  overlay.style.inset = '0';
+  overlay.style.background = 'rgba(0,0,0,0.70)';
+  card.appendChild(overlay);
+
+  const inner = document.createElement('div');
+  inner.style.position = 'relative';
+  inner.style.textAlign = 'center';
+  inner.style.color = '#fff';
+  inner.style.fontFamily = "'Inter', sans-serif";
+  inner.style.zIndex = '2';
+  inner.style.padding = '32px 26px 26px 26px';
+  card.appendChild(inner);
+
+  const header = document.createElement('h2');
+  header.textContent = 'British Juniors Fantasy League 2026 🇬🇧';
+  header.style.fontSize = (isMobile ? s.headerFont * 1.4 : s.headerFont * 1.2) + 'px';
+  header.style.fontWeight = '700';
+  header.style.margin = '0 0 6px 0';
+
+  // "84+ kg Women - Athlete Name" line
+  const weightClass = state.currentClass;
+  const genderLabel = (g === 'F') ? 'Women' : 'Men';
+  const athleteLine = `${weightClass} kg ${genderLabel} - ${athlete}`;
+
+  const sub1 = document.createElement('p');
+  sub1.textContent = athleteLine;
+  sub1.style.fontSize = (isMobile ? s.subFont * 1.5 : s.subFont * 1.5) + 'px';
+  sub1.style.fontWeight = '600';
+  sub1.style.margin = '0 0 4px 0';
+
+  const sub2 = document.createElement('p');
+  sub2.textContent = `${votesForAthlete} Votes Out of ${n}`;
+  sub2.style.fontSize = (isMobile ? s.creditFont * 1.5 : s.creditFont * 1.5) + 'px';
+  sub2.style.color = '#d1d5db';
+  sub2.style.margin = '0 0 18px 0';
+
+  chartImg.style.display = 'block';
+  chartImg.style.margin = '0 auto 10px auto';  // ⬅ matches histogram export
+  chartImg.style.borderRadius = '14px';
+  chartImg.style.width = '82%';
+  chartImg.style.height = 'auto';
+
+  const credit = document.createElement('p');
+  credit.style.fontSize = (isMobile ? s.creditFont * 1.5 : s.creditFont * 1.5) + 'px';
+  credit.style.color = '#d1d5db';
+  credit.style.lineHeight = '1.5';
+  credit.style.marginTop = '8px';
+  credit.style.textAlign = 'center';
+  credit.innerHTML =
+    'Data from tinyurl.com/britishclassicfl-metricssubjuniors<br><br>Sponsored by the Sabado Sessions Podcast';
+
+// QR in bottom-left, matching donut & histogram exports
+const qr = new Image();
+const qrsz = s.qrSize;
+qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=${qrsz}x${qrsz}&data=${encodeURIComponent('https://solacestrength.github.io/britishclassicfl/metrics-subjuniors.html')}`;
+qr.style.position = 'absolute';
+qr.style.bottom = '18px';
+qr.style.left  = '18px';
+qr.style.width = qrsz + 'px';
+qr.style.height = qrsz + 'px';
+qr.style.borderRadius = '6px';
+
+inner.append(header, sub1, sub2, chartImg, credit);
+card.appendChild(qr);
+document.body.appendChild(card);
+
+  await new Promise(requestAnimationFrame);
+  const canvas = await html2canvas(card, {
+    backgroundColor: null,
+    scale: 2,
+    useCORS: true,
+    scrollY: 0
+  });
+  card.remove();
+
+  const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+  if (!blob) return;
+
+  const file = new File([blob], fn, { type: 'image/png' }); // ✅ filename added
+
+  try {
+    if (!isChromeIOS && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        title: 'British Juniors Fantasy League 2026 – Metrics Drilldown',
+        text: 'Check out these stats!',
+        files: [file]
+      });
+    } else {
+      const url = URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fn;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+  } catch (err) {
+    console.error('Share failed; falling back to download.', err);
+    const url = URL.createObjectURL(file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fn;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+}
+
+/* ========= BACK TO TOP ========= */
+const bottomBackToTop = document.getElementById('bottomBackToTop');
+if (bottomBackToTop) {
+  bottomBackToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+</script>
+
+  <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/britishclassicfl/service-worker.js");
+  });
+}
+</script>
+</body>
+</html>
