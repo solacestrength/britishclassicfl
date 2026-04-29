@@ -4,80 +4,271 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Metrics Select | British Juniors Fantasy League 2026 🇬🇧</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      color: #fff;
+      overflow-x: hidden;
+      background: #111827;
+    }
+
+    .bg-image {
+      position: fixed;
+      inset: 0;
+      background: url('bc25_logo.jpg') center / cover no-repeat;
+      z-index: -2;
+    }
+
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.70);
+      z-index: -1;
+    }
+
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      text-align: center;
+      gap: 28px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      opacity: 0.75;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .pill-btn {
+      display: block;
+      padding: 16px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      transition: all 0.18s ease;
+    }
+
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .pill-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* ===== NAV / BURGER ===== */
+    .burger-menu {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .burger-menu a,
+    .nav-link,
+    .nav-sub-link {
+      display: block;
+      width: 100%;
+      padding: 10px 16px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      text-align: left;
+    }
+
+    .nav-row {
+      display: grid;
+      grid-template-columns: 1fr 32px;
+      align-items: center;
+    }
+
+    .nav-dropdown-toggle {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .nav-chevron {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2.6;
+      fill: none;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-dropdown.open .nav-chevron {
+      transform: rotate(180deg);
+    }
+
+    .nav-dropdown-menu {
+      display: none;
+      flex-direction: column;
+    }
+
+    .nav-dropdown.open .nav-dropdown-menu {
+      display: flex;
+    }
+
+    .nav-sub-link {
+      padding-left: 36px;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .nav-row:hover .nav-link,
+    .nav-dropdown.open > .nav-row .nav-link {
+      color: #ff4d4d;
+    }
+  </style>
 </head>
-<body class="relative bg-gray-900 text-white font-sans min-h-screen overflow-x-hidden">
 
-  <div class="fixed inset-0 bg-[url('image_metrics.jpg')] bg-cover bg-center -z-20"></div>
-  <div class="fixed inset-0 bg-black/65 -z-10"></div>
+<body>
 
-  <!-- HEADER -->
-  <header class="w-full bg-gray-900/90 backdrop-blur-sm border-b border-gray-800 relative z-50">
-    <div class="flex items-center justify-center px-4 py-3">
-      <div class="flex-1 text-center">
-        <a href="index.html" class="font-bold text-white hover:text-red-500 transition text-sm sm:text-lg md:text-xl lg:text-2xl">
-          British Juniors Fantasy League 2026 🇬🇧
-        </a>
+  <div class="bg-image"></div>
+  <div class="bg-overlay"></div>
+
+  <div class="relative z-10 min-h-screen">
+
+    <!-- HEADER -->
+    <header class="w-full bg-gray-900/90 backdrop-blur-sm border-b border-gray-800 relative z-50">
+      <div class="flex items-center justify-center px-4 py-3">
+        <div class="flex-1 text-center">
+          <a href="index.html"
+             class="font-bold text-white hover:text-red-500 transition text-sm sm:text-lg md:text-xl lg:text-2xl">
+            British Juniors Fantasy League 2026 🇬🇧
+          </a>
+        </div>
+
+        <div class="absolute right-4 top-1/2 -translate-y-1/2">
+          <button id="menu-btn" aria-expanded="false"
+                  class="text-gray-300 p-2 rounded-md hover:bg-gray-800/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
       </div>
+    </header>
 
-      <div class="absolute right-4 top-1/2 -translate-y-1/2">
-        <button id="menu-btn" class="text-gray-300 p-2 rounded-md hover:bg-gray-800/50">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
-        </button>
+    <!-- MENU -->
+    <div id="mobile-menu"
+      class="fixed top-16 right-4 w-48 bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-md shadow-lg z-50 scale-y-0 opacity-0 pointer-events-none origin-top transition duration-300">
+
+      <nav class="burger-menu flex flex-col py-2">
+        <a href="index.html">Home</a>
+
+        <div class="nav-dropdown">
+          <div class="nav-row">
+            <a href="entry-select.html" class="nav-link">League Entry</a>
+            <button class="nav-dropdown-toggle">
+              <svg class="nav-chevron" viewBox="0 0 24 24">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          <div class="nav-dropdown-menu">
+            <a href="entry-juniors.html" class="nav-sub-link">Junior Entry</a>
+            <a href="entry-subjuniors.html" class="nav-sub-link">Sub-Junior Entry</a>
+          </div>
+        </div>
+
+        <a href="leaderboard-select.html">Leaderboard</a>
+        <a href="accuracy-select.html">Accuracy Scores</a>
+        <a href="metrics-select.html">Metrics</a>
+      </nav>
+    </div>
+
+    <!-- MAIN -->
+    <div class="container">
+      <h1>Metrics</h1>
+      <div class="subtitle">Select your division</div>
+
+      <div class="button-group">
+        <a href="metrics-juniors.html" class="pill-btn">Juniors Metrics</a>
+        <a href="metrics-subjuniors.html" class="pill-btn">Sub-Juniors Metrics</a>
       </div>
     </div>
-  </header>
 
-  <!-- MENU -->
-  <div id="mobile-menu" class="fixed top-16 right-4 w-48 bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-md shadow-lg z-50 scale-y-0 opacity-0 pointer-events-none origin-top transition duration-300">
-    <nav class="flex flex-col py-2 text-white">
-      <a href="index.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800">Home</a>
-      <a href="entry-select.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800">League Entry</a>
-      <a href="leaderboard-select.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800">Leaderboard</a>
-      <a href="accuracy-select.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800">Accuracy Scores</a>
-      <a href="metrics-select.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800">Metrics</a>
-    </nav>
   </div>
 
-  <!-- CONTENT -->
-  <main class="min-h-screen flex flex-col justify-center items-center px-6 text-center gap-7">
-    <h1 class="text-[28px] font-bold">Metrics</h1>
-    <div class="text-sm opacity-75">Select your division</div>
-
-    <div class="flex flex-col gap-4 w-full max-w-xs">
-      <a href="metrics-juniors.html" class="rounded-full px-5 py-4 bg-white/10 border border-white/15 backdrop-blur-md font-semibold hover:bg-white/20 transition">
-        Juniors Metrics
-      </a>
-
-      <a href="metrics-subjuniors.html" class="rounded-full px-5 py-4 bg-white/10 border border-white/15 backdrop-blur-md font-semibold hover:bg-white/20 transition">
-        Sub-Juniors Metrics
-      </a>
-    </div>
-  </main>
-
+  <!-- BURGER SCRIPT -->
   <script>
     const menuBtn = document.getElementById("menu-btn");
     const mobileMenu = document.getElementById("mobile-menu");
+
+    function closeNavDropdowns() {
+      document.querySelectorAll(".nav-dropdown").forEach(d => d.classList.remove("open"));
+    }
+
+    function toggleMenu(show) {
+      mobileMenu.classList.toggle("opacity-100", show);
+      mobileMenu.classList.toggle("scale-y-100", show);
+      mobileMenu.classList.toggle("scale-y-0", !show);
+      mobileMenu.classList.toggle("pointer-events-none", !show);
+      menuBtn.setAttribute("aria-expanded", show);
+      if (!show) closeNavDropdowns();
+    }
+
     let open = false;
 
     menuBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       open = !open;
-      mobileMenu.classList.toggle("opacity-100", open);
-      mobileMenu.classList.toggle("scale-y-100", open);
-      mobileMenu.classList.toggle("scale-y-0", !open);
-      mobileMenu.classList.toggle("pointer-events-none", !open);
+      toggleMenu(open);
+    });
+
+    document.querySelectorAll(".nav-dropdown-toggle").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const parent = btn.closest(".nav-dropdown");
+        parent.classList.toggle("open");
+      });
     });
 
     document.addEventListener("click", (e) => {
       if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
         open = false;
-        mobileMenu.classList.remove("opacity-100", "scale-y-100");
-        mobileMenu.classList.add("opacity-0", "scale-y-0", "pointer-events-none");
+        toggleMenu(false);
       }
     });
+
+    toggleMenu(false);
   </script>
+
 </body>
 </html>
