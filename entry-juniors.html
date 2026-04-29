@@ -14,99 +14,109 @@
     .animate-fade-in { animation: fadeInUp 1s ease-out forwards; }
     .fade-out { opacity: 0; transition: opacity 0.6s ease; }
 
-/* ========= GLOBAL BURGER MENU NAV FIX ========= */
+/* ========= ENTRY PAGE BURGER MENU FIX ========= */
 
-/* Base nav container (no changes to your layout) */
-.burger-menu {
+#mobile-menu nav {
   display: flex;
   flex-direction: column;
+  text-align: left !important;
 }
 
-/* ===== ALL NAV LINKS (Home, Leaderboard, etc.) ===== */
-.burger-menu a,
-.nav-link,
-.nav-sub-link {
+/* All top-level nav links */
+#mobile-menu nav > a,
+#mobile-menu .nav-link {
   display: block;
   width: 100%;
-
   padding: 10px 16px;
-
   color: #fff;
   text-decoration: none;
-
   font-size: 16px;
-  font-weight: 400;           /* 🔥 removes unwanted bold */
-  text-align: left;           /* 🔥 forces consistent alignment */
+  font-weight: 400;
+  text-align: left !important;
   line-height: 1.4;
 }
 
-/* ===== DROPDOWN ROW (League Entry) ===== */
-.nav-row {
+#mobile-menu nav > a:hover,
+#mobile-menu .nav-link:hover {
+  color: #ff4d4d;
+}
+
+/* Dropdown wrapper */
+#mobile-menu .nav-dropdown {
+  width: 100%;
+}
+
+/* League Entry row */
+#mobile-menu .nav-row {
   display: grid;
   grid-template-columns: 1fr 32px;
   align-items: center;
   width: 100%;
+  text-align: left !important;
 }
 
-/* Ensure League Entry behaves EXACTLY like other links */
-.nav-row .nav-link {
-  padding: 10px 16px;
-}
-
-/* ===== CHEVRON BUTTON ===== */
-.nav-dropdown-toggle {
+/* Chevron button */
+#mobile-menu .nav-dropdown-toggle {
   width: 32px;
   height: 32px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: transparent;
-  border: none;
+  border: 0;
   padding: 0;
   margin: 0;
-
-  cursor: pointer;
   color: #fff;
+  cursor: pointer;
 }
 
-/* Chevron icon */
-.nav-chevron {
+/* SVG chevron */
+#mobile-menu .nav-chevron {
   width: 18px;
   height: 18px;
-
   stroke: currentColor;
   stroke-width: 2.6;
   fill: none;
-
   transition: transform 0.2s ease;
 }
 
 /* Rotate when open */
-.nav-dropdown.open .nav-chevron {
+#mobile-menu .nav-dropdown.open .nav-chevron {
   transform: rotate(180deg);
 }
 
-/* ===== DROPDOWN MENU ===== */
-.nav-dropdown-menu {
+/* League Entry red hover/open */
+#mobile-menu .nav-row:hover .nav-link,
+#mobile-menu .nav-dropdown.open > .nav-row .nav-link {
+  color: #ff4d4d;
+}
+
+/* Dropdown menu */
+#mobile-menu .nav-dropdown-menu {
   display: none;
   flex-direction: column;
   width: 100%;
   margin-top: 4px;
 }
 
-.nav-dropdown.open .nav-dropdown-menu {
+#mobile-menu .nav-dropdown.open .nav-dropdown-menu {
   display: flex;
 }
 
-/* ===== INDENTED SUB ITEMS ===== */
-.nav-sub-link {
-  padding: 10px 16px 10px 36px; /* 🔥 clean, consistent indent */
+/* Indented sub-links */
+#mobile-menu .nav-sub-link {
+  display: block;
+  width: 100%;
+  padding: 10px 16px 10px 36px;
   color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: left !important;
+  line-height: 1.4;
 }
 
-.nav-sub-link:hover {
+#mobile-menu .nav-sub-link:hover {
   color: #fff;
 }
     /* Hover anywhere on the row */
@@ -120,7 +130,6 @@
 }
     
   </style>
-  <link rel="stylesheet" href="/assets/css/fix-dropdown.css">
   <link rel="manifest" href="/britishclassicfl/manifest.json">
 <meta name="theme-color" content="#b91c1c">
 
@@ -154,41 +163,34 @@
     </header>
 
     <!-- Mobile menu -->
-    <div id="mobile-menu" class="fixed top-16 right-4 w-48 bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-md shadow-lg z-50 scale-y-0 opacity-0 origin-top transition-transform duration-300 ease-in-out pointer-events-none">
-      <nav class="flex flex-col py-2 text-white">
-        <a href="index.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Home</a>
-        <div class="nav-dropdown">
+<div id="mobile-menu" class="fixed top-16 right-4 w-48 bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-md shadow-lg z-50 scale-y-0 opacity-0 origin-top transition-transform duration-300 ease-in-out pointer-events-none">
+  <nav class="flex flex-col py-2 text-white">
 
-    <div class="nav-row">
+    <a href="index.html">Home</a>
 
-      <a href="entry-select.html" class="nav-link">
+    <div class="nav-dropdown">
+      <div class="nav-row">
+        <a href="entry-select.html" class="nav-link">League Entry</a>
 
-        League Entry
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          <svg class="nav-chevron" viewBox="0 0 24 24">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
 
-      </a>
-
-      <button class="nav-dropdown-toggle" type="button">
-
-        <span class="nav-chevron">▾</span>
-
-      </button>
-
+      <div class="nav-dropdown-menu">
+        <a href="entry-juniors.html" class="nav-sub-link">Junior Entry</a>
+        <a href="entry-subjuniors.html" class="nav-sub-link">Sub-Junior Entry</a>
+      </div>
     </div>
 
-    <div class="nav-dropdown-menu">
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="accuracy_scores.html">Accuracy Scores</a>
+    <a href="metrics.html">Metrics</a>
 
-      <a href="entry-juniors.html">Junior Entry</a>
-
-      <a href="entry-subjuniors.html">Sub-Junior Entry</a>
-
-    </div>
-
-  </div>
-        <a href="leaderboard.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Leaderboard</a>
-        <a href="accuracy_scores.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Accuracy Scores</a>
-        <a href="metrics.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Metrics</a>
-      </nav>
-    </div>
+  </nav>
+</div>
 
     <!-- Main content -->
     <main class="mt-6 md:mt-10 animate-fade-in">
@@ -1379,57 +1381,92 @@
   <!-- Scripts -->
   <script src="entry.js"></script>
   <script>
-    // Mobile menu
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+  // Mobile menu
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
 
-    function toggleMenu(show) {
-      if (show) {
-        mobileMenu.classList.remove('scale-y-0','opacity-0','pointer-events-none');
-        mobileMenu.classList.add('scale-y-100','opacity-100');
-        menuBtn.setAttribute('aria-expanded','true');
-      } else {
-        mobileMenu.classList.add('scale-y-0','opacity-0','pointer-events-none');
-        mobileMenu.classList.remove('scale-y-100','opacity-100');
-        menuBtn.setAttribute('aria-expanded','false');
-      }
+  function closeNavDropdowns() {
+    document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+      dropdown.classList.remove('open');
+
+      const toggle = dropdown.querySelector('.nav-dropdown-toggle');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  function toggleMenu(show) {
+    if (show) {
+      mobileMenu.classList.remove('scale-y-0', 'opacity-0', 'pointer-events-none');
+      mobileMenu.classList.add('scale-y-100', 'opacity-100');
+      menuBtn.setAttribute('aria-expanded', 'true');
+    } else {
+      mobileMenu.classList.add('scale-y-0', 'opacity-0', 'pointer-events-none');
+      mobileMenu.classList.remove('scale-y-100', 'opacity-100');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      closeNavDropdowns();
+    }
+  }
+
+  let menuVisible = false;
+
+  menuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menuVisible = !menuVisible;
+    toggleMenu(menuVisible);
+  });
+
+  // League Entry dropdown
+  document.querySelectorAll('.nav-dropdown-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+
+      const parent = btn.closest('.nav-dropdown');
+      if (!parent) return;
+
+      const isOpen = parent.classList.contains('open');
+
+      closeNavDropdowns();
+
+      parent.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    const clickedInsideMenu = mobileMenu.contains(e.target);
+    const clickedMenuButton = menuBtn.contains(e.target);
+    const clickedDropdown = e.target.closest('.nav-dropdown');
+
+    if (!clickedDropdown) {
+      closeNavDropdowns();
     }
 
-    let menuVisible = false;
-    menuBtn.addEventListener('click', (e) => {
-      menuVisible = !menuVisible;
-      toggleMenu(menuVisible);
-      e.stopPropagation();
-    });
-    document.addEventListener('click', (e) => {
-      if(!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)){
-        if(menuVisible){
-          menuVisible = false;
-          toggleMenu(false);
-        }
+    if (!clickedInsideMenu && !clickedMenuButton) {
+      if (menuVisible) {
+        menuVisible = false;
+        toggleMenu(false);
       }
-    });
-    toggleMenu(false);
+    }
+  });
 
-    // Spotify gate: force new tab, remember pass
-    const spotifyLink = document.getElementById('spotify-link');
-    const spotifyLock = document.getElementById('spotify-lock');
-    const softGateImage = document.getElementById('softGateImage');
+  toggleMenu(false);
 
+  // Spotify gate: force new tab, remember pass
+  const spotifyLink = document.getElementById('spotify-link');
+  const spotifyLock = document.getElementById('spotify-lock');
+  const softGateImage = document.getElementById('softGateImage');
+
+  if (spotifyLink && spotifyLock) {
     spotifyLink.addEventListener('click', (e) => {
-      e.preventDefault(); // allow us to control the open action
+      e.preventDefault();
 
       const url = spotifyLink.href;
 
-      // Make sure the gate never shows again
       sessionStorage.setItem('spotifyPassed', '1');
       spotifyLock.classList.add('hidden');
 
-      // MAXIMUM chance of Android opening a new tab
-      // (must be triggered synchronously within the click event)
       const opened = window.open(url, '_blank');
 
-      // Fallback: if Android blocked new tab, open same tab
       if (!opened) {
         window.location.href = url;
       }
@@ -1440,48 +1477,17 @@
         spotifyLock.classList.add('hidden');
       }
     });
+  }
 
-    // Back to top
-    const bottomBackToTop = document.getElementById('bottomBackToTop');
-    if (bottomBackToTop) {
-      bottomBackToTop.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
+  // Back to top
+  const bottomBackToTop = document.getElementById('bottomBackToTop');
 
-   document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".nav-dropdown-toggle").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-
-      const parent = btn.closest(".nav-dropdown");
-      const isOpen = parent.classList.contains("open");
-
-      // Close others
-      document.querySelectorAll(".nav-dropdown").forEach(d => {
-        d.classList.remove("open");
-        const b = d.querySelector(".nav-dropdown-toggle");
-        if (b) b.setAttribute("aria-expanded", "false");
-      });
-
-      // Toggle current
-      parent.classList.toggle("open", !isOpen);
-      btn.setAttribute("aria-expanded", String(!isOpen));
+  if (bottomBackToTop) {
+    bottomBackToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-  });
-
-  // Close when clicking outside
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".nav-dropdown")) {
-      document.querySelectorAll(".nav-dropdown").forEach(d => {
-        d.classList.remove("open");
-        const b = d.querySelector(".nav-dropdown-toggle");
-        if (b) b.setAttribute("aria-expanded", "false");
-      });
-    }
-  });
-});   
-    }
-  </script>
+  }
+</script>
 
   <!-- EMAIL EXISTS POPUP (backup UI if needed) -->
   <div id="emailExistsModal"
