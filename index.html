@@ -42,92 +42,80 @@
   font-weight: 500;
 }
 
-/* Toggle button (BIG tap target fix) */
+.nav-dropdown {
+  width: 100%;
+}
+
+/* Keep League Entry aligned exactly like the other nav links */
+.nav-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* League Entry should behave like a normal nav item */
+.nav-link {
+  flex: 1;
+  text-decoration: none;
+  color: #fff;
+  font-size: inherit;
+  font-weight: inherit;
+  text-align: inherit;
+  padding: 0;
+}
+
+/* Chevron stays close, but does not push text off alignment */
 .nav-dropdown-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  width: 44px;   /* 🔥 mobile-friendly */
-  height: 44px;
-
+  width: 34px;
+  height: 34px;
+  margin-left: 8px;
   background: none;
   border: none;
   padding: 0;
-  margin: 0;
-
+  color: #fff;
   cursor: pointer;
 }
 
-/* Chevron (bigger + cleaner) */
+/* Slightly smaller than before, cleaner */
 .nav-chevron {
-  width: 22px;
-  height: 22px;
-
-  stroke: #fff;
-  stroke-width: 2.5;
+  width: 19px;
+  height: 19px;
+  stroke: currentColor;
+  stroke-width: 2.6;
   fill: none;
-
   transition: transform 0.2s ease;
 }
 
-/* Rotate on open */
 .nav-dropdown.open .nav-chevron {
   transform: rotate(180deg);
 }
 
-/* Dropdown menu */
+/* Submenu keeps the nice indentation */
 .nav-dropdown-menu {
   display: none;
   flex-direction: column;
-  margin-top: 6px;
+  margin-top: 10px;
 }
 
-/* Open state */
 .nav-dropdown.open .nav-dropdown-menu {
   display: flex;
 }
 
-/* Sub-links */
 .nav-sub-link {
-  padding: 10px 16px 10px 32px; /* nice indent */
+  padding: 8px 0 8px 34px;
   text-decoration: none;
   color: rgba(255,255,255,0.85);
-  font-size: 15px;
+  font-size: inherit;
+  font-weight: inherit;
+  text-align: inherit;
 }
 
 .nav-sub-link:hover {
   color: #fff;
 }
-
-  /* Collapsible shared styles */
-  .rules-collapsible,
-  .prizes-collapsible,
-  .contact-collapsible {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.4s ease, opacity 0.3s ease;
-  }
-
-  .rules-collapsible.open,
-  .prizes-collapsible.open,
-  .contact-collapsible.open {
-    opacity: 1;
-    max-height: 1000px;
-  }
-
-  .rules-arrow,
-  .prizes-arrow,
-  .contact-arrow {
-    transition: transform 0.3s ease;
-  }
-
-  .rules-arrow.rotate,
-  .prizes-arrow.rotate,
-  .contact-arrow.rotate {
-    transform: rotate(180deg);
-  }
   </style>
 
   <!-- Fixes for mobile menu stacking/pointer events -->
