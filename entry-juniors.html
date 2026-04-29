@@ -13,6 +13,82 @@
     .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
     .animate-fade-in { animation: fadeInUp 1s ease-out forwards; }
     .fade-out { opacity: 0; transition: opacity 0.6s ease; }
+
+/* Row layout */
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Main link */
+.nav-link {
+  flex: 1;
+  text-decoration: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Toggle button (BIG tap target fix) */
+.nav-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;   /* 🔥 mobile-friendly */
+  height: 44px;
+
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  cursor: pointer;
+}
+
+/* Chevron (bigger + cleaner) */
+.nav-chevron {
+  width: 22px;
+  height: 22px;
+
+  stroke: #fff;
+  stroke-width: 2.5;
+  fill: none;
+
+  transition: transform 0.2s ease;
+}
+
+/* Rotate on open */
+.nav-dropdown.open .nav-chevron {
+  transform: rotate(180deg);
+}
+
+/* Dropdown menu */
+.nav-dropdown-menu {
+  display: none;
+  flex-direction: column;
+  margin-top: 6px;
+}
+
+/* Open state */
+.nav-dropdown.open .nav-dropdown-menu {
+  display: flex;
+}
+
+/* Sub-links */
+.nav-sub-link {
+  padding: 10px 16px 10px 32px; /* nice indent */
+  text-decoration: none;
+  color: rgba(255,255,255,0.85);
+  font-size: 15px;
+}
+
+.nav-sub-link:hover {
+  color: #fff;
+}
+    
   </style>
   <link rel="stylesheet" href="/assets/css/fix-dropdown.css">
   <link rel="manifest" href="/britishclassicfl/manifest.json">
@@ -1341,6 +1417,39 @@
       bottomBackToTop.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
+
+   document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".nav-dropdown-toggle").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const parent = btn.closest(".nav-dropdown");
+      const isOpen = parent.classList.contains("open");
+
+      // Close others
+      document.querySelectorAll(".nav-dropdown").forEach(d => {
+        d.classList.remove("open");
+        const b = d.querySelector(".nav-dropdown-toggle");
+        if (b) b.setAttribute("aria-expanded", "false");
+      });
+
+      // Toggle current
+      parent.classList.toggle("open", !isOpen);
+      btn.setAttribute("aria-expanded", String(!isOpen));
+    });
+  });
+
+  // Close when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".nav-dropdown")) {
+      document.querySelectorAll(".nav-dropdown").forEach(d => {
+        d.classList.remove("open");
+        const b = d.querySelector(".nav-dropdown-toggle");
+        if (b) b.setAttribute("aria-expanded", "false");
+      });
+    }
+  });
+});   
     }
   </script>
 
