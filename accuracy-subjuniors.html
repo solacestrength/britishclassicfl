@@ -478,7 +478,7 @@ if (menuBtn && mobileMenu) {
 
   /* ---------- Load Sub-Junior Accuracy Scores CSV ---------- */
   async function loadAccuracyScores() {
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFrZCAoHEZqARjNLR5OsRl8F7blm3BHIKTkOZVAfMRwx-rkf4spDM8yGBGP7NOksjgJbokFVnzRLaK/pub?gid=167144887&single=true&output=csv";
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSraGwk9AxTJik09rQaXwmuS6xyELM7A4yepH7nMMxwP7HXF9tL6IUG9Ci8x-H8hPm8UD3_fiq1uY9j/pub?gid=2140937093&single=true&output=csv";
     const res = await fetch(csvUrl);
     const text = await res.text();
     const rows = text.trim().split(/\r?\n/).map(l => l.split(","));
