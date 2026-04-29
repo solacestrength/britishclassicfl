@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Accuracy Scores | British Juniors Fantasy League 2026 🇬🇧</title>
+  <title>Junior Accuracy Scores | British Juniors Fantasy League 2026 🇬🇧</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="assets/css/fix-dropdown.css" />
   <link rel="manifest" href="/britishclassicfl/manifest.json">
@@ -203,7 +203,7 @@
     </div>
 
     <a href="leaderboard.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Leaderboard</a>
-    <a href="accuracy-juniors.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Accuracy Scores</a>
+    <a href="accuracy-juniors.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Junior Accuracy Scores</a>
     <a href="metrics.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Metrics</a>
   </nav>
 </div>
@@ -216,7 +216,7 @@
           <!-- Page header -->
           <div class="w-full mt-10 mb-6 flex flex-col sm:grid sm:grid-cols-3 items-center">
             <div class="hidden sm:block"></div>
-            <h2 class="text-2xl font-bold text-white text-center sm:text-center">Accuracy Scores</h2>
+            <h2 class="text-2xl font-bold text-white text-center sm:text-center">Junior Accuracy Scores</h2>
             <div class="flex items-center space-x-2 mt-3 sm:mt-0 sm:justify-self-end">
               <button id="shareRankingBtn"
                 class="bg-red-600 hover:bg-red-500 text-white rounded-lg flex items-center justify-center"
@@ -476,7 +476,7 @@ if (menuBtn && mobileMenu) {
 
   function escapeRegExp(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
 
-  /* ---------- Load Accuracy Scores CSV ---------- */
+  /* ---------- Load Junior Accuracy Scores CSV ---------- */
   async function loadAccuracyScores() {
     const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFrZCAoHEZqARjNLR5OsRl8F7blm3BHIKTkOZVAfMRwx-rkf4spDM8yGBGP7NOksjgJbokFVnzRLaK/pub?gid=167144887&single=true&output=csv";
     const res = await fetch(csvUrl);
