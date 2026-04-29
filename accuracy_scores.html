@@ -59,6 +59,93 @@
 
     /* Back-to-top FAB transitions */
     #backToTopFab { transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out; }
+
+    /* ========= GLOBAL BURGER MENU NAV FIX ========= */
+
+.burger-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.burger-menu a,
+.nav-link,
+.nav-sub-link {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.nav-row {
+  display: grid;
+  grid-template-columns: 1fr 32px;
+  align-items: center;
+  width: 100%;
+}
+
+.nav-row .nav-link {
+  padding: 10px 16px;
+}
+
+.nav-dropdown-toggle {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: #fff;
+}
+
+.nav-chevron {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  fill: none;
+  transition: transform 0.2s ease;
+}
+
+.nav-dropdown.open .nav-chevron {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.nav-dropdown.open .nav-dropdown-menu {
+  display: flex;
+}
+
+.nav-sub-link {
+  padding: 10px 16px 10px 36px;
+  color: rgba(255,255,255,0.85);
+}
+
+.nav-sub-link:hover {
+  color: #fff;
+}
+
+.nav-row:hover .nav-link {
+  color: #ff4d4d;
+}
+
+.nav-dropdown.open > .nav-row .nav-link {
+  color: #ff4d4d;
+}
   </style>
 </head>
 
@@ -97,12 +184,33 @@
       class="fixed top-16 right-4 w-48 bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-md shadow-lg z-50 scale-y-0 opacity-0 origin-top transition-transform duration-300 ease-in-out pointer-events-none">
       <nav class="flex flex-col py-2 text-white">
         <a href="index.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Home</a>
-        <a href="entry.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">League Entry</a>
-        <a href="leaderboard.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Leaderboard</a>
-        <a href="accuracy_scores.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Accuracy Scores</a>
-        <a href="metrics.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Metrics</a>
-      </nav>
+        <!-- Dropdown menu -->
+<div id="mobile-menu" class="fixed top-16 right-4 w-48 bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-md shadow-lg z-50 scale-y-0 opacity-0 pointer-events-none origin-top transition-transform duration-300 ease-in-out">
+  <nav class="burger-menu flex flex-col py-2 text-white">
+    <a href="index.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Home</a>
+
+    <div class="nav-dropdown">
+      <div class="nav-row">
+        <a href="entry-select.html" class="nav-link">League Entry</a>
+
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          <svg class="nav-chevron" viewBox="0 0 24 24">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div class="nav-dropdown-menu">
+        <a href="entry-juniors.html" class="nav-sub-link">Junior Entry</a>
+        <a href="entry-subjuniors.html" class="nav-sub-link">Sub-Junior Entry</a>
+      </div>
     </div>
+
+    <a href="leaderboard.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Leaderboard</a>
+    <a href="accuracy_scores.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Accuracy Scores</a>
+    <a href="metrics.html" class="px-4 py-2 hover:text-red-500 hover:bg-gray-800 transition">Metrics</a>
+  </nav>
+</div>
 
     <!-- Main content -->
     <main class="pt-20 md:pt-24 animate-fade-in">
@@ -232,27 +340,69 @@ document.addEventListener("DOMContentLoaded", () => {
     !ua.includes("opera");
 
   /* ---------- Burger Menu ---------- */
-  const menuBtn = document.getElementById("menu-btn");
-  const mobileMenu = document.getElementById("mobile-menu");
+const menuBtn = document.getElementById("menu-btn");
+const mobileMenu = document.getElementById("mobile-menu");
 
-  if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener("click", (e) => {
-      const open = mobileMenu.classList.contains("opacity-100");
-      mobileMenu.classList.toggle("opacity-100", !open);
-      mobileMenu.classList.toggle("opacity-0", open);
-      mobileMenu.classList.toggle("scale-y-100", !open);
-      mobileMenu.classList.toggle("scale-y-0", open);
-      mobileMenu.classList.toggle("pointer-events-none", open);
+function closeNavDropdowns() {
+  document.querySelectorAll(".nav-dropdown").forEach(dropdown => {
+    dropdown.classList.remove("open");
+
+    const toggle = dropdown.querySelector(".nav-dropdown-toggle");
+    if (toggle) toggle.setAttribute("aria-expanded", "false");
+  });
+}
+
+function toggleMenu(show) {
+  mobileMenu.classList.toggle("opacity-100", show);
+  mobileMenu.classList.toggle("opacity-0", !show);
+  mobileMenu.classList.toggle("scale-y-100", show);
+  mobileMenu.classList.toggle("scale-y-0", !show);
+  mobileMenu.classList.toggle("pointer-events-none", !show);
+  menuBtn.setAttribute("aria-expanded", String(show));
+
+  if (!show) closeNavDropdowns();
+}
+
+let menuVisible = false;
+
+if (menuBtn && mobileMenu) {
+  menuBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    menuVisible = !menuVisible;
+    toggleMenu(menuVisible);
+  });
+
+  document.querySelectorAll(".nav-dropdown-toggle").forEach(btn => {
+    btn.addEventListener("click", (e) => {
       e.stopPropagation();
-    });
 
-    document.addEventListener("click", (e) => {
-      if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-        mobileMenu.classList.remove("opacity-100", "scale-y-100");
-        mobileMenu.classList.add("opacity-0", "scale-y-0", "pointer-events-none");
-      }
+      const parent = btn.closest(".nav-dropdown");
+      if (!parent) return;
+
+      const isOpen = parent.classList.contains("open");
+
+      closeNavDropdowns();
+
+      parent.classList.toggle("open", !isOpen);
+      btn.setAttribute("aria-expanded", String(!isOpen));
     });
-  }
+  });
+
+  document.addEventListener("click", (e) => {
+    const clickedInsideMenu = mobileMenu.contains(e.target);
+    const clickedMenuButton = menuBtn.contains(e.target);
+    const clickedDropdown = e.target.closest(".nav-dropdown");
+
+    if (!clickedDropdown) closeNavDropdowns();
+
+    if (!clickedInsideMenu && !clickedMenuButton) {
+      menuVisible = false;
+      toggleMenu(false);
+    }
+  });
+
+  toggleMenu(false);
+}
 
   /* ---------- Toast Warning ---------- */
   function showWarning(message) {
