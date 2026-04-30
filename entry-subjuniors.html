@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>League Entry | British Juniors Fantasy League 2026 🇬🇧</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+    .animate-fade-in { animation: fadeInUp 1s ease-out forwards; }
+    .fade-out { opacity: 0; transition: opacity 0.6s ease; }
+
+/* ========= ENTRY PAGE BURGER MENU FIX ========= */
+
+#mobile-menu nav {
+  display: flex;
+  flex-direction: column;
+  text-align: left !important;
+}
+
+/* All top-level nav links */
+#mobile-menu nav > a,
+#mobile-menu .nav-link {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: left !important;
+  line-height: 1.4;
+}
+
+#mobile-menu nav > a:hover,
+#mobile-menu .nav-link:hover {
+  color: #ff4d4d;
+}
+
+/* Dropdown wrapper */
+#mobile-menu .nav-dropdown {
+  width: 100%;
+}
+
+/* League Entry row */
+#mobile-menu .nav-row {
+  display: grid;
+  grid-template-columns: 1fr 32px;
+  align-items: center;
+  width: 100%;
+  text-align: left !important;
+}
+
+/* Chevron button */
+#mobile-menu .nav-dropdown-toggle {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* SVG chevron */
+#mobile-menu .nav-chevron {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  fill: none;
+  transition: transform 0.2s ease;
+}
+
+/* Rotate when open */
+#mobile-menu .nav-dropdown.open .nav-chevron {
+  transform: rotate(180deg);
+}
+
+/* League Entry red hover/open */
+#mobile-menu .nav-row:hover .nav-link,
+#mobile-menu .nav-dropdown.open > .nav-row .nav-link {
+  color: #ff4d4d;
+}
+
+/* Dropdown menu */
+#mobile-menu .nav-dropdown-menu {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 4px;
+}
+
+#mobile-menu .nav-dropdown.open .nav-dropdown-menu {
+  display: flex;
+}
+
+/* Indented sub-links */
+#mobile-menu .nav-sub-link {
+  display: block;
+  width: 100%;
+  padding: 10px 16px 10px 36px;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: left !important;
+  line-height: 1.4;
+}
+
+#mobile-menu .nav-sub-link:hover {
+  color: #fff;
+}
+    /* Hover anywhere on the row */
+.nav-row:hover .nav-link {
+  color: #ff4d4d;
+}
+
+/* Keep red when open */
+.nav-dropdown.open > .nav-row .nav-link {
+  color: #ff4d4d;
+}
+    
+  </style>
+  <link rel="manifest" href="/britishclassicfl/manifest.json">
+<meta name="theme-color" content="#b91c1c">
+
+<!-- iOS -->
+<link rel="apple-touch-icon" href="/britishclassicfl/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body id="top" class="relative bg-gray-900 text-white font-sans">
+  <div class="absolute inset-0 bg-[url('image_entry.jpg')] bg-cover bg-center opacity-45 site-background"></div>
+  <div class="absolute inset-0 bg-black/70 site-background-overlay"></div>
+
+  <div class="relative z-10">
+    <!-- Header -->
+    <header class="site-header w-full bg-gray-900/90 backdrop-blur-sm border-b border-gray-800 relative z-50">
+      <div class="w-full flex items-center justify-center px-4 py-3">
+        <div class="flex-1 text-center">
+          <a href="index.html" class="font-bold text-white hover:text-red-500 transition animate-fade-in-up text-sm sm:text-lg md:text-xl lg:text-2xl">
+            British Juniors Fantasy League 2026 🇬🇧
+          </a>
+        </div>
+        <div class="absolute right-4 top-1/2 -translate-y-1/2">
+          <button id="menu-btn" aria-expanded="false" class="text-gray-300 p-2 rounded-md hover:bg-gray-800/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <span class="sr-only">Open menu</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile menu -->
+<div id="mobile-menu" class="fixed top-16 right-4 w-48 bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-md shadow-lg z-50 scale-y-0 opacity-0 origin-top transition-transform duration-300 ease-in-out pointer-events-none">
+  <nav class="flex flex-col py-2 text-white">
+
+    <a href="index.html">Home</a>
+
+    <div class="nav-dropdown">
+      <div class="nav-row">
+        <a href="entry-select.html" class="nav-link">League Entry</a>
+
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          <svg class="nav-chevron" viewBox="0 0 24 24">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div class="nav-dropdown-menu">
+        <a href="entry-juniors.html" class="nav-sub-link">Junior Entry</a>
+        <a href="entry-subjuniors.html" class="nav-sub-link">Sub-Junior Entry</a>
+      </div>
+    </div>
+
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="accuracy_scores.html">Accuracy Scores</a>
+    <a href="metrics.html">Metrics</a>
+
+  </nav>
+</div>
+
+    <!-- Main content -->
+    <main class="mt-6 md:mt-10 animate-fade-in">
+      <section class="max-w-2xl mx-auto text-center mb-6">
+        <p class="text-l"><b>Enter and see where you stack up</b> 🏆</p>
+        <p class="text-sm text-gray-400 mt-2">
+          N.B. Tap/click Spotify pop-up button then return to entry page tab. 
+          If link opens on same page, tap back (left) arrow on your browser to return. 
+          If you prefer, complete on desktop for a better user experience.
+        </p>
+      </section>
+
+      <!-- Spotify + form section -->
+      <section class="w-full flex flex-col items-center mt-8 px-4 relative max-w-3xl mx-auto">
+        <!-- Spotify overlay prompt -->
+        <div id="spotify-lock" class="absolute inset-0 flex flex-col items-center justify-start pt-6 space-y-4 bg-black/80 rounded-xl text-center p-6 z-20 transition-all duration-500">
+          <img src="IMG_8931.jpeg" alt="Soft gate image" id="softGateImage" class="w-40 sm:w-56 rounded-lg mb-4 transition-opacity duration-500" />
+          <p class="text-lg font-semibold">🎧 Tap link and return to this tab/tap back arrow to enter!</p>
+          <p class="text-sm text-gray-300 max-w-md">
+            Please open the latest Sabado Sessions Podcast episode on Spotify before entering the league.
+          </p>
+          <a href="https://open.spotify.com/embed/episode/0eYrBXDe6FeNTrUZYV9Uax?si=bd9b29367fe9400c"
+             target="_blank"
+             rel="noopener noreferrer"
+             id="spotify-link"
+             class="bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-4 rounded-lg transition">
+            Open Spotify Podcast
+          </a>
+        </div>
+
+        <!-- Form container -->
+        <div id="form-container" class="relative w-full rounded-xl overflow-hidden border border-gray-700 bg-gray-900/70 transition-all duration-500 px-4 py-4">
+          <!-- Multi-step form -->
+          <div id="form-inner" class="max-w-3xl mx-auto">
+            <div id="step-label" class="text-xs uppercase tracking-wide text-gray-400 mb-2"></div>
+            <div id="status" class="text-sm mt-1"></div>
+
+            <form id="bcfl-form" class="space-y-6">
+              <!-- Hidden token (for edits) -->
+              <input type="hidden" id="token" name="token" />
+
+              <!-- STEP 0: Contact -->
+              <div class="step" data-step="0">
+                <div class="space-y-3">
+                  <div>
+                    <p class="text-sm text-gray-300 mb-4">
+                      Click
+                      <a href="index.html#rulesToggle" target="_blank" rel="noopener noreferrer" class="underline hover:text-gray-200">
+                        here</a> for competition rules and
+                      <a href="index.html#prizesToggle" target="_blank" rel="noopener noreferrer" class="underline hover:text-gray-200">
+                        here</a> for our prize list thanks to our sponsors at the
+                      <a href="https://www.instagram.com/sabadosessionspodcast/?hl=en-gb"
+                         target="_blank" rel="noopener noreferrer"
+                         class="underline hover:text-gray-200">
+                        Sabado Sessions Podcast</a>.
+                    </p>
+                    <label for="email" class="block text-sm font-semibold mb-1">
+                      Email Address<span class="text-red-500">*</span>
+                    </label>
+                    <input type="email" id="email" name="email"
+                           class="w-full px-3 py-2 rounded-md bg-gray-800 border border-gray-700 text-sm" />
+                    <p id="emailError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                  <div>
+                    <label for="instagramHandle" class="block text-sm font-semibold mb-1">Instagram Handle</label>
+                    <input type="text" id="instagramHandle" name="instagramHandle"
+                           class="w-full px-3 py-2 rounded-md bg-gray-800 border border-gray-700 text-sm" />
+                  </div>
+                  <div>
+                    <label for="leaderboardName" class="block text-sm font-semibold mb-1">
+                      Leaderboard Name <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="leaderboardName" name="leaderboardName"
+                           class="w-full px-3 py-2 rounded-md bg-gray-800 border border-gray-700 text-sm" />
+                    <p class="text-xs text-gray-400 mt-1">
+                      This is how you will appear on the public leaderboard.
+                    </p>
+                    <p id="leaderboardError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 1: Women (winners + totals only) -->
+              <div class="step" data-step="1">
+                <p class="text-xs text-gray-400 mb-4">
+                  For each class, pick your winner and optionally enter a winning total. Totals are used to calculate accuracy scores
+                  which will be used as a tie-breaker — don't skip if you're in it to win it!
+                </p>
+
+<!-- 43 kg Women -->
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+  <h3 class="font-semibold text-sm mb-2">43 kg Women</h3>
+                    <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w43w" name="w43w" data-gender="female" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+    <option value="">Select a lifter…</option>
+    <option>Tiffany Pilnikova (298.5 kg)</option>
+  </select>
+                      <p id="w43wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t43w" name="t43w"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t43wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>    
+
+<!-- 47 kg Women -->
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+  <h3 class="font-semibold text-sm mb-2">47 kg Women</h3>
+                    <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w47w" name="w47w" data-gender="female" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+    <option value="">Select a lifter…</option>
+    <option>Gwen Marsden (365.5 kg)</option>
+  </select>
+
+                      <p id="w47wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t47w" name="t47w"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t47wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>    
+
+<!-- 52 kg Women -->
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+  <h3 class="font-semibold text-sm mb-2">52 kg Women</h3>
+                    <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w52w" name="w52w" data-gender="female" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+    <option value="">Select a lifter…</option>
+    <option>Talulah Royston-Battaglia (407.5 kg)</option>
+    <option>Abby Cooley (382.5 kg)</option>
+    <option>Rufaro Chikwanda (342.5 kg)</option>
+    <option>Chloe Cornwell (333.5 kg)</option>
+    <option>Kora Franklin (300 kg)</option>
+    <option>Teagan Lindsay (292.5 kg)</option>
+  </select>
+                      <p id="w52wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t52w" name="t52w"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t52wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>    
+
+<!-- 57 kg Women -->
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+  <h3 class="font-semibold text-sm mb-2">57 kg Women</h3>
+                    <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w57w" name="w57w" data-gender="female" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+    <option value="">Select a lifter…</option>
+    <option>Annabelle Cox (420 kg)</option>
+    <option>Georgina Harrison (400 kg)</option>
+    <option>Laila Baig (390 kg)</option>
+    <option>Hannah Karpal (355 kg)</option>
+    <option>Izzy Eddy (345 kg)</option>
+    <option>Clara Thomas (340 kg)</option>
+    <option>Aleena Akhtar (330 kg)</option>
+    <option>Megan Redshaw (330 kg)</option>
+    <option>Tsz Ching Leung (327.5 kg)</option>
+    <option>Theresa Grealy (310 kg)</option>
+    <option>Krutika Joshi (310 kg)</option>
+    <option>Larissa Cheung (302.5 kg)</option>
+    <option>Amrita Panda (302.5 kg)</option>
+    <option>Emily Trowbridge (300 kg)</option>
+    <option>Beatrice Nada (300 kg)</option>
+    <option>Emma Scott (300 kg)</option>
+    <option>Lottie Newell (300 kg)</option>
+    <option>Bianca Vasiliu (300 kg)</option>
+    <option>Alice Aringoli (297.5 kg)</option>
+  </select>
+                      <p id="w57wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t57w" name="t57w"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t57wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>    
+
+<!-- 63 kg Women -->
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+  <h3 class="font-semibold text-sm mb-2">63 kg Women</h3>
+                    <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w63w" name="w63w" data-gender="female" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+    <option value="">Select a lifter…</option>
+    <option>Martha Marsh (447.5 kg)</option>
+    <option>Victoria Hart (441 kg)</option>
+    <option>Serena Blundell (420 kg)</option>
+    <option>Isobel David (415 kg)</option>
+    <option>Laura Terry (405 kg)</option>
+    <option>Cairo Johnson (395 kg)</option>
+    <option>Claudia Gowland (370 kg)</option>
+    <option>Ariana Gopee (350 kg)</option>
+    <option>Shannon Townsend (350 kg)</option>
+    <option>Amelia Nagar (350 kg)</option>
+    <option>Julia Szumilas (350 kg)</option>
+  </select>
+                      <p id="w63wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t63w" name="t63w"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t63wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>    
+
+  <!-- 69 kg Women -->
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+  <h3 class="font-semibold text-sm mb-2">69 kg Women</h3>
+                    <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w69w" name="w69w" data-gender="female" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+    <option value="">Select a lifter…</option>
+    <option>Hannah Davis (465 kg)</option>
+    <option>Emily Byrne (445 kg)</option>
+    <option>Emilia Martin (435 kg)</option>
+    <option>Skye Moore (412.5 kg)</option>
+    <option>Vicky Catterall (402.5 kg)</option>
+    <option>Issabella Chapman (400 kg)</option>
+    <option>Melissa Jones (400 kg)</option>
+    <option>Jessica Bean (400 kg)</option>
+    <option>Leandra Williams-Macklin (395 kg)</option>
+    <option>Freja Bedell (377.5 kg)</option>
+    <option>Lizzy Olowe (370 kg)</option>
+    <option>Aliyah Archer (362.5 kg)</option>
+    <option>Saahithyasree Aroori (360 kg)</option>
+    <option>Yasmin Burt (355 kg)</option>
+  </select>
+                      <p id="w69wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t69w" name="t69w"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t69wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>    
+
+<!-- 76 kg Women -->
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+  <h3 class="font-semibold text-sm mb-2">76 kg Women</h3>
+                    <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w76w" name="w76w" data-gender="female" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+    <option value="">Select a lifter…</option>
+    <option>Harriet Cull (487 kg)</option>
+    <option>Ella Dronfield (485 kg)</option>
+    <option>Izzy Hartley (480 kg)</option>
+    <option>Qian Yu Phang (470 kg)</option>
+    <option>Anabel Shawyer (469 kg)</option>
+    <option>Libby Rubin (450 kg)</option>
+    <option>Dhyana Sehmar (447.5 kg)</option>
+    <option>Olivia Bond (433.5 kg)</option>
+    <option>Roxy Jeffries (410 kg)</option>
+    <option>Abbie Holroyd (387.5 kg)</option>
+    <option>Dani Laivins (385 kg)</option>
+    <option>Jessie Boyham (385 kg)</option>
+    <option>Charlotte Whittaker (375 kg)</option>
+    <option>Sophia Strachan (372.5 kg)</option>
+    <option>Safara White (370 kg)</option>
+    <option>Connie-Bo Lindsay (367.5 kg)</option>
+    <option>Emma Barclay (367.5 kg)</option>
+  </select>
+                      <p id="w76wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t76w" name="t76w"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t76wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                 </div>
+
+<!-- 84 kg Women -->
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+  <h3 class="font-semibold text-sm mb-2">84 kg Women</h3>
+                    <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w84w" name="w84w" data-gender="female" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+    <option value="">Select a lifter…</option>
+    <option>Princess Kunadu (468 kg)</option>
+    <option>Jennifer Muir (458 kg)</option>
+    <option>Ruby Howard (445 kg)</option>
+    <option>Olivia Follis (422.5 kg)</option>
+    <option>Moanne Zolario (420 kg)</option>
+    <option>Madeline Gayter (400 kg)</option>
+    <option>Lily Smalley (390 kg)</option>
+    <option>Lucy Lucas (375 kg)</option>
+  </select>
+                      <p id="w84wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t84w" name="t84w"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t84wError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                  </div>
+
+<!-- 84+ kg Women -->
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+  <h3 class="font-semibold text-sm mb-2">84+ kg Women</h3>
+                    <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w84pw" name="w84pw" data-gender="female" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+    <option value="">Select a lifter…</option>
+    <option>Nevaeh Iroghiendo (525 kg)</option>
+    <option>Jameliah Oseki-Simms (493.5 kg)</option>
+    <option>Naomi D'Almeida (490 kg)</option>
+    <option>Subiksha Anand (430 kg)</option>
+    <option>Sharna Burton (417.5 kg)</option>
+  </select>      
+                      <p id="w84pwError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t84pw" name="t84pw"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t84pwError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div> 
+              </div>
+
+              <!-- STEP 2: Men (winners + totals only) -->
+              <div class="step" data-step="2">
+
+               <!-- 53 kg Men -->
+
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+
+  <h3 class="font-semibold text-sm mb-2">53 kg Men</h3>
+
+  <div class="space-y-2">
+
+    <div>
+
+      <label class="text-xs font-semibold mb-1 block">
+
+        Predicted Winner <span class="text-red-500">*</span>
+
+      </label>
+
+      <select id="w53m" name="w53m" data-gender="male" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+
+        <option value="">Select a lifter…</option>
+
+        <option>Scott Ellis (397.5 kg)</option>
+
+      </select>
+                      <p id="w53mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t53m" name="t53m"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t53mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                  </div>
+
+<!-- 59 kg Men -->
+
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+
+  <h3 class="font-semibold text-sm mb-2">59 kg Men</h3>
+   <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+
+  <select id="w59m" name="w59m" data-gender="male" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+
+    <option value="">Select a lifter…</option>
+
+    <option>Kurt Alibusa (490 kg)</option>
+
+    <option>Gian Patel (485 kg)</option>
+
+    <option>Mohammed Arifur Rahman (485 kg)</option>
+
+    <option>Zaib Hossain (452.5 kg)</option>
+
+  </select>
+                      <p id="w59mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t59m" name="t59m"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t59mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                  </div>
+
+<!-- 66 kg Men -->
+
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+
+  <h3 class="font-semibold text-sm mb-2">66 kg Men</h3>
+ <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w66m" name="w66m" data-gender="male" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+
+    <option value="">Select a lifter…</option>
+
+    <option>Alfie Bonsell (600.5 kg)</option>
+
+    <option>Aaron Chacko (560 kg)</option>
+
+    <option>Cian McGirl (535 kg)</option>
+
+    <option>Paul Kellett (522.5 kg)</option>
+
+    <option>Sagnik Chatterjee (500 kg)</option>
+
+  </select>
+                      <p id="w66mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t66m" name="t66m"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t66mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                  </div>
+      
+
+<!-- 74 kg Men -->
+
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+
+  <h3 class="font-semibold text-sm mb-2">74 kg Men</h3>
+ <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w74m" name="w74m" data-gender="male" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+
+    <option value="">Select a lifter…</option>
+
+    <option>Matthew Pond (705.5 kg)</option>
+
+    <option>John Razon (700 kg)</option>
+
+    <option>Euan Curran (687.5 kg)</option>
+
+    <option>Ping Hao Ng (672.5 kg)</option>
+
+    <option>Orestis Papoulis Xystrakis (672.5 kg)</option>
+
+    <option>Karim Al Qudah (652.5 kg)</option>
+
+    <option>Dorje Weston (617.5 kg)</option>
+
+    <option>Max Clayton (605 kg)</option>
+
+    <option>Archie Fletcher (600 kg)</option>
+
+    <option>Davide Laferla (592.5 kg)</option>
+
+    <option>Paul Mavro (590 kg)</option>
+    <option>Adrian Zimon (580 kg)</option>
+    <option>Fergus Rice (575 kg)</option>
+    <option>France Masiddo (567.5 kg)</option>
+    <option>Arren Dougherty (560 kg)</option>
+    <option>Harry Hebden (555 kg)</option>
+
+  </select>
+
+                      <p id="w74mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t74m" name="t74m"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t74mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                  </div>
+
+<!-- 83 kg Men -->
+
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+
+  <h3 class="font-semibold text-sm mb-2">83 kg Men</h3>
+ <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w83m" name="w83m" data-gender="male" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+
+    <option value="">Select a lifter…</option>
+
+    <option>Samuel Walker (742.5 kg)</option>
+
+    <option>Kacper Walesa (735 kg)</option>
+
+    <option>Emeka Obiekwe Canamero (715 kg)</option>
+
+    <option>Peter Young (710 kg)</option>
+
+    <option>Jake McGarvey (700 kg)</option>
+
+    <option>Yaw Parbey (697.5 kg)</option>
+
+    <option>Hussein Waiswa (690 kg)</option>
+
+    <option>Ayonla Oyinloye (680 kg)</option>
+
+    <option>Thomas Cross (675 kg)</option>
+
+    <option>Benjamin Kaye (642.5 kg)</option>
+
+    <option>Douwejan Yoong (640 kg)</option>
+
+    <option>Thomas Harvey (637.5 kg)</option>
+
+    <option>Jamie Jones (637.5 kg)</option>
+
+  </select>
+            <p id="w83mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t83m" name="t83m"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t83mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>
+
+<!-- 93 kg Men -->
+
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+
+  <h3 class="font-semibold text-sm mb-2">93 kg Men</h3>
+ <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w93m" name="w93m" data-gender="male" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+
+    <option value="">Select a lifter…</option>
+
+    <option>Emmanuel Olatunji (822.5 kg)</option>
+
+    <option>Thomas Skillicorn (770 kg)</option>
+
+    <option>Tobi Clement (750 kg)</option>
+
+    <option>Mason Green-Prosper (735 kg)</option>
+
+    <option>Tom McArthur (722.5 kg)</option>
+
+    <option>Benny Malan (707.5 kg)</option>
+
+    <option>Dylan Flanagan (680 kg)</option>
+
+    <option>Stephen Fajemilusi (665 kg)</option>
+
+    <option>Ben Holmes (657.5 kg)</option>
+
+    <option>Joshua Darne (657.5 kg)</option>
+
+    <option>Jin Zheng (657.5 kg)</option>
+
+  </select>
+                      <p id="w93mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t93m" name="t93m"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t93mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>
+
+<!-- 105 kg Men -->
+
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+
+  <h3 class="font-semibold text-sm mb-2">105 kg Men</h3>
+ <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w105m" name="w105m" data-gender="male" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+
+    <option value="">Select a lifter…</option>
+
+    <option>Peter Mendy (885.5 kg)</option>
+
+    <option>Jaden Osemwegie (837.5 kg)</option>
+
+    <option>Tim Li (832.5 kg)</option>
+
+    <option>Emmanouil Olympios Mavriotis (810 kg)</option>
+
+    <option>Henry Goldstraw (806 kg)</option>
+
+    <option>Lewis Dete (770 kg)</option>
+
+    <option>Anthony Vella (765 kg)</option>
+
+    <option>George Taylor (725 kg)</option>
+
+    <option>Osemudiamen Paul Osemhanre (710 kg)</option>
+
+    <option>Joe McGuire (702.5 kg)</option>
+
+    <option>Abdulhafis Lawal (702.5 kg)</option>
+
+  </select>
+                      <p id="w105mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t105m" name="t105m"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t105mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>        
+
+<!-- 120 kg Men -->
+
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+
+  <h3 class="font-semibold text-sm mb-2">120 kg Men</h3>
+ <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w120m" name="w120m" data-gender="male" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+
+    <option value="">Select a lifter…</option>
+
+    <option>Joshua Ngoka (965.5 kg)</option>
+
+    <option>William Ndibe (799 kg)</option>
+
+    <option>Rudi Norris (790 kg)</option>
+
+    <option>Priestly Adejo (727.5 kg)</option>
+
+    <option>Kacper Olszewski (700 kg)</option>
+
+    <option>Brownwell Ehimare (700 kg)</option>
+
+  </select>
+                       <p id="w120mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t120m" name="t120m"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t120mError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>       
+
+<!-- 120+ kg Men -->
+
+<div class="border border-gray-700 rounded-md p-3 mb-3">
+
+  <h3 class="font-semibold text-sm mb-2">120+ kg Men</h3>
+ <div class="space-y-2">
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">
+                        Predicted Winner <span class="text-red-500">*</span>
+                      </label>
+  <select id="w120pm" name="w120pm" data-gender="male" class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+
+    <option value="">Select a lifter…</option>
+
+    <option>Gerard Murphy (817.5 kg)</option>
+
+    <option>Samuel Ezeama (785 kg)</option>
+
+    <option>Sebastian Nock (707.5 kg)</option>
+
+  </select>
+                              <p id="w120pmError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                    <div>
+                      <label class="text-xs font-semibold mb-1 block">Winning Total</label>
+                      <input type="text" id="t120pm" name="t120pm"
+                             class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                      <p id="t120pmError" class="text-xs text-red-400 mt-1"></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 3: Confidence Ratings (all women then all men) -->
+              <div class="step" data-step="3">
+                <p class="text-xs text-gray-400 mb-4">
+                  Now assign a unique confidence rating from 1 (least confident) to 16 (most) to each weight class.
+                  Each number 1–16 must be used exactly once across all 16 classes. Your predicted winner and
+                  nominated total for each class are shown above the dropdown for reference.
+                </p>
+
+                <!-- Women’s Confidence -->
+                <p class="font-semibold text-sm mb-2">Women’s Classes</p>
+
+                <!-- 43 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">43 kg Confidence Rating</h3>
+                  <p id="confLabel_43w" class="text-xs text-gray-400 mb-2">
+                    Your 43 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c43w" name="c43w"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c43wError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>                
+
+                <!-- 47 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">47 kg Confidence Rating</h3>
+                  <p id="confLabel_47w" class="text-xs text-gray-400 mb-2">
+                    Your 47 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c47w" name="c47w"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c47wError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 52 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">52 kg Confidence Rating</h3>
+                  <p id="confLabel_52w" class="text-xs text-gray-400 mb-2">
+                    Your 52 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c52w" name="c52w"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c52wError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 57 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">57 kg Confidence Rating</h3>
+                  <p id="confLabel_57w" class="text-xs text-gray-400 mb-2">
+                    Your 57 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c57w" name="c57w"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c57wError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 63 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">63 kg Confidence Rating</h3>
+                  <p id="confLabel_63w" class="text-xs text-gray-400 mb-2">
+                    Your 63 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c63w" name="c63w"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c63wError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 69 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">69 kg Confidence Rating</h3>
+                  <p id="confLabel_69w" class="text-xs text-gray-400 mb-2">
+                    Your 69 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c69w" name="c69w"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c69wError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 76 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">76 kg Confidence Rating</h3>
+                  <p id="confLabel_76w" class="text-xs text-gray-400 mb-2">
+                    Your 76 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c76w" name="c76w"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c76wError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 84 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">84 kg Confidence Rating</h3>
+                  <p id="confLabel_84w" class="text-xs text-gray-400 mb-2">
+                    Your 84 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c84w" name="c84w"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c84wError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 84+ kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-6">
+                  <h3 class="font-semibold text-sm mb-1">84+ kg Confidence Rating</h3>
+                  <p id="confLabel_84pw" class="text-xs text-gray-400 mb-2">
+                    Your 84+ kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c84pw" name="c84pw"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c84pwError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- Men’s Confidence -->
+                <p class="font-semibold text-sm mb-2">Men’s Classes</p>
+
+                <!-- 53 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">53 kg Confidence Rating</h3>
+                  <p id="confLabel_53m" class="text-xs text-gray-400 mb-2">
+                    Your 53 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c53m" name="c53m"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c53mError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>                
+
+                <!-- 59 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">59 kg Confidence Rating</h3>
+                  <p id="confLabel_59m" class="text-xs text-gray-400 mb-2">
+                    Your 59 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c59m" name="c59m"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c59mError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 66 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">66 kg Confidence Rating</h3>
+                  <p id="confLabel_66m" class="text-xs text-gray-400 mb-2">
+                    Your 66 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c66m" name="c66m"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c66mError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 74 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">74 kg Confidence Rating</h3>
+                  <p id="confLabel_74m" class="text-xs text-gray-400 mb-2">
+                    Your 74 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c74m" name="c74m"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c74mError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 83 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">83 kg Confidence Rating</h3>
+                  <p id="confLabel_83m" class="text-xs text-gray-400 mb-2">
+                    Your 83 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c83m" name="c83m"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c83mError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 93 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">93 kg Confidence Rating</h3>
+                  <p id="confLabel_93m" class="text-xs text-gray-400 mb-2">
+                    Your 93 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c93m" name="c93m"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c93mError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 105 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">105 kg Confidence Rating</h3>
+                  <p id="confLabel_105m" class="text-xs text-gray-400 mb-2">
+                    Your 105 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c105m" name="c105m"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c105mError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 120 kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">120 kg Confidence Rating</h3>
+                  <p id="confLabel_120m" class="text-xs text-gray-400 mb-2">
+                    Your 120 kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c120m" name="c120m"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c120mError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <!-- 120+ kg Confidence -->
+                <div class="border border-gray-700 rounded-md p-3 mb-3">
+                  <h3 class="font-semibold text-sm mb-1">120+ kg Confidence Rating</h3>
+                  <p id="confLabel_120pm" class="text-xs text-gray-400 mb-2">
+                    Your 120+ kg Predicted Winner — no winner selected yet.
+                  </p>
+                  <div>
+                    <label class="text-xs font-semibold mb-1 block">
+                      Confidence Rating (1–18) <span class="text-red-500">*</span>
+                    </label>
+                    <select id="c120pm" name="c120pm"
+                            class="conf-select w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm">
+                    </select>
+                    <p id="c120pmError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 4: Best Lifters -->
+              <div class="step" data-step="4">
+                <p class="text-xs text-gray-400 mb-3">
+                  Final tie-breaker: predict which lifters will achieve the highest IPF GL points.
+                </p>
+                <div class="space-y-3">
+                  <div>
+                    <label for="femaleBest" class="text-xs font-semibold mb-1 block">
+                      Female Best Lifter <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="femaleBest" name="femaleBest" list="femaleBestList"
+                           class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                    <datalist id="femaleBestList"></datalist>
+                    <p id="femaleBestError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                  <div>
+                    <label for="maleBest" class="text-xs font-semibold mb-1 block">
+                      Male Best Lifter <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="maleBest" name="maleBest" list="maleBestList"
+                           class="w-full bg-gray-800 border border-gray-700 rounded-md px-2 py-1.5 text-sm" />
+                    <datalist id="maleBestList"></datalist>
+                    <p id="maleBestError" class="text-xs text-red-400 mt-1"></p>
+                  </div>
+                </div>
+
+                <p class="mt-4 text-xs text-gray-400">
+                  After submitting, you’ll receive a full copy of your responses and a unique link
+                  to edit your entry until <b>13th May 2026, 11:59 pm (GMT)</b>.
+                  If you can’t see the email, please check spam/junk and mark it as “Not spam”.
+                </p>
+              </div>
+
+              <!-- ========================= -->
+<!-- UNIFIED NAVIGATION BLOCK (used for ALL steps) -->
+<div id="navContainer" class="mt-6 border-t border-gray-700 pt-4">
+
+  <!-- Top row: Back + Next -->
+  <div class="flex items-center justify-between">
+
+    <!-- Back -->
+    <button type="button" id="backBtn"
+      class="px-4 py-2 rounded-full bg-gray-800 text-xs sm:text-sm font-semibold
+             border border-gray-700 hover:bg-gray-700 transition">
+      Back
+    </button>
+
+    <!-- Next / Submit -->
+    <button type="button" id="nextBtn"
+      class="px-5 py-2 rounded-full bg-red-600 text-xs sm:text-sm font-semibold
+             hover:bg-red-500 transition">
+      Next
+    </button>
+
+  </div>
+
+  <!-- Bottom row: Save / Clear -->
+  <div class="flex items-center justify-between mt-3">
+
+    <!-- Clear Form -->
+    <button type="button" id="clearFormBtn"
+      class="px-4 py-2 rounded-full bg-gray-800 text-xs sm:text-sm font-semibold
+             border border-gray-700 hover:bg-gray-700 transition">
+      Clear Form
+    </button>
+
+    <!-- Save Progress -->
+    <button type="button" id="saveProgressBtn"
+      class="px-4 py-2 rounded-full bg-gray-800 text-xs sm:text-sm font-semibold
+             border border-gray-700 hover:bg-gray-700 transition">
+      Save Progress
+    </button>
+
+  </div>
+
+</div>
+            </form>
+
+            <!-- Edit link display box (filled after submit) -->
+            <div id="edit-link-box" class="mt-4"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- View Metrics Button -->
+      <div class="flex justify-center mt-8">
+        <a href="metrics.html"
+           class="inline-flex items-center justify-center bg-gray-800/60 border border-gray-700
+                  text-gray-200 font-semibold px-6 py-3 rounded-full backdrop-blur-sm shadow-lg
+                  hover:bg-gray-700/70 hover:text-red-400 transition text-sm">
+          View Metrics
+        </a>
+      </div>
+
+      <!-- Back to Top Button -->
+      <div class="flex justify-center mt-8">
+        <button id="bottomBackToTop"
+                class="bg-gray-800/60 border border-gray-700 text-red-500 w-10 h-10 rounded-full
+                       flex items-center justify-center backdrop-blur-sm shadow-lg
+                       hover:bg-gray-700/70 hover:text-red-400 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <footer class="text-center text-gray-500 text-sm mt-16 pb-4">
+        Sponsored by the Sabado Sessions Podcast
+      </footer>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="entry-subjuniors.js"></script>
+  <script>
+  // Mobile menu
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  function closeNavDropdowns() {
+    document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+      dropdown.classList.remove('open');
+
+      const toggle = dropdown.querySelector('.nav-dropdown-toggle');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  function toggleMenu(show) {
+    if (show) {
+      mobileMenu.classList.remove('scale-y-0', 'opacity-0', 'pointer-events-none');
+      mobileMenu.classList.add('scale-y-100', 'opacity-100');
+      menuBtn.setAttribute('aria-expanded', 'true');
+    } else {
+      mobileMenu.classList.add('scale-y-0', 'opacity-0', 'pointer-events-none');
+      mobileMenu.classList.remove('scale-y-100', 'opacity-100');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      closeNavDropdowns();
+    }
+  }
+
+  let menuVisible = false;
+
+  menuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menuVisible = !menuVisible;
+    toggleMenu(menuVisible);
+  });
+
+  // League Entry dropdown
+  document.querySelectorAll('.nav-dropdown-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+
+      const parent = btn.closest('.nav-dropdown');
+      if (!parent) return;
+
+      const isOpen = parent.classList.contains('open');
+
+      closeNavDropdowns();
+
+      parent.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    const clickedInsideMenu = mobileMenu.contains(e.target);
+    const clickedMenuButton = menuBtn.contains(e.target);
+    const clickedDropdown = e.target.closest('.nav-dropdown');
+
+    if (!clickedDropdown) {
+      closeNavDropdowns();
+    }
+
+    if (!clickedInsideMenu && !clickedMenuButton) {
+      if (menuVisible) {
+        menuVisible = false;
+        toggleMenu(false);
+      }
+    }
+  });
+
+  toggleMenu(false);
+
+  // Spotify gate: force new tab, remember pass
+  const spotifyLink = document.getElementById('spotify-link');
+  const spotifyLock = document.getElementById('spotify-lock');
+  const softGateImage = document.getElementById('softGateImage');
+
+  if (spotifyLink && spotifyLock) {
+    spotifyLink.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const url = spotifyLink.href;
+
+      sessionStorage.setItem('spotifyPassed', '1');
+      spotifyLock.classList.add('hidden');
+
+      const opened = window.open(url, '_blank');
+
+      if (!opened) {
+        window.location.href = url;
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('spotifyPassed') === '1') {
+        spotifyLock.classList.add('hidden');
+      }
+    });
+  }
+
+  // Back to top
+  const bottomBackToTop = document.getElementById('bottomBackToTop');
+
+  if (bottomBackToTop) {
+    bottomBackToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+</script>
+
+  <!-- EMAIL EXISTS POPUP (backup UI if needed) -->
+  <div id="emailExistsModal"
+       class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[999] hidden">
+    <div class="bg-gray-900 border border-gray-700 rounded-xl p-6 w-80 text-center">
+      <h2 class="text-lg font-semibold text-red-400 mb-3">Email Already Used</h2>
+      <p class="text-sm text-gray-300 mb-4">
+        This email already has an entry.<br>
+        Would you like us to resend your private edit link?
+      </p>
+
+      <button id="resendLinkBtn"
+              class="w-full py-2 rounded-lg bg-red-600 font-semibold hover:bg-red-500 mb-2">
+        Send My Link
+      </button>
+
+      <button id="cancelEmailExistsBtn"
+              class="w-full py-2 rounded-lg bg-gray-700 font-semibold hover:bg-gray-600">
+        Cancel
+      </button>
+    </div>
+  </div>
+  <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/britishclassicfl/service-worker.js");
+  });
+}
+</script>
+  <!-- DEADLINE LOCK OVERLAY (allows burger menu) -->
+<!-- <div id="deadline-closed-overlay"
+     class="hidden fixed inset-x-0 top-[64px] bottom-0 bg-black/80 backdrop-blur-sm z-[9999]
+            flex items-center justify-center px-6 text-center">
+  <div class="bg-gray-900 border border-gray-700 p-8 rounded-xl max-w-md">
+    <h2 class="text-2xl font-bold text-red-400 mb-3">Entries Are Now Closed</h2>
+    <p class="text-gray-300 text-sm leading-relaxed">
+      The submission deadline for the<br>
+      <span class="font-semibold">British Juniors Fantasy League</span><br>
+      has now passed.<br><br>
+      Thank you to everyone who entered!
+    </p> -->
+  </div>
+</div>
+</body>
+</html>
