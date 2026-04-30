@@ -54,9 +54,9 @@ const ALL_CLASSES = [...femaleClasses, ...maleClasses];
 
 // Meta for confidence labels
 const classMeta = {
-  // '43w':  { labelPrefix: '43 kg Predicted Winner' },
-  // '47w':  { labelPrefix: '47 kg Predicted Winner' },
-  // '52w':  { labelPrefix: '52 kg Predicted Winner' },
+  '43w':  { labelPrefix: '43 kg Predicted Winner' },
+  '47w':  { labelPrefix: '47 kg Predicted Winner' },
+  '52w':  { labelPrefix: '52 kg Predicted Winner' },
   '57w':  { labelPrefix: '57 kg Predicted Winner' },
   '63w':  { labelPrefix: '63 kg Predicted Winner' },
   '69w':  { labelPrefix: '69 kg Predicted Winner' },
