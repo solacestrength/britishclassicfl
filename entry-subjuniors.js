@@ -1,20 +1,18 @@
 // ========= CONFIG =========
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzYY2tz3Lj05YrNlhWjgWZ_e5nUqjQ0wPdbpQEiSOVP4JAWpYjkCbUPfZQUTNI_te-rVA/exec'; // <-- your deployed Apps Script Web App URL
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzYY2tz3Lj05YrNlhWjgWZ_e5nUqjQ0wPdbpQEiSOVP4JAWpYjkCbUPfZQUTNI_te-rVA/exec';
 const AUTO_SAVE_KEY = 'bcfl_subjr26_savedProgress_v1';
 
 // ========= DEADLINE ENFORCEMENT =========
 const ENTRY_DEADLINE = new Date("2026-05-13T23:59:00Z");
 
 function isPastDeadline() {
-  const now = new Date();
-  return now > ENTRY_DEADLINE;
+  return new Date() > ENTRY_DEADLINE;
 }
 
 function lockFormForDeadline() {
   const overlay = document.getElementById('deadline-closed-overlay');
   if (overlay) overlay.classList.remove('hidden');
 
-  // Disable everything except viewing
   document.querySelectorAll('input, select, button, textarea').forEach(el => {
     el.disabled = true;
   });
@@ -39,39 +37,54 @@ const maleBestInput = document.getElementById('maleBest');
 const femaleBestList = document.getElementById('femaleBestList');
 const maleBestList = document.getElementById('maleBestList');
 
-// Save / Clear buttons (must exist in HTML)
 const saveBtn = document.getElementById('saveProgressBtn');
 const clearBtn = document.getElementById('clearFormBtn');
 
-// All confidence selects (now all live on Step 4 page)
 const confSelects = Array.from(document.querySelectorAll('.conf-select'));
 
-// Class IDs (for looping)
-const femaleClasses = ['43w', '47w', '52w', '57w','63w','69w','76w','84w','84pw'];
-const maleClasses   = ['53m','59m','66m','74m','83m','93m','105m','120m','120pm'];
+// ========= CLASS SETUP =========
+const femaleClassesBase = ['43w', '47w', '52w', '57w', '63w', '69w', '76w', '84w', '84pw'];
+const maleClassesBase = ['53m', '59m', '66m', '74m', '83m', '93m', '105m', '120m', '120pm'];
 
-const ALL_CLASSES = [...femaleClasses, ...maleClasses];
+function exists(id) {
+  return !!document.getElementById(id);
+}
 
-// Meta for confidence labels
+function activeFemaleClasses() {
+  return femaleClassesBase.filter(cls => exists('w' + cls));
+}
+
+function activeMaleClasses() {
+  return maleClassesBase.filter(cls => exists('w' + cls));
+}
+
+function activeAllClasses() {
+  return [...activeFemaleClasses(), ...activeMaleClasses()];
+}
+
+function activeConfidenceClasses() {
+  return activeAllClasses().filter(cls => exists('c' + cls));
+}
+
 const classMeta = {
-  '43w':  { labelPrefix: '43 kg Predicted Winner' },
-  '47w':  { labelPrefix: '47 kg Predicted Winner' },
-  '52w':  { labelPrefix: '52 kg Predicted Winner' },
-  '57w':  { labelPrefix: '57 kg Predicted Winner' },
-  '63w':  { labelPrefix: '63 kg Predicted Winner' },
-  '69w':  { labelPrefix: '69 kg Predicted Winner' },
-  '76w':  { labelPrefix: '76 kg Predicted Winner' },
-  '84w':  { labelPrefix: '84 kg Predicted Winner' },
+  '43w': { labelPrefix: '43 kg Predicted Winner' },
+  '47w': { labelPrefix: '47 kg Predicted Winner' },
+  '52w': { labelPrefix: '52 kg Predicted Winner' },
+  '57w': { labelPrefix: '57 kg Predicted Winner' },
+  '63w': { labelPrefix: '63 kg Predicted Winner' },
+  '69w': { labelPrefix: '69 kg Predicted Winner' },
+  '76w': { labelPrefix: '76 kg Predicted Winner' },
+  '84w': { labelPrefix: '84 kg Predicted Winner' },
   '84pw': { labelPrefix: '84+ kg Predicted Winner' },
 
-  '53m':   { labelPrefix: '53 kg Predicted Winner' },
-  '59m':   { labelPrefix: '59 kg Predicted Winner' },
-  '66m':   { labelPrefix: '66 kg Predicted Winner' },
-  '74m':   { labelPrefix: '74 kg Predicted Winner' },
-  '83m':   { labelPrefix: '83 kg Predicted Winner' },
-  '93m':   { labelPrefix: '93 kg Predicted Winner' },
-  '105m':  { labelPrefix: '105 kg Predicted Winner' },
-  '120m':  { labelPrefix: '120 kg Predicted Winner' },
+  '53m': { labelPrefix: '53 kg Predicted Winner' },
+  '59m': { labelPrefix: '59 kg Predicted Winner' },
+  '66m': { labelPrefix: '66 kg Predicted Winner' },
+  '74m': { labelPrefix: '74 kg Predicted Winner' },
+  '83m': { labelPrefix: '83 kg Predicted Winner' },
+  '93m': { labelPrefix: '93 kg Predicted Winner' },
+  '105m': { labelPrefix: '105 kg Predicted Winner' },
+  '120m': { labelPrefix: '120 kg Predicted Winner' },
   '120pm': { labelPrefix: '120+ kg Predicted Winner' }
 };
 
@@ -81,12 +94,11 @@ let autoSaveIntervalId = null;
 let editingToken = null;
 
 // ========= SCROLL HELPERS =========
-
 function scrollToFormTop() {
   const formContainer = document.getElementById('form-container');
   if (formContainer) {
     const rect = formContainer.getBoundingClientRect();
-    const targetY = rect.top + window.pageYOffset - 16; // small margin
+    const targetY = rect.top + window.pageYOffset - 16;
     window.scrollTo({ top: targetY, behavior: 'smooth' });
   } else {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -97,14 +109,12 @@ function scrollToFirstErrorInStep(stepIndex) {
   const stepEl = steps[stepIndex];
   if (!stepEl) return;
 
-  const errorEls = Array.from(
-    stepEl.querySelectorAll('[id$="Error"]')
-  ).filter(el => el.textContent.trim() !== '');
+  const errorEls = Array.from(stepEl.querySelectorAll('[id$="Error"]'))
+    .filter(el => el.textContent.trim() !== '');
 
-  if (errorEls.length === 0) return;
+  if (!errorEls.length) return;
 
-  const firstError = errorEls[0];
-  const rect = firstError.getBoundingClientRect();
+  const rect = errorEls[0].getBoundingClientRect();
   const targetY = rect.top + window.pageYOffset - 80;
   window.scrollTo({ top: targetY, behavior: 'smooth' });
 }
@@ -116,26 +126,19 @@ function showStep(index) {
   });
 
   currentStep = index;
-  backBtn.style.visibility = index === 0 ? 'hidden' : 'visible';
 
-  if (index === steps.length - 1) {
-    nextBtn.textContent = 'Submit';
-  } else {
-    nextBtn.textContent = 'Next';
-  }
+  backBtn.style.visibility = index === 0 ? 'hidden' : 'visible';
+  nextBtn.textContent = index === steps.length - 1 ? 'Submit' : 'Next';
 
   const labels = [
     'Step 1 of 5 – Contact',
-    'Step 2 of 5 – Women’s Predictions',
-    'Step 3 of 5 – Men’s Predictions',
-    'Step 4 of 5 – Confidence Ratings',
-    'Step 5 of 5 – Best Lifters'
+    'Step 2 of 5 – Predictions',
+    'Step 3 of 5 – Confidence Ratings',
+    'Step 4 of 5 – Best Lifters'
   ];
-  stepLabel.textContent = labels[index] || '';
 
-  positionUtilityButtons();
+  stepLabel.textContent = labels[index] || `Step ${index + 1} of ${steps.length}`;
 
-  // Show Save/Clear on Steps 0–3; hide on final step (4)
   if (saveBtn && clearBtn) {
     if (index === steps.length - 1) {
       saveBtn.classList.add('hidden');
@@ -148,7 +151,7 @@ function showStep(index) {
 }
 
 function showStatus(message, isError = false) {
-  statusEl.textContent = message;
+  statusEl.textContent = message || '';
   statusEl.className = 'text-sm mt-1 ' + (isError ? 'text-red-400' : 'text-green-400');
 }
 
@@ -163,48 +166,40 @@ function setError(id, msg) {
   if (el) el.textContent = msg;
 }
 
-// ========= CONFIDENCE LABELS (Step 4) =========
-
+// ========= CONFIDENCE LABELS =========
 function updateConfidenceLabels() {
-  const allClasses = [...femaleClasses, ...maleClasses];
-
-  allClasses.forEach(cls => {
+  activeConfidenceClasses().forEach(cls => {
     const meta = classMeta[cls];
     const labelEl = document.getElementById('confLabel_' + cls);
-    if (!meta || !labelEl) return;
-
-const wSel = document.getElementById('w' + cls);
-if (!wSel) return; // 🚫 skip non-existent classes
-
     const wSel = document.getElementById('w' + cls);
-    const winner = wSel && wSel.value ? wSel.value : '';
+
+    if (!meta || !labelEl || !wSel) return;
+
+    const winner = wSel.value || '';
 
     if (!winner) {
       labelEl.textContent = `Your ${meta.labelPrefix} — no winner selected yet.`;
       return;
     }
 
-    // Remove nominated totals e.g. "(707.5 kg)"
-    const cleanName = winner.replace(/\s*\([\d\.]+\s*kg\)/i, '').trim();
-
+    const cleanName = winner.replace(/\s*\([\d.]+\s*kg\)/i, '').trim();
     labelEl.textContent = `Your ${meta.labelPrefix} — ${cleanName}`;
   });
 }
 
 // ========= CONFIDENCE RATING LOGIC =========
-
 function initConfidenceOptions() {
-  confSelects.forEach(sel => {
+  const activeConfSelects = Array.from(document.querySelectorAll('.conf-select'));
+  const total = activeConfSelects.length;
+
+  activeConfSelects.forEach(sel => {
     sel.innerHTML = '';
 
-    // Placeholder
     const placeholder = document.createElement('option');
     placeholder.value = '';
     placeholder.textContent = 'Select rating…';
     sel.appendChild(placeholder);
 
-    // Ratings 1–18
-    const total = confSelects.length;
     for (let i = 1; i <= total; i++) {
       const opt = document.createElement('option');
       opt.value = String(i);
@@ -212,117 +207,150 @@ function initConfidenceOptions() {
       sel.appendChild(opt);
     }
 
-    // CLEAR ALL OPTION — global
     const clearOpt = document.createElement('option');
     clearOpt.value = 'CLEAR_ALL';
     clearOpt.textContent = '⚠️ Clear ALL confidence ratings';
     clearOpt.classList.add('text-red-400', 'font-semibold');
     sel.appendChild(clearOpt);
+
+    const label = sel.closest('div')?.querySelector('label');
+    if (label) {
+      label.innerHTML = `Confidence Rating (1–${total}) <span class="text-red-500">*</span>`;
+    }
   });
 }
 
 function refreshConfidenceDisables() {
+  const activeConfSelects = Array.from(document.querySelectorAll('.conf-select'));
+
   const used = new Set(
-    confSelects
+    activeConfSelects
       .map(sel => sel.value)
       .filter(v => v !== '' && v !== 'CLEAR_ALL')
   );
 
-  confSelects.forEach(sel => {
+  activeConfSelects.forEach(sel => {
     const current = sel.value;
+
     Array.from(sel.options).forEach(opt => {
-      if (!opt.value || opt.value === 'CLEAR_ALL') return; // skip placeholder + clear
+      if (!opt.value || opt.value === 'CLEAR_ALL') return;
       opt.disabled = used.has(opt.value) && opt.value !== current;
     });
   });
 }
 
-// ========= CLEAR CONFIDENCE RATINGS =========
+function wireConfidenceClearHandlers() {
+  document.querySelectorAll('.conf-select').forEach(sel => {
+    sel.addEventListener('change', () => {
+      if (sel.value === 'CLEAR_ALL') {
+        const ok = window.confirm(
+          'Are you sure you want to clear ALL confidence ratings for ALL visible weight classes?'
+        );
 
-confSelects.forEach(sel => {
-  sel.addEventListener('change', () => {
-    if (sel.value === 'CLEAR_ALL') {
-      const ok = window.confirm(
-        'Are you sure you want to clear ALL confidence ratings for ALL weight classes?'
-      );
+        if (!ok) {
+          sel.value = '';
+          refreshConfidenceDisables();
+          return;
+        }
 
-      if (!ok) {
+        activeConfidenceClasses().forEach(cls => {
+          const cSel = document.getElementById('c' + cls);
+          if (cSel) cSel.value = '';
+        });
+
+        const total = activeConfidenceClasses().length;
+        refreshConfidenceDisables();
+        showStatus(`All ${total} confidence ratings have been reset. Please reassign 1–${total}.`, false);
         sel.value = '';
         return;
       }
 
-      const allClasses = [...femaleClasses, ...maleClasses];
-
-      // Clear all confidence selects across men and women
-      allClasses.forEach(cls => {
-        const cSel = document.getElementById('c' + cls);
-        if (cSel) {
-          cSel.value = '';
-        }
-      });
-
       refreshConfidenceDisables();
-      showStatus(`All ${confSelects.length} confidence ratings have been reset. Please reassign 1–${confSelects.length}.`, false);
-      sel.value = '';
-      return;
-    }
-
-    // Normal rating selection -> refresh disables
-    refreshConfidenceDisables();
-  });
-});
-
-// ========= BEST LIFTER LISTS =========
-
-function buildBestLifterLists() {
-  // Collect options from all female and male class winner dropdowns
-  const femaleOptions = new Set();
-  const maleOptions = new Set();
-
-  femaleClasses.forEach(cls => {
-    const sel = document.getElementById('w' + cls);
-    if (sel) {
-      Array.from(sel.options).forEach(opt => {
-        if (opt.value) femaleOptions.add(opt.textContent);
-      });
-    }
-  });
-
-  maleClasses.forEach(cls => {
-    const sel = document.getElementById('w' + cls);
-    if (sel) {
-      Array.from(sel.options).forEach(opt => {
-        if (opt.value) maleOptions.add(opt.textContent);
-      });
-    }
-  });
-
-  femaleBestList.innerHTML = '';
-  femaleOptions.forEach(name => {
-    const option = document.createElement('option');
-    option.value = name;
-    femaleBestList.appendChild(option);
-  });
-
-  maleBestList.innerHTML = '';
-  maleOptions.forEach(name => {
-    const option = document.createElement('option');
-    option.value = name;
-    maleBestList.appendChild(option);
+    });
   });
 }
 
-// ========= VALIDATION =========
+// ========= BEST LIFTER LISTS =========
+function buildBestLifterLists() {
+  const femaleOptions = new Set();
+  const maleOptions = new Set();
 
+  activeFemaleClasses().forEach(cls => {
+    const sel = document.getElementById('w' + cls);
+    if (!sel) return;
+
+    Array.from(sel.options).forEach(opt => {
+      if (opt.value) femaleOptions.add(opt.textContent);
+    });
+  });
+
+  activeMaleClasses().forEach(cls => {
+    const sel = document.getElementById('w' + cls);
+    if (!sel) return;
+
+    Array.from(sel.options).forEach(opt => {
+      if (opt.value) maleOptions.add(opt.textContent);
+    });
+  });
+
+  if (femaleBestList) {
+    femaleBestList.innerHTML = '';
+    femaleOptions.forEach(name => {
+      const option = document.createElement('option');
+      option.value = name;
+      femaleBestList.appendChild(option);
+    });
+  }
+
+  if (maleBestList) {
+    maleBestList.innerHTML = '';
+    maleOptions.forEach(name => {
+      const option = document.createElement('option');
+      option.value = name;
+      maleBestList.appendChild(option);
+    });
+  }
+}
+
+// ========= VALIDATION =========
 const totalRegex = /^(?:[0-9]|[1-9][0-9]{1,2}|1[0-9]{3}|2000)(?:\.0|\.5)?$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+function validatePredictionClasses(classes) {
+  let valid = true;
+
+  classes.forEach(cls => {
+    const wSel = document.getElementById('w' + cls);
+    const tInput = document.getElementById('t' + cls);
+
+    if (!wSel) return;
+
+    if (!wSel.value) {
+      setError('w' + cls + 'Error', 'Please pick a winner.');
+      valid = false;
+    }
+
+    if (tInput) {
+      const v = tInput.value.trim();
+
+      if (v !== '' && !totalRegex.test(v)) {
+        setError('t' + cls + 'Error', 'Use 0–2000 in steps of 0.5.');
+        valid = false;
+      }
+    }
+  });
+
+  return valid;
+}
+
 function validateStep(stepIndex) {
   clearErrors();
+  showStatus('');
   let valid = true;
 
   if (stepIndex === 0) {
     const emailVal = emailInput.value.trim();
+
     if (!emailVal) {
       setError('emailError', 'Email is required.');
       valid = false;
@@ -330,119 +358,63 @@ function validateStep(stepIndex) {
       setError('emailError', 'Please enter a valid email address.');
       valid = false;
     }
+
     if (!leaderboardInput.value.trim()) {
       setError('leaderboardError', 'Leaderboard name is required.');
       valid = false;
     }
   }
 
-if (stepIndex === 1) {
-  femaleClasses.forEach(cls => {
-    const wSel = document.getElementById('w' + cls);
-    const tInput = document.getElementById('t' + cls);
+  if (stepIndex === 1) {
+    valid = validatePredictionClasses(activeAllClasses()) && valid;
+  }
 
-    // 🚫 Skip classes not present in this form (e.g. sub-juniors)
-    if (!wSel && !tInput) return;
+  if (stepIndex === 2 || stepIndex === 3) {
+    const presentClasses = activeConfidenceClasses();
 
-    if (wSel && !wSel.value) {
-      setError('w' + cls + 'Error', 'Please pick a winner.');
-      valid = false;
-    }
+    presentClasses.forEach(cls => {
+      const cSel = document.getElementById('c' + cls);
 
-    if (tInput) {
-      const v = tInput.value.trim();
-      if (v !== '' && !totalRegex.test(v)) {
-        setError('t' + cls + 'Error', 'Use 0–2000 in steps of 0.5.');
+      if (!cSel) return;
+
+      if (!cSel.value || cSel.value === 'CLEAR_ALL') {
+        setError('c' + cls + 'Error', 'Please choose a confidence rating.');
         valid = false;
       }
-    }
-  });
-}
-    
-  if (stepIndex === 2) {
-    // Men – winners & totals required (confidence is on Step 4 now)
-maleClasses.forEach(cls => {
-  const wSel = document.getElementById('w' + cls);
-  const tInput = document.getElementById('t' + cls);
+    });
 
-  if (!wSel) {
-    console.error('Missing element:', 'w' + cls);
-    valid = false;
-    return;
-  }
+    const values = presentClasses
+      .map(cls => document.getElementById('c' + cls)?.value)
+      .filter(v => v && v !== 'CLEAR_ALL');
 
-  if (!wSel.value) {
-    setError('w' + cls + 'Error', 'Please pick a winner.');
-    valid = false;
-  }
+    const unique = new Set(values);
 
-  if (tInput) {
-    const v = tInput.value.trim();
-    if (v !== '' && !totalRegex.test(v)) {
-      setError('t' + cls + 'Error', 'Use 0–2000 in steps of 0.5 (e.g. 865 or 865.5).');
+    if (values.length !== presentClasses.length || unique.size !== presentClasses.length) {
+      showStatus(
+        `Each confidence rating must be used exactly once across all ${presentClasses.length} visible classes.`,
+        true
+      );
       valid = false;
     }
-  } else {
-    console.error('Missing element:', 't' + cls);
-    valid = false;
-  }
-});
   }
 
-if (stepIndex === 3) {
-  const allClasses = [...femaleClasses, ...maleClasses];
-
-  const presentClasses = allClasses.filter(cls =>
-    document.getElementById('c' + cls)
-  );
-
-  presentClasses.forEach(cls => {
-    const cSel = document.getElementById('c' + cls);
-
-    if (!cSel.value || cSel.value === 'CLEAR_ALL') {
-      setError('c' + cls + 'Error', 'Please choose a confidence rating.');
-      valid = false;
-    }
-  });
-
-  const allValues = presentClasses
-    .map(cls => document.getElementById('c' + cls).value)
-    .filter(v => v !== '' && v !== 'CLEAR_ALL');
-
-  const unique = new Set(allValues);
-
-  if (allValues.length !== presentClasses.length || unique.size !== presentClasses.length) {
-    showStatus(
-      `Each confidence rating must be used exactly once across all ${presentClasses.length} classes.`,
-      true
-    );
-    valid = false;
-  }
-}
-
-  if (stepIndex === 4) {
-    // Best Lifters
-    const femaleInput = document.getElementById('femaleBest');
-    const maleInput   = document.getElementById('maleBest');
-
+  if (stepIndex === steps.length - 1) {
     const femaleOptions = [...document.querySelectorAll('#femaleBestList option')]
       .map(o => o.value.trim().toLowerCase());
 
     const maleOptions = [...document.querySelectorAll('#maleBestList option')]
       .map(o => o.value.trim().toLowerCase());
 
-    const femaleVal = femaleInput.value.trim().toLowerCase();
-    const maleVal   = maleInput.value.trim().toLowerCase();
+    const femaleVal = femaleBestInput.value.trim().toLowerCase();
+    const maleVal = maleBestInput.value.trim().toLowerCase();
 
-    if (!femaleOptions.includes(femaleVal)) {
-      document.getElementById('femaleBestError').textContent =
-        'Please select a lifter from the list.';
+    if (!femaleVal || !femaleOptions.includes(femaleVal)) {
+      setError('femaleBestError', 'Please select a lifter from the list.');
       valid = false;
     }
 
-    if (!maleOptions.includes(maleVal)) {
-      document.getElementById('maleBestError').textContent =
-        'Please select a lifter from the list.';
+    if (!maleVal || !maleOptions.includes(maleVal)) {
+      setError('maleBestError', 'Please select a lifter from the list.');
       valid = false;
     }
   }
@@ -451,7 +423,6 @@ if (stepIndex === 3) {
 }
 
 // ========= SAVE / RESTORE PROGRESS =========
-
 function collectFormState() {
   const data = {};
   if (!form) return data;
@@ -468,21 +439,20 @@ function collectFormState() {
 function applyFormState(state) {
   if (!state) return;
 
-  // Restore all named fields except currentStep
   Object.keys(state).forEach(key => {
     if (key === 'currentStep') return;
-    const el = form.querySelector(`[name="${key}"]`);
-    if (!el) return;
 
-    if (el.type === 'checkbox' || el.type === 'radio') {
-      el.checked = state[key] === el.value;
+    const input = form.querySelector(`[name="${key}"]`);
+    if (!input) return;
+
+    if (input.type === 'checkbox' || input.type === 'radio') {
+      input.checked = state[key] === input.value;
     } else {
-      el.value = state[key];
+      input.value = state[key];
     }
   });
 
-  // Clamp step between 0 and last
-  let savedStep = typeof state.currentStep === 'number' ? state.currentStep : 0;
+  let savedStep = Number(state.currentStep || 0);
   if (isNaN(savedStep)) savedStep = 0;
   savedStep = Math.max(0, Math.min(savedStep, steps.length - 1));
 
@@ -495,6 +465,7 @@ function saveProgress(showMessage = true, isAuto = false) {
   if (!form) return;
 
   const emailVal = emailInput.value.trim();
+
   if (!emailVal) {
     if (!isAuto && showMessage) {
       showStatus('Add your email before saving progress.', true);
@@ -503,11 +474,12 @@ function saveProgress(showMessage = true, isAuto = false) {
   }
 
   const state = collectFormState();
+
   try {
     localStorage.setItem(AUTO_SAVE_KEY, JSON.stringify(state));
   } catch (e) {
     if (!isAuto && showMessage) {
-      showStatus('Unable to save progress (storage error).', true);
+      showStatus('Unable to save progress. Storage may be full or blocked.', true);
     }
     return;
   }
@@ -533,6 +505,7 @@ function restoreSavedProgressIfAny() {
   if (!raw) return false;
 
   let state;
+
   try {
     state = JSON.parse(raw);
   } catch (e) {
@@ -552,22 +525,17 @@ function clearFormAll() {
 
   form.reset();
 
-  // Preserve token if user is editing via private link
   tokenInput.value = existingToken;
 
-  // Re-init confidence & labels
   initConfidenceOptions();
   refreshConfidenceDisables();
   updateConfidenceLabels();
 
-  // Reset step to first
   showStep(0);
   scrollToFormTop();
 
-  // Clear saved progress
   localStorage.removeItem(AUTO_SAVE_KEY);
 
-  // Stop auto-save if running
   if (autoSaveIntervalId) {
     clearInterval(autoSaveIntervalId);
     autoSaveIntervalId = null;
@@ -577,19 +545,16 @@ function clearFormAll() {
 }
 
 // ========= AUTO-SAVE =========
-
 function startAutoSave() {
   if (autoSaveIntervalId) return;
   if (!emailInput.value.trim()) return;
 
   autoSaveIntervalId = setInterval(() => {
-    saveProgress(true, true); // with subtle message
+    saveProgress(true, true);
   }, 30000);
 }
 
 // ========= DUPLICATE EMAIL HELPERS =========
-
-// Assumes backend supports ?action=checkEmail&email=...
 async function checkEmailExists(email) {
   const division = divisionInput ? divisionInput.value.trim() : '';
 
@@ -600,15 +565,16 @@ async function checkEmailExists(email) {
       '&division=' + encodeURIComponent(division),
     { method: 'GET' }
   );
+
   const json = await res.json();
+
   if (!json.ok) {
     throw new Error(json.message || 'Could not check email.');
   }
-  // Expecting { ok:true, exists:true/false }
+
   return !!json.exists;
 }
 
-// Assumes backend supports ?action=sendLink&email=...
 async function sendEditLink(email) {
   const division = divisionInput ? divisionInput.value.trim() : '';
 
@@ -619,91 +585,71 @@ async function sendEditLink(email) {
       '&division=' + encodeURIComponent(division),
     { method: 'GET' }
   );
+
   const json = await res.json();
 
   if (!json.ok) {
-    // Show message but don't blow up JS
     showStatus(json.message || 'Could not send your private link. Please try again later.', true);
     return false;
   }
 
-  // Optionally show a success message here, but main one is set in caller
   return true;
 }
 
 // ========= PREFILL LOGIC =========
-
 async function prefillIfToken() {
   const params = new URLSearchParams(window.location.search);
   const existingToken = params.get('token');
 
   if (!existingToken) {
-    // Still want labels based on default (blank) winners/totals
     updateConfidenceLabels();
     return;
   }
 
-  // Put token into hidden input so submit will update same row
   tokenInput.value = existingToken;
 
   try {
     showStatus('Loading your saved entry…', false);
+
     const res = await fetch(
       SCRIPT_URL + '?action=prefill&token=' + encodeURIComponent(existingToken),
       { method: 'GET' }
     );
+
     const json = await res.json();
+
     if (!json.ok) {
       showStatus(json.message || 'Could not load previous entry.', true);
       updateConfidenceLabels();
       return;
     }
+
     const d = json.data || {};
 
-    // Contact
-    if (d.email)           emailInput.value = d.email;
+    if (d.email) emailInput.value = d.email;
     if (d.instagramHandle) igInput.value = d.instagramHandle;
     if (d.leaderboardName) leaderboardInput.value = d.leaderboardName;
 
-    // 🔒 When editing via token, lock the email field
     emailInput.readOnly = true;
     emailInput.classList.add('bg-gray-700', 'cursor-not-allowed');
 
-    // Winners – Women
-    femaleClasses.forEach(cls => {
+    activeAllClasses().forEach(cls => {
       const wSel = document.getElementById('w' + cls);
       const tInput = document.getElementById('t' + cls);
-      const cSel  = document.getElementById('c' + cls);
+      const cSel = document.getElementById('c' + cls);
 
       const wKey = 'w' + cls;
       const tKey = 't' + cls;
       const cKey = 'c' + cls;
 
-      if (d[wKey] && wSel)   wSel.value = d[wKey];
+      if (d[wKey] && wSel) wSel.value = d[wKey];
       if (d[tKey] && tInput) tInput.value = d[tKey];
-      if (d[cKey] && cSel)   cSel.value = String(d[cKey]);
+      if (d[cKey] && cSel) cSel.value = String(d[cKey]);
     });
 
-    // Winners – Men
-    maleClasses.forEach(cls => {
-      const wSel = document.getElementById('w' + cls);
-      const tInput = document.getElementById('t' + cls);
-      const cSel  = document.getElementById('c' + cls);
-
-      const wKey = 'w' + cls;
-      const tKey = 't' + cls;
-      const cKey = 'c' + cls;
-
-      if (d[wKey] && wSel)   wSel.value = d[wKey];
-      if (d[tKey] && tInput) tInput.value = d[tKey];
-      if (d[cKey] && cSel)   cSel.value = String(d[cKey]);
-    });
-
-    // Best lifters
     if (d.femaleBest) femaleBestInput.value = d.femaleBest;
-    if (d.maleBest)   maleBestInput.value   = d.maleBest;
+    if (d.maleBest) maleBestInput.value = d.maleBest;
 
-    // After setting confidence values, refresh disables and labels
     refreshConfidenceDisables();
     updateConfidenceLabels();
 
@@ -715,19 +661,15 @@ async function prefillIfToken() {
 }
 
 // ========= SUBMIT =========
-
 async function submitForm() {
   clearErrors();
   showStatus('');
 
-  // Normalise email
   emailInput.value = emailInput.value.trim().toLowerCase();
 
-  // Validate ALL steps before submitting
   for (let s = 0; s < steps.length; s++) {
     if (!validateStep(s)) {
       showStep(s);
-      // Wait a tiny moment for DOM to show correct step then scroll to first error
       setTimeout(() => scrollToFirstErrorInStep(s), 50);
       return;
     }
@@ -739,6 +681,7 @@ async function submitForm() {
 
   try {
     const formData = new FormData(form);
+
     const res = await fetch(SCRIPT_URL, {
       method: 'POST',
       body: formData
@@ -753,27 +696,22 @@ async function submitForm() {
       return;
     }
 
-    // Success message
     showStatus(json.message || 'Entry saved. Check your email for confirmation and your edit link.', false);
 
-    // === SHOW EDIT LINK ON PAGE ===
-    if (json.ok && json.token) {
+    if (json.token) {
       const editLink = `https://solacestrength.github.io/britishclassicfl/entry-subjuniors.html?token=${encodeURIComponent(json.token)}`;
       const linkBox = document.getElementById('edit-link-box');
 
       if (linkBox) {
         linkBox.innerHTML = `
           <div class="p-4 mt-4 rounded-lg bg-gray-800 border border-gray-700 text-center text-sm text-gray-200">
-              <p class="font-semibold mb-2">Your private edit link:</p>
-              <a href="${editLink}" class="text-blue-400 break-all" target="_blank">${editLink}</a>
-              <p class="text-gray-400 mt-2">(This has also been emailed to you.)</p>
+            <p class="font-semibold mb-2">Your private edit link:</p>
+            <a href="${editLink}" class="text-blue-400 break-all" target="_blank">${editLink}</a>
+            <p class="text-gray-400 mt-2">(This has also been emailed to you.)</p>
           </div>
         `;
       }
     }
-
-    // On successful submit, you *could* clear saved progress
-    // but I'll leave it intact in case they want to tweak again.
   } catch (err) {
     showStatus('Network or server error. Please try again.', true);
   }
@@ -783,26 +721,6 @@ async function submitForm() {
 }
 
 // ========= NAVIGATION HANDLERS =========
-
-function positionUtilityButtons() {
-  const clearBtns = document.querySelectorAll('.clearFormBtn');
-  const saveBtns  = document.querySelectorAll('.saveProgressBtn');
-
-  // Hide all by default
-  clearBtns.forEach(btn => btn.classList.add('hidden'));
-  saveBtns.forEach(btn => btn.classList.add('hidden'));
-
-  // Step 4 is the last step with save/clear — DON’T show on Step 5
-  if (currentStep === 4) return;
-
-  // Show buttons for Steps 1–4
-  const clear = document.querySelector(`.clearFormBtn[data-step="${currentStep}"]`);
-  const save  = document.querySelector(`.saveProgressBtn[data-step="${currentStep}"]`);
-
-  if (clear) clear.classList.remove('hidden');
-  if (save)  save.classList.remove('hidden');
-}
-
 backBtn.addEventListener('click', () => {
   if (currentStep > 0) {
     showStep(currentStep - 1);
@@ -811,20 +729,16 @@ backBtn.addEventListener('click', () => {
 });
 
 nextBtn.addEventListener('click', async () => {
-  // Not on last step yet
   if (currentStep < steps.length - 1) {
-    // Local validation for current step
     if (!validateStep(currentStep)) {
       scrollToFirstErrorInStep(currentStep);
       return;
     }
 
-    // Special handling on Step 0 for duplicate emails
     if (currentStep === 0) {
       const emailVal = emailInput.value.trim().toLowerCase();
       const tokenVal = tokenInput.value.trim();
 
-      // Only check for duplicates if this is NOT an edit via token
       if (emailVal && !tokenVal) {
         try {
           showStatus('Checking email…', false);
@@ -834,7 +748,6 @@ nextBtn.addEventListener('click', async () => {
           const exists = await checkEmailExists(emailVal);
 
           if (exists) {
-            // Popup: send link or cancel
             const wantLink = window.confirm(
               'An entry with this email address already exists.\n\n' +
               'Press OK to send your private edit link to this email so you can edit your existing entry.\n' +
@@ -852,15 +765,12 @@ nextBtn.addEventListener('click', async () => {
 
             nextBtn.disabled = false;
             backBtn.disabled = false;
-            // 🔒 Do NOT advance in either case
             return;
           }
 
-          // If no existing entry, clear any "checking" status
           showStatus('', false);
           nextBtn.disabled = false;
           backBtn.disabled = false;
-
         } catch (err) {
           showStatus('Could not check this email right now. Please try again.', true);
           nextBtn.disabled = false;
@@ -869,65 +779,60 @@ nextBtn.addEventListener('click', async () => {
         }
       }
 
-      // Start auto-save once Step 0 is valid and email is set
       startAutoSave();
     }
 
-    // If we reach here, it's safe to advance
+    updateConfidenceLabels();
     showStep(currentStep + 1);
     scrollToFormTop();
   } else {
-    // Last step -> submit
     submitForm();
   }
 });
 
 // ========= INIT =========
-
 document.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
   editingToken = params.get('token');
 
   const hasSavedProgress = !!localStorage.getItem(AUTO_SAVE_KEY);
 
-  // If editing via private link OR returning with saved progress → bypass Spotify gate
   if (editingToken || hasSavedProgress) {
     sessionStorage.setItem('spotifyPassed', '1');
     const spotifyLock = document.getElementById('spotify-lock');
     if (spotifyLock) spotifyLock.classList.add('hidden');
   }
 
-    // 🔒 Hard deadline enforcement + bypass Spotify gate
   if (isPastDeadline()) {
-    // Bypass Spotify lock automatically
     sessionStorage.setItem('spotifyPassed', '1');
     const spotifyLock = document.getElementById('spotify-lock');
     if (spotifyLock) spotifyLock.classList.add('hidden');
 
-    // Fully lock the form
     lockFormForDeadline();
     return;
   }
 
   initConfidenceOptions();
+  wireConfidenceClearHandlers();
   buildBestLifterLists();
   showStep(0);
 
-  // Wire up live updates for confidence labels
-  const allClasses = [...femaleClasses, ...maleClasses];
-  allClasses.forEach(cls => {
+  activeAllClasses().forEach(cls => {
     const wSel = document.getElementById('w' + cls);
     const tInput = document.getElementById('t' + cls);
 
     if (wSel) {
-      wSel.addEventListener('change', updateConfidenceLabels);
+      wSel.addEventListener('change', () => {
+        updateConfidenceLabels();
+        buildBestLifterLists();
+      });
     }
+
     if (tInput) {
       tInput.addEventListener('input', updateConfidenceLabels);
     }
   });
 
-  // Hook up Save / Clear buttons
   if (saveBtn) {
     saveBtn.addEventListener('click', () => {
       saveProgress(true, false);
@@ -938,18 +843,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     clearBtn.addEventListener('click', clearFormAll);
   }
 
-  // If NOT editing via token, restore saved progress if available
   if (!editingToken && hasSavedProgress) {
     restoreSavedProgressIfAny();
   }
 
-  // Prefill from token if present (will also update labels)
   await prefillIfToken();
 
-  // Ensure labels are correct at start
   updateConfidenceLabels();
 
-  // If email already present (from saved progress or token), start auto-save
   if (emailInput.value.trim()) {
     startAutoSave();
   }
