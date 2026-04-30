@@ -28,6 +28,7 @@ const nextBtn = document.getElementById('nextBtn');
 const statusEl = document.getElementById('status');
 const stepLabel = document.getElementById('step-label');
 const tokenInput = document.getElementById('token');
+const divisionInput = document.getElementById('division');
 
 const emailInput = document.getElementById('email');
 const igInput = document.getElementById('instagramHandle');
@@ -597,8 +598,13 @@ function startAutoSave() {
 
 // Assumes backend supports ?action=checkEmail&email=...
 async function checkEmailExists(email) {
+  const division = divisionInput ? divisionInput.value.trim() : '';
+
   const res = await fetch(
-    SCRIPT_URL + '?action=checkEmail&email=' + encodeURIComponent(email),
+    SCRIPT_URL +
+      '?action=checkEmail' +
+      '&email=' + encodeURIComponent(email) +
+      '&division=' + encodeURIComponent(division),
     { method: 'GET' }
   );
   const json = await res.json();
@@ -611,8 +617,13 @@ async function checkEmailExists(email) {
 
 // Assumes backend supports ?action=sendLink&email=...
 async function sendEditLink(email) {
+  const division = divisionInput ? divisionInput.value.trim() : '';
+
   const res = await fetch(
-    SCRIPT_URL + '?action=sendLink&email=' + encodeURIComponent(email),
+    SCRIPT_URL +
+      '?action=sendLink' +
+      '&email=' + encodeURIComponent(email) +
+      '&division=' + encodeURIComponent(division),
     { method: 'GET' }
   );
   const json = await res.json();
