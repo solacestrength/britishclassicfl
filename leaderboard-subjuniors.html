@@ -152,7 +152,7 @@
 </head>
 
 <body class="relative bg-gray-900 text-white font-sans">
-  <div class="site-background absolute inset-0 bg-[url('image_leaderboard_shf.jpg')] bg-cover bg-center opacity-45"></div>
+  <div class="site-background absolute inset-0 bg-[url('image_leaderboard_sjr.jpg')] bg-cover bg-center opacity-45"></div>
   <div class="site-background-overlay absolute inset-0 bg-black/70"></div>
 
   <div class="relative z-10">
@@ -314,8 +314,8 @@
       </section>
 
       <div class="flex justify-center mt-8">
-        <a href="accuracy_scores.html" class="inline-flex items-center justify-center bg-gray-800/60 border border-gray-700 text-gray-200 font-semibold px-6 py-3 rounded-full backdrop-blur-sm shadow-lg hover:bg-gray-700/70 hover:text-red-400 transition text-sm">
-          View Accuracy Scores
+        <a href="accuracy-subjuniors.html" class="inline-flex items-center justify-center bg-gray-800/60 border border-gray-700 text-gray-200 font-semibold px-6 py-3 rounded-full backdrop-blur-sm shadow-lg hover:bg-gray-700/70 hover:text-red-400 transition text-sm">
+          View Sub-Junior Accuracy Scores
         </a>
       </div>
 
@@ -694,7 +694,7 @@ if (menuBtn && mobileMenu) {
     const rowsHtml=slice.map((r,i)=>{const actual=s+i, bold=actual===idx?"font-weight:bold;":""; return `<tr style="${bold}">${r.map(c=>`<td class="px-3 py-1 text-center">${c}</td>`).join("")}</tr>`;}).join("");
     const div=document.createElement("div");
     Object.assign(div.style,{width:"600px",borderRadius:"16px",overflow:"hidden",background:"#000",
-      backgroundImage:"url('image_leaderboard_shf.jpg')",backgroundSize:"cover",backgroundPosition:"center",
+      backgroundImage:"url('image_leaderboard_sjr.jpg')",backgroundSize:"cover",backgroundPosition:"center",
       boxShadow:"0 10px 30px rgba(0,0,0,.35)",position:"relative",zIndex:9999});
     const qr=new Image(); qr.crossOrigin="anonymous";
     qr.src=`https://api.qrserver.com/v1/create-qr-code/?size=75x75&data=${encodeURIComponent(window.location.href)}`;
