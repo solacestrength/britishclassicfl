@@ -129,6 +129,32 @@
 .nav-dropdown.open > .nav-row .nav-link {
   color: #ff4d4d;
 }
+
+/* ========= HOME PAGE COLLAPSIBLES ========= */
+
+.rules-collapsible,
+.prizes-collapsible,
+.contact-collapsible {
+  display: none;
+}
+
+.rules-collapsible.open,
+.prizes-collapsible.open,
+.contact-collapsible.open {
+  display: block;
+}
+
+#rulesArrow,
+#prizesArrow,
+#contactArrow {
+  transition: transform 0.2s ease;
+}
+
+#rulesArrow.rotate,
+#prizesArrow.rotate,
+#contactArrow.rotate {
+  transform: rotate(180deg);
+}
     
   </style>
 
@@ -309,7 +335,7 @@
               </svg>
             </h3>
 
-            <div id="contactContent" class="contact-collapsible open mt-1">
+            <div id="contactContent" class="contact-collapsible mt-1">
               <ul class="list-disc list-inside text-gray-300 space-y-2">
                 <li>
                   For enquiries regarding prizes or anything else fantasy league related,
