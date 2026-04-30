@@ -173,6 +173,9 @@ function updateConfidenceLabels() {
     const labelEl = document.getElementById('confLabel_' + cls);
     if (!meta || !labelEl) return;
 
+const wSel = document.getElementById('w' + cls);
+if (!wSel) return; // 🚫 skip non-existent classes
+
     const wSel = document.getElementById('w' + cls);
     const winner = wSel && wSel.value ? wSel.value : '';
 
@@ -333,35 +336,28 @@ function validateStep(stepIndex) {
     }
   }
 
-  if (stepIndex === 1) {
-    // Women – winners & totals required (confidence is on Step 4 now)
-femaleClasses.forEach(cls => {
-  const wSel = document.getElementById('w' + cls);
-  const tInput = document.getElementById('t' + cls);
+if (stepIndex === 1) {
+  femaleClasses.forEach(cls => {
+    const wSel = document.getElementById('w' + cls);
+    const tInput = document.getElementById('t' + cls);
 
-  if (!wSel) {
-    console.error('Missing element:', 'w' + cls);
-    valid = false;
-    return;
-  }
+    // 🚫 Skip classes not present in this form (e.g. sub-juniors)
+    if (!wSel && !tInput) return;
 
-  if (!wSel.value) {
-    setError('w' + cls + 'Error', 'Please pick a winner.');
-    valid = false;
-  }
-
-  if (tInput) {
-    const v = tInput.value.trim();
-    if (v !== '' && !totalRegex.test(v)) {
-      setError('t' + cls + 'Error', 'Use 0–2000 in steps of 0.5 (e.g. 865 or 865.5).');
+    if (wSel && !wSel.value) {
+      setError('w' + cls + 'Error', 'Please pick a winner.');
       valid = false;
     }
-  } else {
-    console.error('Missing element:', 't' + cls);
-    valid = false;
-  }
-});
-  }
+
+    if (tInput) {
+      const v = tInput.value.trim();
+      if (v !== '' && !totalRegex.test(v)) {
+        setError('t' + cls + 'Error', 'Use 0–2000 in steps of 0.5.');
+        valid = false;
+      }
+    }
+  });
+}
     
   if (stepIndex === 2) {
     // Men – winners & totals required (confidence is on Step 4 now)
@@ -395,32 +391,29 @@ maleClasses.forEach(cls => {
 
 if (stepIndex === 3) {
   const allClasses = [...femaleClasses, ...maleClasses];
-  const allValues = [];
 
-  allClasses.forEach(cls => {
+  const presentClasses = allClasses.filter(cls =>
+    document.getElementById('c' + cls)
+  );
+
+  presentClasses.forEach(cls => {
     const cSel = document.getElementById('c' + cls);
 
-    if (!cSel) {
-      console.error('Missing element:', 'c' + cls);
-      valid = false;
-      return;
-    }
-
-    const val = cSel.value;
-
-    if (!val || val === 'CLEAR_ALL') {
+    if (!cSel.value || cSel.value === 'CLEAR_ALL') {
       setError('c' + cls + 'Error', 'Please choose a confidence rating.');
       valid = false;
-    } else {
-      allValues.push(val);
     }
   });
 
+  const allValues = presentClasses
+    .map(cls => document.getElementById('c' + cls).value)
+    .filter(v => v !== '' && v !== 'CLEAR_ALL');
+
   const unique = new Set(allValues);
 
-  if (allValues.length !== 18 || unique.size !== 18) {
+  if (allValues.length !== presentClasses.length || unique.size !== presentClasses.length) {
     showStatus(
-      'Each confidence rating 1–18 must be used exactly once across all weight classes.',
+      `Each confidence rating must be used exactly once across all ${presentClasses.length} classes.`,
       true
     );
     valid = false;
