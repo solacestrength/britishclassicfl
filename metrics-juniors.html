@@ -737,7 +737,9 @@ const drillState = {
     currentAthlete: null,
     currentClass: null,
     athleteMap: {},
-    totalVotesInClass: 0
+    totalVotesInClass: 0,
+    pointMin: null,
+    pointMax: null
   },
   M: {
     wrapper: document.getElementById('menDrillWrapper'),
@@ -747,7 +749,9 @@ const drillState = {
     currentAthlete: null,
     currentClass: null,
     athleteMap: {},
-    totalVotesInClass: 0
+    totalVotesInClass: 0,
+    pointMin: null,
+    pointMax: null
   }
 };
 
@@ -1442,13 +1446,23 @@ function renderDrillChart(g, athlete) {
   const s = sizing();
   const isMobile = window.innerWidth < 768;
   const votes = state.athleteMap[athlete].votes || [];
-  const colors = getRedGradientColors();
 
-  // points 1–16 -> bins
-  const counts = Array(16).fill(0);
+  const minPoint = Number.isFinite(state.pointMin) ? state.pointMin : 1;
+  const maxPoint = Number.isFinite(state.pointMax) ? state.pointMax : Math.max(minPoint, 1);
+
+  const labels = Array.from(
+    { length: maxPoint - minPoint + 1 },
+    (_, i) => minPoint + i
+  );
+
+  const counts = Array(labels.length).fill(0);
+
   votes.forEach(v => {
-    if (v >= 1 && v <= 16) counts[v - 1]++;
+    const idx = v - minPoint;
+    if (idx >= 0 && idx < counts.length) counts[idx]++;
   });
+
+  const colors = getRedGradientColors(labels.length);
 
   if (state.chart) state.chart.destroy();
 
@@ -1456,7 +1470,7 @@ function renderDrillChart(g, athlete) {
   state.chart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: Array.from({ length: 16 }, (_, i) => i + 1),
+      labels,
       datasets: [{
         data: counts,
         backgroundColor: colors,
@@ -1490,14 +1504,9 @@ function renderDrillChart(g, athlete) {
           callbacks: {
             labelPointStyle: () => ({ pointStyle: 'circle', rotation: 0 }),
             title: (items) => {
-              const bin = items[0]?.label;
-              if (!bin) return '';
-              const n = parseInt(bin, 10);
-              return isNaN(n)
-                ? bin
-                : n === 1
-                  ? `${n} Point`
-                  : `${n} Points`;
+              const n = parseInt(items[0]?.label, 10);
+              if (isNaN(n)) return '';
+              return n === 1 ? `${n} Point` : `${n} Points`;
             },
             label: (ctx2) => `Vote Count – ${ctx2.parsed.y}`
           }
@@ -1507,13 +1516,12 @@ function renderDrillChart(g, athlete) {
       scales: {
         x: {
           ticks: {
-  color: '#ccc',
-  // Slightly smaller font on mobile so all 1–16 labels fit comfortably
-  font: { size: isMobile ? Math.max(9, s.axisTick - 2) : s.axisTick },
-  maxRotation: 0,
-  minRotation: 0,
-  autoSkip: false           // <- FORCE all tick labels to render
-},
+            color: '#ccc',
+            font: { size: isMobile ? Math.max(9, s.axisTick - 2) : s.axisTick },
+            maxRotation: 0,
+            minRotation: 0,
+            autoSkip: false
+          },
           title: {
             display: true,
             text: 'Points / Confidence Level',
@@ -1574,14 +1582,27 @@ function handleDonutClick(g, w, donutId, evt, elements, rows) {
 
 function buildDrillAthleteMap(rows) {
   const map = {};
+  const allPoints = [];
+
   rows.forEach(r => {
     const name = r.Athlete;
     if (!name) return;
+
     const pts = parseInt(r.Points, 10);
+
     if (!map[name]) map[name] = { votes: [] };
-    if (!isNaN(pts) && pts >= 1 && pts <= 16) map[name].votes.push(pts);
+
+    if (!isNaN(pts) && pts > 0) {
+      map[name].votes.push(pts);
+      allPoints.push(pts);
+    }
   });
-  return map;
+
+  return {
+    athleteMap: map,
+    pointMin: allPoints.length ? Math.min(...allPoints) : 1,
+    pointMax: allPoints.length ? Math.max(...allPoints) : 1
+  };
 }
 
 function openDrilldown(g, w, athlete, rows, opts = {}) {
@@ -1592,7 +1613,11 @@ function openDrilldown(g, w, athlete, rows, opts = {}) {
   const donutContainer = document.getElementById(donutContainerId);
 
   // build athlete vote map for this class
-  state.athleteMap = buildDrillAthleteMap(rows);
+  const drillBuild = buildDrillAthleteMap(rows);
+
+  state.athleteMap = drillBuild.athleteMap;
+  state.pointMin = drillBuild.pointMin;
+  state.pointMax = drillBuild.pointMax;
   state.currentAthlete = athlete;
   state.currentClass = w;
   state.totalVotesInClass = rows.length;
@@ -1664,6 +1689,8 @@ function closeDrilldown(g) {
     state.chart = null;
   }
 
+  state.pointMin = null;
+  state.pointMax = null;
   state.currentAthlete = null;
   state.currentClass = null;
   state.athleteMap = {};
